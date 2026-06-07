@@ -1,0 +1,59 @@
+
+.nutrition-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.calorie-ring-container {
+    background: white;
+    padding: 30px;
+    border-radius: 25px;
+    text-align: center;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.ring-visual {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    border: 15px solid #f0f4f8;
+    border-top: 15px solid #0d6efd; 
+    margin: 0 auto 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+/* estilo tarjetas */
+.macro-tag {
+    padding: 15px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.bg-prot { background: #eef2ff; color: #4f46e5; border-left: 5px solid #4f46e5; }
+.bg-carb { background: #fff4e5; color: #ff8a00; border-left: 5px solid #ff8a00; }
+.bg-fat { background: #f5f3ff; color: #8b5cf6; border-left: 5px solid #8b5cf6; }
+
+
+.food-table {
+    background: white;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+}
+
+.food-item {
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+}
+
+.food-item:last-child { border-bottom: none; }

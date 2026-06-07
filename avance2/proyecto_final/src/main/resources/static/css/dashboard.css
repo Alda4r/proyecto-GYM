@@ -1,0 +1,146 @@
+
+:root {
+    --sidebar-bg: #ffffff;
+    --main-bg: #f8f9fa;
+    --primary-blue: #0d6efd;
+    --accent-orange: #ff8a00;
+    --success-green: #10b981;
+    --card-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+body {
+    background-color: var(--main-bg);
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    margin: 0;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fillProgress {
+    from { width: 0; }
+}
+
+.sidebar {
+    background-color: var(--sidebar-bg);
+    height: 100vh;
+    border-right: 1px solid #eee;
+    padding: 25px;
+    position: fixed;
+    width: 260px;
+    z-index: 100;
+}
+
+.brand-section i {
+    color: #ffb800;
+    font-size: 1.8rem;
+}
+
+.nav-link {
+    color: #666;
+    padding: 14px 18px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.nav-link i {
+    margin-right: 12px;
+    width: 20px;
+    text-align: center;
+}
+
+.nav-link.active {
+    background-color: var(--primary-blue);
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
+}
+
+.nav-link:hover:not(.active) {
+    background-color: #f1f1f1;
+    transform: translateX(5px);
+}
+
+.main-content {
+    margin-left: 260px;
+    padding: 40px;
+}
+
+.stat-card {
+    background: white;
+    border: none;
+    border-radius: 20px;
+    padding: 22px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.3s ease;
+    animation: slideUp 0.5s ease forwards;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+}
+
+.bg-orange-light { background-color: #fff4e5; color: var(--accent-orange); }
+.bg-blue-light { background-color: #eef2ff; color: var(--primary-blue); }
+.bg-green-light { background-color: #ecfdf5; color: var(--success-green); }
+
+/* estilo en entrenamiento*/
+.content-card {
+    background: white;
+    border-radius: 20px;
+    padding: 25px;
+    box-shadow: var(--card-shadow);
+}
+
+.training-item {
+    cursor: pointer;
+    background-color: #fcfcfc;
+    border: 2px solid transparent;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 12px;
+    transition: 0.2s;
+}
+
+.training-item:hover {
+    background-color: #f8fbff;
+    border-color: #dbe9ff;
+    transform: scale(1.01);
+}
+
+/*barras */
+.progress { height: 10px; border-radius: 10px; background-color: #eee; }
+.progress-bar { background-color: #333; animation: fillProgress 1.5s ease-in-out; }
+
+
+.modal-content {
+    border-radius: 25px;
+    border: none;
+    animation: slideUp 0.4s ease;
+}
+
+.exercise-row {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+}

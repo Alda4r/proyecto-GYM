@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Cuenta - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+    <link rel="stylesheet" th:href="@{/css/cuenta.css}">
+</head>
+
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='cuenta')}"></div>
+
+    <main class="main-content">
+        <div class="container-fluid p-4">
+            <div th:if="${user != null}">
+                
+                <div class="d-flex justify-content-between align-items-end mb-4">
+                    <h2 class="fw-bold mb-0">Resumen de Perfil</h2>
+                    <button class="btn-gradient btn-edit-profile" data-bs-toggle="modal" data-bs-target="#modalEditarPerfil">
+                        <i class="fas fa-edit me-2"></i> Editar Perfil
+                    </button>
+                </div>
+                
+                <div class="row g-4">
+                    <div class="col-lg-4">
+                        <div class="card border-0 shadow-sm overflow-hidden profile-card">
+                            <div class="avatar-section-custom text-center p-4" style="background: linear-gradient(135deg, #f8f9fa, #e9ecef);">
+                                <i class="fas fa-user-circle fa-6x mb-3 text-primary"></i>
+                                <h3 class="fw-bold mb-0 text-dark" th:text="${user.nombre}">Nombre</h3>
+                                <span class="badge bg-primary rounded-pill px-3 mt-2" th:text="${user.membresia}">Membresía</span>
+                                
+                                <div th:if="${imcValue != null}" class="mt-3 p-2 rounded-3 bg-white border">
+                                    <small class="text-muted d-block fw-bold text-uppercase" style="font-size: 0.75rem;">Índice de Masa Corporal (IMC)</small>
+                                    <span class="fs-4 fw-bold text-dark" th:text="${imcValue}">24.2</span>
+                                    <span th:text="${'(' + imcClasificacion + ')'}" class="badge bg-success ms-1 small">Normal</span>
+                                </div>
+                            </div>
+                            <div class="card-body p-4 text-center">
+                                <div class="mb-3">
+                                    <label class="small text-muted d-block">Correo Electrónico</label>
+                                    <span class="fw-bold text-dark" th:text="${user.email}">correo@ejemplo.com</span>
+                                </div>
+                                <div class="mb-3" th:if="${user.nivelEntrenamiento != null}">
+                                    <label class="small text-muted d-block">Nivel de Condición</label>
+                                    <span class="badge bg-secondary text-capitalize" th:text="${user.nivelEntrenamiento}">Intermedio</span>
+                                </div>
+                                <hr>
+                                <a th:href="@{/login}" class="form-secondary-link fw-bold text-danger text-decoration-none">
+                                    <i class="fas fa-power-off me-2"></i> Cerrar Sesión
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-8">
+                        <div th:if="!${esAdmin}" class="row g-3 mb-4">
+                            <div class="col-md-4">
+                                <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4">
+                                    <small class="text-muted fw-bold text-uppercase">Peso</small>
+                                    <h3 class="fw-bold mb-0 text-dark" th:text="${user.pesoActual != null ? user.pesoActual + ' kg' : '---'}">0 kg</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-card-mini stat-card-dark shadow-sm p-3 rounded-4">
+                                    <small class="text-muted fw-bold text-uppercase">Altura</small>
+                                    <h3 class="fw-bold mb-0" th:text="${user.altura != null ? user.altura + ' m' : '---'}">0 m</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="stat-card-mini stat-card-green shadow-sm p-3 rounded-4">
+                                    <small class="text-muted fw-bold text-uppercase">Calorías Meta</small>
+                                    <h3 class="fw-bold mb-0" th:text="${user.metaCalorias != null ? user.metaCalorias : '---'}">0</h3>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div th:if="${esAdmin}" class="row g-3 mb-4">
+                            <div class="col-md-3">
+                                <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-primary border-5">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Total Usuarios</small>
+                                    <h3 class="fw-bold mb-0 text-dark" th:text="${adminTotalUsuarios}">0</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-success border-5">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Usuarios Activos</small>
+                                    <h3 class="fw-bold mb-0 text-success" th:text="${adminUsuariosActivos}">0</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-warning border-5">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Miembros Premium</small>
+                                    <h3 class="fw-bold mb-0 text-warning" th:text="${adminUsuariosPremium}">0</h3>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-info border-5">
+                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Total Entrenamientos</small>
+                                    <h3 class="fw-bold mb-0 text-info" th:text="${adminEntrenamientosTotales}">0</h3>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card border-0 shadow-sm p-0 routine-table-card overflow-hidden rounded-4">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-dark">
+                                    <tr>
+                                        <th class="ps-4 py-3">Últimas Rutinas</th>
+                                        <th>Duración</th>
+                                        <th class="pe-4 text-end">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="registro : ${historialReal}">
+                                        <td class="ps-4 fw-bold text-dark" th:text="${registro.rutinaNombre}">Nombre de la rutina</td>
+                                        <td th:text="${registro.duracionMinutos + ' min'}">0 min</td>
+                                        <td class="pe-4 text-end text-success">
+                                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2">
+                                                <i class="fas fa-check-circle me-1"></i> Hecho
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(historialReal)}">
+                                        <td colspan="3" class="text-center text-muted py-4">
+                                            <i class="fa-solid fa-dumbbell me-2"></i> Aún no has completado entrenamientos. ¡Empieza hoy!
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="modalEditarPerfil" tabindex="-1" aria-labelledby="modalEditarPerfilLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content rounded-4 border-0 shadow">
+                            <div class="modal-header bg-dark text-white border-0 py-3">
+                                <h5 class="modal-title fw-bold" id="modalEditarPerfilLabel"><i class="fas fa-user-edit me-2 text-info"></i> Actualizar Parámetros</h5>
+                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            
+                            <form th:action="@{/cuenta/editar}" th:object="${user}" method="post">
+                                <div class="modal-body p-4">
+                                    
+                                    <input type="hidden" th:field="*{email}">
+                                    <input type="hidden" th:field="*{nombre}">
+                                    <input type="hidden" th:field="*{password}">
+                                    <input type="hidden" th:field="*{membresia}">
+                                    <input type="hidden" th:field="*{nivelEntrenamiento}">
+
+                                    <div th:if="!${esAdmin}">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold text-secondary">Peso Actual (kg)</label>
+                                            <input type="number" step="0.1" class="form-control rounded-3" th:field="*{pesoActual}">
+                                            <div class="text-danger small fw-bold mt-1" th:if="${#fields.hasErrors('pesoActual')}" th:errors="*{pesoActual}">Error de peso</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold text-secondary">Altura (m)</label>
+                                            <input type="number" step="0.01" class="form-control rounded-3" th:field="*{altura}">
+                                            <div class="text-danger small fw-bold mt-1" th:if="${#fields.hasErrors('altura')}" th:errors="*{altura}">Error de altura</div>
+                                        </div>
+                                        
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold text-secondary">Meta Diaria de Calorías</label>
+                                            <input type="number" class="form-control rounded-3" th:field="*{metaCalorias}">
+                                            <div class="text-danger small fw-bold mt-1" th:if="${#fields.hasErrors('metaCalorias')}" th:errors="*{metaCalorias}">Error de calorías</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold text-secondary">Objetivo de Entrenamiento</label>
+                                            <select class="form-select rounded-3" th:field="*{objetivo}">
+                                                <option value="Ganar Peso">Ganar Peso / Volumen</option>
+                                                <option value="Bajar Peso">Bajar Peso / Definición</option>
+                                                <option value="Hacerse más fuerte">Hacerse más Fuerte (Fuerza)</option>
+                                            </select>
+                                            <div class="text-danger small fw-bold mt-1" th:if="${#fields.hasErrors('objetivo')}" th:errors="*{objetivo}">Error de objetivo</div>
+                                        </div>
+                                    </div>
+
+                                    <div th:if="${esAdmin}" class="alert alert-info rounded-3">
+                                        <i class="fas fa-lock me-2"></i>
+                                        <strong>Cuenta de Administrador</strong>
+                                        <p class="mb-0 small mt-2">Esta es una cuenta administrativa. Las métricas se generan automáticamente desde el sistema. Contacta al equipo técnico si necesitas realizar cambios.</p>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer border-0 bg-light p-3">
+                                    <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold" th:disabled="${esAdmin}">Guardar Cambios</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <div th:unless="${user != null}" class="text-center mt-5">
+                <div class="guest-card-dark shadow-lg">
+                    <i class="fas fa-user-secret fa-5x mb-4 guest-icon"></i>
+                    <h3 class="fw-bold">Modo Invitado</h3>
+                    <p class="opacity-75">Tu transformación merece ser guardada. Inicia sesión para ver tus métricas personalizadas.</p>
+                    <div class="d-grid gap-2 mt-4">
+                        <a th:href="@{/login}" class="btn-gradient text-decoration-none py-2 guest-btn-login text-center">INICIAR SESIÓN</a>
+                        <a th:href="@{/registro}" class="btn btn-outline-light py-2 guest-btn-register">Crear cuenta</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script th:if="${mostrarModalErrores}">
+        var myModal = new bootstrap.Modal(document.getElementById('modalEditarPerfil'));
+        myModal.show();
+    </script>
+</body>
+</html>

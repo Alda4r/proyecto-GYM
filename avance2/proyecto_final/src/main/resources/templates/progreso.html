@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitGym - Mi Progreso</title>
+    <th:block th:replace="~{fragmentos :: cabecera-comun}"></th:block>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        .progress { height: 20px; border-radius: 50px; background-color: #f0f2f5; }
+        .progress-bar { font-weight: bold; font-size: 0.85rem; border-radius: 50px; }
+        .icon-box { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; border-radius: 12px; }
+        .custom-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+        .custom-card:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.05) !important; }
+    </style>
+</head>
+
+<body>
+    
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='progreso')}"></div>
+
+    <div class="col-md-9 col-lg-10 main-content animate-up">
+
+        <div class="mb-4">
+            <h1 class="fw-bold" th:text="${isAdmin} ? 'Panel de Control: Progreso Global' : 'Mi Progreso'">Mi Progreso</h1>
+            <p class="text-muted" th:text="${isAdmin} ? 'Supervisión en tiempo real del rendimiento, alimentación y cumplimiento de los alumnos de la sede' : 'Visualiza tu evolución y el cumplimiento de tus objetivos reales'">Visualiza tu evolución y el cumplimiento de tus objetivos reales</p>
+        </div>
+
+        <div th:if="${isAdmin}" class="card border-0 shadow-sm p-4 rounded-4 bg-white mb-4">
+            <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="icon-box bg-primary bg-opacity-10 text-primary"><i class="fas fa-users-cog fa-lg"></i></div>
+                <div>
+                    <h5 class="fw-bold mb-0">Monitoreo de Alumnos Activos</h5>
+                    <p class="text-muted small mb-0">Selecciona un miembro registrado para inspeccionar su alimentación diaria y volumen de entrenamiento.</p>
+                </div>
+            </div>
+            <hr class="mt-2 mb-4">
+            
+            <form th:action="@{/progreso}" method="get" class="row g-3 align-items-center">
+                <div class="col-md-8">
+                    <select name="buscarEmail" class="form-select rounded-pill p-3 shadow-sm border" required>
+                        <option value="">-- Elige un alumno para ver si entrena y come correctamente --</option>
+                        <option th:each="alumno : ${alumnos}" 
+                                th:value="${alumno.email}" 
+                                th:text="${alumno.nombre + ' (' + alumno.email + ') — Objetivo: ' + alumno.objetivo}"
+                                th:selected="${alumnoAuditado != null && alumnoAuditado.email == alumno.email}">
+                            Alumno
+                        </option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-primary w-100 rounded-pill p-3 fw-bold shadow-sm">
+                        <i class="fas fa-chart-line me-2"></i>Auditar Rendimiento
+                    </button>
+                </div>
+            </form>
+
+            <div th:if="${alumnoAuditado != null}" class="p-3 rounded-4 border bg-light bg-opacity-50 mt-4 animate-up">
+                <div class="row text-center g-3">
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-primary border-4">
+                            <small class="text-muted d-block mb-1">Meta del Perfil</small>
+                            <span class="fw-bold text-dark small" th:text="${objetivoActual}">Objetivo</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-success border-4">
+                            <small class="text-muted d-block mb-1">¿Comió Saludable Hoy?</small>
+                            <span th:if="${comioHoy}" class="badge bg-success-subtle text-success rounded-pill px-3 fw-bold"><i class="fas fa-check me-1"></i> Sí, registrado</span>
+                            <span th:if="${!comioHoy}" class="badge bg-danger-subtle text-danger rounded-pill px-3 fw-bold"><i class="fas fa-times me-1"></i> Sin registrar</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-warning border-4">
+                            <small class="text-muted d-block mb-1">Calorías Consumidas Hoy</small>
+                            <span class="fw-bold text-dark" th:text="${caloriasHoy + ' kcal'}">0 kcal</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 bg-white rounded-3 shadow-sm border-start border-info border-4">
+                            <small class="text-muted d-block mb-1">Sesiones Finalizadas</small>
+                            <span class="fw-bold text-info fs-5" th:text="${totalEntrenamientos + ' totales'}">0 totales</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div th:if="${!isAdmin || alumnoAuditado != null}" class="animate-up">
+
+            <div class="row g-4 mb-4">
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="custom-card h-100 text-center p-3 bg-white rounded-4 shadow-sm border-0">
+                        <small class="text-muted d-block mb-1">Peso Controlado</small>
+                        <h3 class="fw-bold mb-0 text-dark" th:text="${pesoActual + ' kg'}">75.0 kg</h3>
+                        <small class="text-success small"><i class="fa-solid fa-circle-check"></i> Sincronizado</small>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="custom-card h-100 text-center p-3 bg-white rounded-4 shadow-sm border-0">
+                        <small class="text-muted d-block mb-1">IMC Real</small>
+                        <h3 class="fw-bold mb-0 text-primary" th:text="${imc}">24.5</h3>
+                        <small class="text-muted small">Clasificación: Normal</small>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="custom-card h-100 text-center p-3 bg-white rounded-4 shadow-sm border-0">
+                        <small class="text-muted d-block mb-1">Grasa Corporal Estimada</small>
+                        <h3 class="fw-bold mb-1 text-warning" th:text="${grasa}">0.0%</h3>
+                        <span class="badge bg-light text-muted" th:text="${totalEntrenamientos > 0 ? '-2.3% este mes' : 'Base inicial'}">Base inicial</span>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6 col-xl-3">
+                    <div class="custom-card h-100 text-center p-3 bg-white rounded-4 shadow-sm border-0">
+                        <small class="text-muted d-block mb-1">Masa Muscular Estimada</small>
+                        <h3 class="fw-bold mb-1 text-success" th:text="${masaMuscular}">0.0 kg</h3>
+                        <span class="badge bg-light text-muted" th:text="${totalEntrenamientos > 0 ? '+1.5kg este mes' : 'Base inicial'}">Base inicial</span>
+                    </div>
+                </div>
+            </div>
+
+            <ul class="nav nav-pills nav-fill mb-4 bg-white p-2 rounded-4 shadow-sm border-0" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active d-flex justify-content-center align-items-center fw-bold" data-bs-toggle="pill" data-bs-target="#tab-peso">Análisis de Composición</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link d-flex justify-content-center align-items-center fw-bold" data-bs-toggle="pill" data-bs-target="#tab-entrenamientos">Cumplimiento Semanal</button>
+                </li>
+                <li class="nav-item">
+                    <button class="nav-link d-flex justify-content-center align-items-center fw-bold" data-bs-toggle="pill" data-bs-target="#tab-fuerza">Enfoque de Rutinas</button>
+                </li>
+            </ul>
+
+            <div class="tab-content mb-4">
+                
+                <div class="tab-pane fade show active" id="tab-peso">
+                    <div class="custom-card p-4 bg-white rounded-4 shadow-sm border-0">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="icon-box bg-primary bg-opacity-10 text-primary"><i class="fa-solid fa-scale-balanced fa-lg"></i></div>
+                            <div>
+                                <h5 class="fw-bold mb-0">Estado Corporal de la Cuenta</h5>
+                                <p class="text-muted small mb-0">Índice de masa corporal calculado automáticamente.</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="py-3">
+                            <p class="mb-2">Basado en el peso actual de <strong th:text="${pesoActual + ' kg'}">75kg</strong> y una estatura promedio, el IMC calculado es de <strong th:text="${imc}">24.5</strong>.</p>
+                            <div class="alert alert-success border-0 rounded-4 d-flex align-items-center gap-2 mb-0" role="alert">
+                                <i class="fa-solid fa-circle-info text-success"></i>
+                                <span>Felicidades, la cuenta se encuentra dentro del rango de <strong>Peso Saludable / Normal</strong>. ¡A mantener el ritmo!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-entrenamientos">
+                    <div class="custom-card p-4 bg-white rounded-4 shadow-sm border-0">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="icon-box bg-success bg-opacity-10 text-success"><i class="fa-solid fa-calendar-check fa-lg"></i></div>
+                            <div>
+                                <h5 class="fw-bold mb-0">Meta de Entrenamientos Completados</h5>
+                                <p class="text-muted small mb-0">Monitoreo de constancia y asistencia semanal al gimnasio.</p>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="py-3">
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>Progreso de Rutinas Finalizadas</span>
+                                <span class="fw-bold" th:text="${totalEntrenamientos + ' completadas'}">0 completadas</span>
+                            </div>
+                            <div class="progress mb-3">
+                                <div class="progress-bar bg-success progress-bar-striped progress-bar-animated" 
+                                     role="progressbar" 
+                                     th:style="'width: ' + (${totalEntrenamientos >= 4 ? 100 : totalEntrenamientos * 25}) + '%'"
+                                     th:text="(${totalEntrenamientos >= 4 ? 100 : totalEntrenamientos * 25}) + '%'">0%</div>
+                            </div>
+                            <p class="text-muted small mb-0"><i class="fa-solid fa-fire text-danger"></i> Cada vez que el usuario presiona "Finalizar Entrenamiento" al terminar sus series, esta barra acumulará volumen automáticamente.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane fade" id="tab-fuerza">
+                    <div class="custom-card p-4 bg-white rounded-4 shadow-sm border-0">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="icon-box bg-primary bg-opacity-10 text-warning"><i class="fa-solid fa-dumbbell fa-lg"></i></div>
+                            <div>
+                                <h5 class="fw-bold mb-0">Distribución Muscular Realizada</h5>
+                                <p class="text-muted small mb-0">Volumen de trabajo dedicado a cada sección anatómica de la base de datos.</p>
+                            </div>
+                        </div>
+                        <hr>
+                        
+                        <div class="py-2">
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small fw-bold">Trabajo de Pecho</span>
+                                    <span class="badge bg-dark" th:text="${vecesPecho + ' sesiones'}">0 sesiones</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-warning text-dark" role="progressbar" 
+                                         th:style="'width: ' + (${vecesPecho > 0 ? 100 : 0}) + '%'">Pecho</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small fw-bold">Trabajo de Espalda</span>
+                                    <span class="badge bg-dark" th:text="${vecesEspalda + ' sesiones'}">0 sesiones</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-info text-dark" role="progressbar" 
+                                         th:style="'width: ' + (${vecesEspalda > 0 ? 100 : 0}) + '%'">Espalda</div>
+                                </div>
+                            </div>
+
+                            <div class="mb-4">
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small fw-bold">Trabajo de Pierna</span>
+                                    <span class="badge bg-dark" th:text="${vecesPierna + ' sesiones'}">0 sesiones</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-danger" role="progressbar" 
+                                         th:style="'width: ' + (${vecesPierna > 0 ? 100 : 0}) + '%'">Pierna</div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="d-flex justify-content-between mb-1">
+                                    <span class="small fw-bold">Trabajo de Fuerza</span>
+                                    <span class="badge bg-dark" th:text="${vecesFuerza + ' sesiones'}">0 sesiones</span>
+                                </div>
+                                <div class="progress">
+                                    <div class="progress-bar bg-dark" role="progressbar" 
+                                         th:style="'width: ' + (${vecesFuerza > 0 ? 100 : 0}) + '%'">Fuerza</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="custom-card p-4 bg-white rounded-4 shadow-sm border-0 mb-4">
+                <h6 class="fw-bold mb-4">Frecuencia Total Registrada por Zona Muscular 🏆</h6>
+                <div class="row g-3">
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-4 bg-light text-center">
+                            <small class="text-muted d-block mb-1">Zona: Pecho</small>
+                            <span class="fw-bold text-dark fs-5" th:text="${vecesPecho + ' completadas'}">0 completadas</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-4 bg-light text-center">
+                            <small class="text-muted d-block mb-1">Zona: Espalda</small>
+                            <span class="fw-bold text-dark fs-5" th:text="${vecesEspalda + ' completadas'}">0 completadas</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-4 bg-light text-center">
+                            <small class="text-muted d-block mb-1">Zona: Pierna</small>
+                            <span class="fw-bold text-dark fs-5" th:text="${vecesPierna + ' completadas'}">0 completadas</span>
+                        </div>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        <div class="p-3 rounded-4 bg-light text-center">
+                            <small class="text-muted d-block mb-1">Zona: Fuerza</small>
+                            <span class="fw-bold text-dark fs-5" th:text="${vecesFuerza + ' completadas'}">0 completadas</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div> <div th:if="${isAdmin && alumnoAuditado == null}" class="text-center py-5 bg-white rounded-4 border shadow-sm animate-up">
+            <i class="fa-solid fa-chart-pie text-muted fa-3x mb-3 opacity-50"></i>
+            <h5 class="fw-bold text-secondary">Esperando Selección de Alumno</h5>
+            <p class="text-muted small mb-0 px-3">Por favor, despliega el selector superior para auditar y graficar el progreso metabólico e historial de rutinas de un usuario en particular.</p>
+        </div>
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

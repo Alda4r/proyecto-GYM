@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro Atleta - FitGym</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" th:href="@{/css/login.css}" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+</head>
+
+<body>
+  <div class="login-container">
+    <div class="login-image-section d-none d-lg-flex">
+      <div class="motivational-text">
+        <h1 class="motivational-title">
+          Desbloquea <br />
+          tu potencial.
+        </h1>
+        <p class="motivational-subtitle">TU TRANSFORMACIÓN COMIENZA AQUÍ.</p>
+      </div>
+    </div>
+
+    <div class="login-form-section">
+      <div class="login-form-panel">
+        <div class="text-center mb-4">
+          <h2 class="panel-title mb-1">CREA TU CUENTA</h2>
+          <p class="text-muted small">
+            Ingresa tus datos para personalizar tu experience
+          </p>
+        </div>
+
+        <form th:action="@{/registro}" th:object="${usuario}" method="post">
+
+          <div class="input-icon-container mb-3">
+            <i class="fas fa-user input-icon"></i>
+            <input type="text" th:field="*{nombre}" class="form-control-custom w-100" placeholder="Nombre completo"
+              required>
+          </div>
+
+          <div class="input-icon-container mb-3">
+            <i class="fas fa-envelope input-icon"></i>
+            <input type="email" th:field="*{email}" class="form-control-custom w-100" placeholder="Correo electrónico"
+              required>
+          </div>
+          <div class="input-icon-container mb-3">
+            <i class="fas fa-bullseye input-icon"></i>
+            <select name="objetivo" class="form-control-custom w-100 py-2" style="padding-left: 2.5rem !important;"
+              required>
+              <option value="" disabled selected>Selecciona tu objetivo</option>
+              <option value="Hacerse más fuerte">Hacerse más fuerte</option>
+              <option value="Perder grasa">Perder grasa</option>
+              <option value="Mantenerse">Mantenerse</option>
+            </select>
+          </div>
+          <div class="row g-2 mb-3">
+            <div class="col-4">
+              <input type="number" step="0.01" id="altura" name="altura"
+                th:value="${usuario.altura == 0 ? '' : usuario.altura}"
+                class="form-control-custom w-100 text-center p-3" placeholder="cm (ej: 1.75)" required>
+            </div>
+            <div class="col-4">
+              <input type="number" step="0.1" id="pesoActual" name="pesoActual"
+                th:value="${usuario.pesoActual == 0 ? '' : usuario.pesoActual}"
+                class="form-control-custom w-100 text-center p-3" placeholder="kg (ej: 70.5)" required>
+            </div>
+            <div class="col-4">
+              <input type="number" id="edadCampo" name="edad" th:value="${usuario.edad == 0 ? '' : usuario.edad}"
+                class="form-control-custom w-100 text-center p-3" placeholder="Edad" readonly required>
+            </div>
+          </div>
+
+          <div class="row g-2 mb-3">
+            <div class="col-md-6">
+              <select id="genero" name="genero" class="form-control-custom w-100 py-2"
+                style="padding-left: 1rem !important;" required>
+                <option value="" disabled th:selected="${usuario.genero == null}">Género</option>
+                <option value="Masculino" th:selected="${usuario.genero == 'Masculino'}">Masculino</option>
+                <option value="Femenino" th:selected="${usuario.genero == 'Femenino'}">Femenino</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <input type="date" id="fechaNac" name="fechaNacimiento" th:value="${usuario.fechaNacimiento}"
+                class="form-control-custom w-100 py-2" style="padding-left: 1rem !important;" required>
+            </div>
+          </div>
+
+          <div class="input-icon-container mb-3">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="password" name="password" class="form-control-custom w-100"
+              placeholder="Contraseña" required>
+          </div>
+
+          <div class="input-icon-container mb-3">
+            <i class="fas fa-lock input-icon"></i>
+            <input type="password" id="confirmarContrasena" name="confirmarPassword" class="form-control-custom w-100"
+              placeholder="Confirmar contraseña" required>
+          </div>
+          <div id="errorPassword" class="small mt-1 text-center"></div>
+
+          <input type="hidden" id="metaCalorias" name="metaCalorias" value="2000">
+          <input type="hidden" id="nivelEntrenamiento" name="nivelEntrenamiento" value="Principiante">
+          <input type="hidden" id="membresia" name="membresia" value="Digital-Gratis">
+
+          <button type="submit" class="btn-gradient w-100 mt-2">
+            REGISTRARME AHORA <i class="fas fa-arrow-right ms-2"></i>
+          </button>
+
+          <div class="d-flex justify-content-center mt-4">
+            <p>¿Ya tienes cuenta?
+              <a th:href="@{/login}" class="form-secondary-link">Inicia sesión aquí.</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script th:src="@{/js/registro.js}"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

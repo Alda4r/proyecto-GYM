@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='dashboard')}"></div>
+
+    <main class="main-content">
+        <div class="header-section mb-5">
+            <h2 class="fw-bold">Dashboard</h2>
+            <p class="text-muted">Bienvenido de vuelta, <span class="fw-bold text-primary" th:text="${user.nombre}">Usuario</span>. ¡Es hora de entrenar! 💪</p>
+        </div>
+
+        <div class="row g-4 mb-5">
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div><span class="text-muted small">Calorías Quemadas</span><h3 class="fw-bold mb-0" th:text="${totalCalorias}">0</h3></div>
+                    <div class="stat-icon bg-orange-light"><i class="fa-solid fa-fire"></i></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div><span class="text-muted small">Entrenamientos</span><h3 class="fw-bold mb-0" th:text="${totalEntrenamientos}">0</h3></div>
+                    <div class="stat-icon bg-blue-light"><i class="fa-solid fa-bolt"></i></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div><span class="text-muted small">Meta del Mes</span><h3 class="fw-bold mb-0">75%</h3></div>
+                    <div class="stat-icon bg-green-light"><i class="fa-solid fa-bullseye"></i></div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-card">
+                    <div><span class="text-muted small">Racha Actual</span><h3 class="fw-bold mb-0" th:text="${racha + ' días'}">0 días</h3></div>
+                    <div class="stat-icon bg-purple-light"><i class="fa-solid fa-chart-line"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="content-card">
+                    <h5 class="fw-bold mb-4">Entrenamientos Recientes</h5>
+                    <div th:each="historial : ${entrenamientosRecientes}" class="training-item d-flex justify-content-between align-items-center mb-3 p-3 border-bottom">
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-light p-3 me-3"><i class="fa-solid fa-dumbbell text-primary"></i></div>
+                            <div>
+                                <h6 class="fw-bold mb-0" th:text="${historial.rutinaNombre}">Rutina</h6>
+                                <small class="text-muted" th:text="${historial.fechaHora}"></small>
+                            </div>
+                        </div>
+                        <div class="text-end">
+                            <span class="fw-bold d-block" th:text="${historial.duracionMinutos} + ' min'"></span>
+                            <span class="text-warning small" th:text="${historial.caloriasQuemadas} + ' cal'"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="content-card">
+                    <h5 class="fw-bold mb-4">Objetivos Semanales</h5>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between small mb-1"><span>Entrenamientos</span><b>4/5</b></div>
+                        <div class="progress"><div class="progress-bar bg-dark" style="width: 80%"></div></div>
+                    </div>
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between small mb-1"><span>Calorías</span><b th:text="${totalCalorias} + '/3000'"></b></div>
+                        <div class="progress"><div class="progress-bar bg-warning" th:style="'width: ' + (${totalCalorias} * 100 / 3000) + '%'"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

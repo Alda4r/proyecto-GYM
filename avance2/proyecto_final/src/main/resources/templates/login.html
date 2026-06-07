@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - FitSaaS Gym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body class="d-flex align-items-center vh-100">
+    <div class="login-container w-100">
+        <div class="login-image-section">
+            <div class="motivational-text">
+                <h1 class="motivational-title">
+                    DESBLOQUEA<br>
+                    TU POTENCIAL.
+                </h1>
+                <p class="motivational-subtitle">
+                    TU TRANSFORMACIÓN COMIENZA AQUÍ.
+                </p>
+            </div>
+        </div>
+        <div class="login-form-section">
+            <div class="login-form-panel">
+                <div class="text-center mb-5">
+                    <img th:src="@{https://via.placeholder.com/150x50/34495e/ffffff?text=FITSAAS}"
+                        alt="Logo FitSaaS Gym" class="img-fluid">
+                </div>
+                <h2 class="panel-title text-center text-uppercase">
+                    BIENVENIDO DE NUEVO
+                </h2>
+                <div th:if="${param.exito}" class="alert alert-success alert-dismissible fade show text-center" role="alert">
+            <i class="fas fa-check-circle me-2"></i> ¡Registrado correctamente! Ya puedes iniciar sesión.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+                <form th:action="@{/login}" method="post">
+
+    <div th:if="${param.error}" class="alert alert-danger text-center p-2 small mb-3" role="alert">
+        <i class="fas fa-exclamation-triangle me-2"></i> Credenciales incorrectas. Intenta de nuevo.
+    </div>
+
+    <div th:if="${param.suspendido}" class="alert alert-warning text-center p-2 small mb-3" role="alert">
+        <i class="fas fa-ban me-2"></i> Tu cuenta ha sido suspendida. Contacta con administrador.
+    </div>
+
+    <div th:if="${param.inactivo}" class="alert alert-warning text-center p-2 small mb-3" role="alert">
+        <i class="fas fa-clock me-2"></i> Tu membresía está inactiva. Contacta con soporte.
+    </div>
+
+    <div th:if="${param.exito}" class="alert alert-success text-center p-2 small mb-3" role="alert">
+        <i class="fas fa-check-circle me-2"></i> ¡Registrado correctamente! Ya puedes iniciar sesión.
+    </div>
+
+    <div class="input-icon-container mb-3">
+        <i class="fas fa-envelope input-icon"></i>
+        <input type="email" id="email" name="email" class="form-control-custom w-100" placeholder="Correo Electrónico" required>
+    </div>
+
+    <div class="input-icon-container mb-3">
+        <i class="fas fa-lock input-icon"></i>
+        <input type="password" id="password" name="password" class="form-control-custom w-100" placeholder="Contraseña" required>
+    </div>
+
+    <button type="submit" class="btn-gradient w-100 mt-2">
+        INICIAR SESIÓN <i class="fas fa-sign-in-alt ms-2"></i>
+    </button>
+</form>
+                <div class="text-center mt-5 pt-3 border-top border-dark">
+                    <p class="mb-2">
+                        ¿No tienes cuenta?
+                    </p>
+                    <a th:href="@{/registro}" class="form-secondary-link fw-bold">
+                        Regístrate aquí y empieza tu viaje.
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
