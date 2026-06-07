@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.example.demo.model.Usuario;
 import com.example.demo.repository.UsuarioRepository;
 
-import jakarta.servlet.http.HttpSession; // IMPORTANTE: Para manejar la memoria de sesión
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -20,24 +20,20 @@ public class LoginController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    // 1. Muestra la pantalla de inicio de sesión
     @GetMapping("/login")
     public String mostrarLogin() {
-        return "login"; // Devuelve la vista login.html
+        return "login";
     }
 
-    // 2. Procesa los datos del formulario al hacer clic en "Ingresar"
     @PostMapping("/login")
     public String procesarLogin(@RequestParam("email") String email, 
                                 @RequestParam("password") String password, 
-                                HttpSession session, // AGREGADO: Inyectamos la sesión aquí
+                                HttpSession session,
                                 Model model) {
         
-        // Ejecuta la consulta en SQL Server
         Optional<Usuario> usuarioOpt = usuarioRepository.findByEmailAndPassword(email, password);
 
         if (usuarioOpt.isPresent()) {
-            // Extraemos el objeto Usuario real que estaba dentro del Optional
             Usuario usuarioReal = usuarioOpt.get();
 
             if (usuarioReal.isSuspendido()) {
@@ -48,18 +44,14 @@ public class LoginController {
                 return "redirect:/login?inactivo";
             }
             
-            // GUARDADO EN SESIÓN: El servidor recordará a este usuario con el apodo "usuarioLogueado"
             session.setAttribute("usuarioLogueado", usuarioReal);
             
-            // Si es admin, lo llevamos directo al panel de gestión
             if ("admin@gym.com".equalsIgnoreCase(usuarioReal.getEmail())) {
                 return "redirect:/admin";
             }
             
-            // ¡Éxito! Redirige al Dashboard de forma segura
             return "redirect:/dashboard"; 
         } else {
-            // Error: Redirige al login agregando el parámetro "?error" en la URL
             return "redirect:/login?error";
         }
     }
