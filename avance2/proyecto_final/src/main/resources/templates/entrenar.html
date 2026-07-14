@@ -114,21 +114,13 @@
         </div>
     </div>
 
+    <input type="hidden" id="ejerciciosJson" th:value="${ejerciciosJson}" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        var ejerciciosData = [
-            <th:block th:each="ejercicio, iter : ${ejercicios}">
-            {id: ${ejercicio.id}, nombre: '<th:block th:text="${#strings.escapeJavaScript(ejercicio.nombre)}">nombre</th:block>',
-             series: ${ejercicio.series}, repeticiones: ${ejercicio.repeticiones},
-             pesoSugerido: '<th:block th:text="${#strings.escapeJavaScript(ejercicio.pesoSugerido)}">kg</th:block>'}
-            <th:block th:if="${!iter.last}">,</th:block>
-            </th:block>
-        ];
-    </script>
     <script th:src="@{/js/entrenar.js}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            initWorkout(ejerciciosData, 60);
+            var raw = document.getElementById('ejerciciosJson').value;
+            initWorkout(JSON.parse(raw), 60);
         });
     </script>
 </body>
