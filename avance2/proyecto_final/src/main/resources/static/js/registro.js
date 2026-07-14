@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const pass2 = document.getElementById('confirmarContrasena'); 
     const errorDiv = document.getElementById('errorPassword'); 
     const btnEnviar = document.querySelector('button[type="submit"]');
-    const fechaNacInput = document.getElementById('fechaNac');
+    const fechaNacInput = document.getElementById('fechaNacimiento');
     const edadCampoInput = document.getElementById('edadCampo');
     const inputsNum = document.querySelectorAll('input[inputmode="decimal"], input[type="number"]');
     inputsNum.forEach(input => {

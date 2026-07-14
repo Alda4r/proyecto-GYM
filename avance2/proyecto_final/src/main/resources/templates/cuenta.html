@@ -80,25 +80,19 @@
                         </div>
 
                         <div th:if="${esAdmin}" class="row g-3 mb-4">
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-primary border-5">
                                     <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Total Usuarios</small>
                                     <h3 class="fw-bold mb-0 text-dark" th:text="${adminTotalUsuarios}">0</h3>
                                 </div>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-4">
                                 <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-success border-5">
                                     <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Usuarios Activos</small>
                                     <h3 class="fw-bold mb-0 text-success" th:text="${adminUsuariosActivos}">0</h3>
                                 </div>
                             </div>
-                            <div class="col-md-3">
-                                <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-warning border-5">
-                                    <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Miembros Premium</small>
-                                    <h3 class="fw-bold mb-0 text-warning" th:text="${adminUsuariosPremium}">0</h3>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
+                             <div class="col-md-4">
                                 <div class="stat-card-mini shadow-sm bg-white p-3 rounded-4 border-start border-info border-5">
                                     <small class="text-muted fw-bold text-uppercase" style="font-size: 0.75rem;">Total Entrenamientos</small>
                                     <h3 class="fw-bold mb-0 text-info" th:text="${adminEntrenamientosTotales}">0</h3>
@@ -149,7 +143,6 @@
                                     
                                     <input type="hidden" th:field="*{email}">
                                     <input type="hidden" th:field="*{nombre}">
-                                    <input type="hidden" th:field="*{password}">
                                     <input type="hidden" th:field="*{membresia}">
                                     <input type="hidden" th:field="*{nivelEntrenamiento}">
 

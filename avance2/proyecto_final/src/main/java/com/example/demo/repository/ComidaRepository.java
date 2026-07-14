@@ -11,4 +11,5 @@ import com.example.demo.model.Comida;
 @Repository
 public interface ComidaRepository extends JpaRepository<Comida, Long> {
     List<Comida> findByUsuarioEmailAndFecha(String usuarioEmail, LocalDate fecha);
+    List<Comida> findByUsuarioEmail(String usuarioEmail);
 }

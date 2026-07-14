@@ -6,10 +6,12 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
 
 @Entity
 @Table(name = "usuarios")
@@ -48,22 +50,25 @@ public class Usuario {
     @Column(nullable = false)
     private String password;
 
-    private int edad;
+    private Integer edad;
     
     @Column(length = 20)
     private String genero;
     
+    @Past(message = "La fecha de nacimiento debe ser anterior a hoy")
     private LocalDate fechaNacimiento;
     
-    @Column(nullable = false, columnDefinition = "BIT DEFAULT 0")
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean suspendido = false;
 
-    // Constructores
+    @Column(length = 20)
+    private String rol;
+
     public Usuario() {
     }
 
     public Usuario(String email, String nombre, Double pesoActual, Double altura, Integer metaCalorias, 
-                   String nivelEntrenamiento, String membresia, String password, Integer edad, String genero, LocalDate fechaNacimiento, String objetivo) {
+                   String nivelEntrenamiento, String membresia, String password, Integer edad, String genero, LocalDate fechaNacimiento, String objetivo, String rol) {
         this.email = email;
         this.nombre = nombre;
         this.pesoActual = pesoActual;
@@ -76,8 +81,17 @@ public class Usuario {
         this.genero = genero;
         this.fechaNacimiento = fechaNacimiento;
         this.objetivo = objetivo;
+        this.rol = rol;
     }
+    @AssertTrue(message = "Ingresa una fecha de nacimiento válida (la edad debe estar entre 13 y 100 años)")
+        public boolean isEdadValida() {
+    if (fechaNacimiento == null) {
+        return false;
+}
+    int edadCalculada = java.time.Period.between(fechaNacimiento, LocalDate.now()).getYears();
 
+    return edadCalculada >= 13 && edadCalculada <= 100;
+}
     // Getters y Setters
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }
@@ -103,8 +117,8 @@ public class Usuario {
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
 
-    public int getEdad() { return edad; }
-    public void setEdad(int edad) { this.edad = edad; }
+    public Integer getEdad() { return edad; }
+    public void setEdad(Integer edad) { this.edad = edad; }
 
     public String getGenero() { return genero; }
     public void setGenero(String genero) { this.genero = genero; }
@@ -117,4 +131,7 @@ public class Usuario {
     
     public boolean isSuspendido() { return suspendido; }
     public void setSuspendido(boolean suspendido) { this.suspendido = suspendido; }
+
+    public String getRol() { return rol; }
+    public void setRol(String rol) { this.rol = rol; }
 }

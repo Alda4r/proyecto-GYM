@@ -16,7 +16,7 @@ public class HistorialEntrenamiento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String usuarioEmail; // Para saber qué atleta completó el ejercicio
+    private String usuarioEmail;
     private String rutinaNombre;
     private int caloriasQuemadas;
     private int duracionMinutos;
@@ -29,7 +29,7 @@ public class HistorialEntrenamiento {
         this.rutinaNombre = rutinaNombre;
         this.caloriasQuemadas = caloriasQuemadas;
         this.duracionMinutos = duracionMinutos;
-        this.fechaHora = LocalDateTime.now(); // Se guarda la hora exacta del clic
+        this.fechaHora = LocalDateTime.now();
     }
 
     // ========== GETTERS Y SETTERS ==========

@@ -13,7 +13,7 @@
         <div class="brand-section d-flex align-items-center mb-5">
             <i class="fa-solid fa-dumbbell me-3"></i>
             <div>
-                <h4 class="fw-bold mb-0">FitGym</h4>
+                <h4 class="fw-bold mb-0">Fit-Factory Gym</h4>
                 <small class="text-muted">Tu entreno personal</small>
             </div>
         </div>
@@ -32,7 +32,11 @@
             <a th:href="@{/cuenta}" th:class="${paginaActual == 'cuenta' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-user"></i> Cuenta</a>
 
             <div class="mt-auto pt-5 border-top">
-                <a th:href="@{/login}" class="nav-link text-danger"><i class="fas fa-power-off"></i> Salir</a>
+                <form th:action="@{/logout}" method="post" style="display: inline;">
+                    <button type="submit" class="nav-link text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
+                        <i class="fas fa-power-off"></i> Salir
+                    </button>
+                </form>
             </div>
         </nav>
     </div>

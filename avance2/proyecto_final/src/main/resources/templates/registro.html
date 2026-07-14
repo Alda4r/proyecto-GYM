@@ -32,44 +32,66 @@
         </div>
 
         <form th:action="@{/registro}" th:object="${usuario}" method="post">
-
+          <div class="alert alert-danger py-2" th:if="${#fields.hasAnyErrors()}">
+            <strong>Revisa los datos ingresados. Hay campos con errores:</strong>
+            <ul class="mb-0 mt-1 small">
+              <li th:each="err : ${#fields.allErrors()}" th:text="${err}"></li>
+            </ul>
+          </div>
           <div class="input-icon-container mb-3">
             <i class="fas fa-user input-icon"></i>
             <input type="text" th:field="*{nombre}" class="form-control-custom w-100" placeholder="Nombre completo"
               required>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}">
+              Error nombre
+            </div>
           </div>
 
           <div class="input-icon-container mb-3">
             <i class="fas fa-envelope input-icon"></i>
             <input type="email" th:field="*{email}" class="form-control-custom w-100" placeholder="Correo electrónico"
               required>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+              Error email
+            </div>
+
           </div>
           <div class="input-icon-container mb-3">
             <i class="fas fa-bullseye input-icon"></i>
-            <select name="objetivo" class="form-control-custom w-100 py-2" style="padding-left: 2.5rem !important;"
-              required>
-              <option value="" disabled selected>Selecciona tu objetivo</option>
+            <select th:field="*{objetivo}" class="form-control-custom w-100 py-2"
+              style="padding-left: 2.5rem !important;" required>
+
+              <option value="" disabled>Selecciona tu objetivo</option>
+              <option value="Ganar Peso">Ganar Peso</option>
+              <option value="Perder Peso">Perder Peso</option>
               <option value="Hacerse más fuerte">Hacerse más fuerte</option>
-              <option value="Perder grasa">Perder grasa</option>
-              <option value="Mantenerse">Mantenerse</option>
             </select>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('objetivo')}" th:errors="*{objetivo}">
+              Error objetivo
+            </div>
           </div>
           <div class="row g-2 mb-3">
             <div class="col-4">
-              <input type="number" step="0.01" id="altura" name="altura"
-                th:value="${usuario.altura == 0 ? '' : usuario.altura}"
-                class="form-control-custom w-100 text-center p-3" placeholder="cm (ej: 1.75)" required>
+              <input type="number" step="0.01" th:field="*{altura}" class="form-control-custom w-100 text-center p-3"
+                placeholder="m (ej: 1.75)" required>
+
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('altura')}" th:errors="*{altura}">
+                Error altura
+              </div>
             </div>
             <div class="col-4">
-              <input type="number" step="0.1" id="pesoActual" name="pesoActual"
-                th:value="${usuario.pesoActual == 0 ? '' : usuario.pesoActual}"
-                class="form-control-custom w-100 text-center p-3" placeholder="kg (ej: 70.5)" required>
+              <input type="number" step="0.1" th:field="*{pesoActual}" class="form-control-custom w-100 text-center p-3"
+                placeholder="kg (ej: 70.5)" required>
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('pesoActual')}" th:errors="*{pesoActual}">
+                Error peso
+              </div>
             </div>
             <div class="col-4">
-              <input type="number" id="edadCampo" name="edad" th:value="${usuario.edad == 0 ? '' : usuario.edad}"
+              <input type="number" id="edadCampo" name="edad" value=""
                 class="form-control-custom w-100 text-center p-3" placeholder="Edad" readonly required>
             </div>
           </div>
+          <div id="resultadoIMC" class="text-center small text-muted mt-1"></div>
 
           <div class="row g-2 mb-3">
             <div class="col-md-6">
@@ -81,15 +103,27 @@
               </select>
             </div>
             <div class="col-md-6">
-              <input type="date" id="fechaNac" name="fechaNacimiento" th:value="${usuario.fechaNacimiento}"
-                class="form-control-custom w-100 py-2" style="padding-left: 1rem !important;" required>
+              <input type="date" th:field="*{fechaNacimiento}" class="form-control-custom w-100 py-2"
+                style="padding-left: 1rem !important;" required>
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('fechaNacimiento')}"
+                th:errors="*{fechaNacimiento}">
+                Error fecha nacimiento
+              </div>
+
+              <div class="text-danger small mt-1" th:if="${#fields.hasErrors('edadValida')}" th:errors="*{edadValida}">
+                Error edad
+              </div>
             </div>
+
           </div>
 
           <div class="input-icon-container mb-3">
             <i class="fas fa-lock input-icon"></i>
-            <input type="password" id="password" name="password" class="form-control-custom w-100"
+            <input type="password" id="password" th:field="*{password}" class="form-control-custom w-100"
               placeholder="Contraseña" required>
+            <div class="text-danger small mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">
+              Error contraseña
+            </div>
           </div>
 
           <div class="input-icon-container mb-3">
@@ -101,8 +135,10 @@
 
           <input type="hidden" id="metaCalorias" name="metaCalorias" value="2000">
           <input type="hidden" id="nivelEntrenamiento" name="nivelEntrenamiento" value="Principiante">
-          <input type="hidden" id="membresia" name="membresia" value="Digital-Gratis">
-
+          <input type="hidden" id="membresia" name="membresia" value="Activo">
+          <div class="text-danger small mt-1" th:if="${#fields.hasErrors('metaCalorias')}" th:errors="*{metaCalorias}">
+            Error calorías
+          </div>
           <button type="submit" class="btn-gradient w-100 mt-2">
             REGISTRARME AHORA <i class="fas fa-arrow-right ms-2"></i>
           </button>

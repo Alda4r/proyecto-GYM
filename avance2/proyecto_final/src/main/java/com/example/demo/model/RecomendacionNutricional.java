@@ -21,7 +21,7 @@ public class RecomendacionNutricional {
     @Column(name = "tipo_comida")
     private String tipoComida;
 
-    // MANDATORIO: Nombre en camelCase para que el repositorio JPA lo reconozca al vuelo
+
     @Column(name = "usuario_email")
     private String usuarioEmail;
 
@@ -35,7 +35,7 @@ public class RecomendacionNutricional {
         this.usuarioEmail = usuarioEmail;
     }
 
-    // ========== GETTERS Y SETTERS COMPATIBLES ==========
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     

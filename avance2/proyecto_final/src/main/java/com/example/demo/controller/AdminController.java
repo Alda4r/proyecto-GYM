@@ -10,33 +10,32 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.model.HistorialEntrenamiento;
-import com.example.demo.model.RecomendacionNutricional; // Importación añadida
+import com.example.demo.model.RecomendacionNutricional;
 import com.example.demo.model.Usuario;
-import com.example.demo.repository.HistorialRepository;
-import com.example.demo.repository.RecomendacionRepository; // Importación añadida
-import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.service.HistorialService;
+import com.example.demo.service.RecomendacionService;
+import com.example.demo.service.UsuarioService;
 
 import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AdminController {
 
-    @Autowired 
-    private UsuarioRepository usuarioRepository;
-    
-    @Autowired 
-    private HistorialRepository historialRepository;
+    @Autowired
+    private UsuarioService usuarioService;
 
-    @Autowired 
-    private RecomendacionRepository recomendacionRepository; // Inyección añadida
+    @Autowired
+    private HistorialService historialService;
 
-    // ==========================================
-    // 1. DASHBOARD ALUMNO
-    // ==========================================
+    @Autowired
+    private RecomendacionService recomendacionService;
+
     @GetMapping("/dashboard")
     public String dashboard(HttpSession session, Model model) {
         Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
-        if (user == null) return "redirect:/login";
+        if (user == null) {
+            return "redirect:/login";
+        }
 
         if ("admin@gym.com".equalsIgnoreCase(user.getEmail())) {
             return "redirect:/admin";
@@ -44,18 +43,15 @@ public class AdminController {
 
         model.addAttribute("user", user);
 
-        List<HistorialEntrenamiento> hist = historialRepository.findByUsuarioEmailOrderByFechaHoraDesc(user.getEmail());
+        List<HistorialEntrenamiento> hist = historialService.findByUsuarioEmailOrderByFechaHoraDesc(user.getEmail());
         model.addAttribute("totalEntrenamientos", hist.size());
         model.addAttribute("entrenamientosRecientes", hist);
         model.addAttribute("totalCalorias", hist.stream().mapToInt(HistorialEntrenamiento::getCaloriasQuemadas).sum());
-        model.addAttribute("racha", hist.isEmpty() ? 0 : 1);
-        
+        model.addAttribute("racha", calcularRacha(hist));
+
         return "dashboard";
     }
 
-    // ==========================================
-    // 2. PANEL ADMINISTRADOR
-    // ==========================================
     @GetMapping("/admin")
     public String adminPanel(HttpSession session, Model model) {
         Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
@@ -63,20 +59,18 @@ public class AdminController {
             return "redirect:/login";
         }
 
-        List<Usuario> usuarios = usuarioRepository.findAll();
-        List<HistorialEntrenamiento> todosHist = historialRepository.findAll();
+        List<Usuario> usuarios = usuarioService.findAll();
+        List<HistorialEntrenamiento> todosHist = historialService.findAll();
 
         long usuariosActivos = usuarios.stream()
-                .filter(u -> "Activo".equalsIgnoreCase(u.getMembresia()) 
-                          || "Premium".equalsIgnoreCase(u.getMembresia()) 
-                          || "Regular".equalsIgnoreCase(u.getMembresia()) 
-                          || "Digital-Gratis".equalsIgnoreCase(u.getMembresia()))
-                .count();
+            .filter(u -> u.getMembresia() != null
+            && !u.getMembresia().equalsIgnoreCase("Inactivo"))
+            .count();
 
         model.addAttribute("user", user);
         model.addAttribute("usuarios", usuarios);
         model.addAttribute("totalUsuarios", usuarios.size());
-        model.addAttribute("usuariosPremium", usuariosActivos); 
+        model.addAttribute("usuariosActivos", usuariosActivos);
         model.addAttribute("totalEntrenamientos", todosHist.size());
         model.addAttribute("totalCalorias", todosHist.stream().mapToInt(HistorialEntrenamiento::getCaloriasQuemadas).sum());
         model.addAttribute("entrenamientosRecientes", todosHist.stream().limit(5).toList());
@@ -84,49 +78,38 @@ public class AdminController {
         return "admin-dashboard";
     }
 
-    // ==========================================
-    // 3. ACTUALIZAR ESTADO (3 VÍAS: ACTIVO, INACTIVO, ELIMINAR)
-    // ==========================================
     @PostMapping("/admin/actualizar-membresia")
     public String actualizarMembresia(@RequestParam("email") String email,
             @RequestParam("membresia") String nuevaMembresia,
             HttpSession session) {
-        
+
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         if (usuarioLogueado == null || !usuarioLogueado.getEmail().equalsIgnoreCase("admin@gym.com")) {
             return "redirect:/login";
         }
 
         // Buscamos al usuario afectado
-        Usuario usuario = usuarioRepository.findById(email).orElse(null);
+        Usuario usuario = usuarioService.findByEmail(email).orElse(null);
         if (usuario != null) {
-            
-            // ACCIÓN 1: Si se selecciona "Eliminar", se borra físicamente de la base de datos de inmediato
+
             if ("Eliminar".equalsIgnoreCase(nuevaMembresia)) {
-                // ESCUDO DE SEGURIDAD: Evitar que el admin se elimine a sí mismo por error
                 if (!"admin@gym.com".equalsIgnoreCase(email)) {
-                    usuarioRepository.delete(usuario);
+                    usuarioService.deleteByEmail(email);
                 }
-            } 
-            // ACCIÓN 2: Si es "Activo" o "Inactivo", simplemente se guarda el nuevo estado
-            else {
+            } else {
                 usuario.setMembresia(nuevaMembresia);
-                
-                // Parche preventivo para el error 500 de validación de calorías
+
                 if (usuario.getMetaCalorias() < 1200) {
                     usuario.setMetaCalorias(1200);
                 }
-                
-                usuarioRepository.save(usuario);
+
+                usuarioService.save(usuario);
             }
         }
 
         return "redirect:/admin";
     }
 
-    // ==========================================
-    // 4. REGISTRAR DIETA / ALIMENTO PARA EL ALUMNO
-    // ==========================================
     @PostMapping("/admin/registrar-alimento")
     public String registrarAlimento(@RequestParam("nombre") String nombre,
             @RequestParam("calorias") int calorias,
@@ -135,17 +118,58 @@ public class AdminController {
             HttpSession session) {
 
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
-        
-        // Candado de seguridad para el Administrador
+
         if (usuarioLogueado == null || !usuarioLogueado.getEmail().equalsIgnoreCase("admin@gym.com")) {
             return "redirect:/login";
         }
 
-        // Creamos la recomendación amarrada al correo del alumno elegido en el selector
         RecomendacionNutricional nuevaReceta = new RecomendacionNutricional(nombre, calorias, tipoComida, usuarioEmail);
-        recomendacionRepository.save(nuevaReceta);
+        recomendacionService.save(nuevaReceta);
+        return "redirect:/calorias";
+    }
 
-        // Redirige de vuelta a la vista unificada de calorías
-        return "redirect:/calorias"; 
+    @GetMapping("/admin/eliminar-sugerencia")
+    public String eliminarSugerencia(@RequestParam("id") Long id,
+            HttpSession session) {
+
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+
+        if (usuarioLogueado == null || !"admin@gym.com".equalsIgnoreCase(usuarioLogueado.getEmail())) {
+            return "redirect:/login";
+        }
+
+        recomendacionService.deleteById(id);
+
+        return "redirect:/calorias";
+    }
+
+        private int calcularRacha(List<HistorialEntrenamiento> historial) {
+        if (historial == null || historial.isEmpty()) return 0;
+
+        java.util.Set<java.time.LocalDate> fechas = new java.util.HashSet<>();
+        for (HistorialEntrenamiento h : historial) {
+            fechas.add(h.getFechaHora().toLocalDate());
+        }
+
+        java.util.List<java.time.LocalDate> ordenadas = new java.util.ArrayList<>(fechas);
+        java.util.Collections.sort(ordenadas, java.util.Collections.reverseOrder());
+
+        if (ordenadas.isEmpty() || !ordenadas.get(0).equals(java.time.LocalDate.now())) {
+            return 0;
+        }
+
+        int racha = 0;
+        java.time.LocalDate esperada = java.time.LocalDate.now();
+
+        for (java.time.LocalDate fecha : ordenadas) {
+            if (fecha.equals(esperada)) {
+                racha++;
+                esperada = esperada.minusDays(1);
+            } else {
+                break;
+            }
+        }
+
+        return racha;
     }
 }

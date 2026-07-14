@@ -10,7 +10,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "comidas_registro") // Asegúrate de que coincida con tu tabla de SQL Server
+@Table(name = "comidas_registro") 
 public class Comida {
 
     @Id
@@ -25,7 +25,6 @@ public class Comida {
 
     private int calorias;
     
-    // 🛠️ VERIFICA QUE ESTOS ATRIBUTOS ESTÉN ASÍ:
     private int proteina;
     private int carbohidratos;
     private int grasas;
@@ -35,11 +34,10 @@ public class Comida {
     @Column(name = "usuario_email")
     private String usuarioEmail;
 
-    // Constructor vacío obligatorio para JPA
     public Comida() {
     }
 
-    // ========== GETTERS Y SETTERS ==========
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -52,7 +50,7 @@ public class Comida {
     public int getCalorias() { return calorias; }
     public void setCalorias(int calorias) { this.calorias = calorias; }
 
-    // 🛠️ ESTOS SON LOS MÉTODOS QUE TE FALTABAN PARA REPARAR EL ERROR:
+
     public int getProteina() { return proteina; }
     public void setProteina(int proteina) { this.proteina = proteina; }
 

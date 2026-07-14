@@ -12,62 +12,56 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.example.demo.model.HistorialEntrenamiento;
 import com.example.demo.model.Usuario;
-import com.example.demo.repository.HistorialRepository;
-import com.example.demo.repository.UsuarioRepository;
+import com.example.demo.service.HistorialService;
+import com.example.demo.service.UsuarioService;
 
 import jakarta.servlet.http.HttpSession;
-import jakarta.validation.Valid;
 
 @Controller
 public class CuentaController {
 
     @Autowired
-    private HistorialRepository historialRepository;
+    private HistorialService historialService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @GetMapping("/cuenta")
     public String verCuenta(HttpSession session, Model model) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
 
         if (usuarioLogueado != null) {
-            Usuario usuarioActivo = usuarioRepository.findById(usuarioLogueado.getEmail()).orElse(usuarioLogueado);
+            Usuario usuarioActivo = usuarioService.findByEmail(usuarioLogueado.getEmail())
+                    .orElse(usuarioLogueado);
+
+            session.setAttribute("usuarioLogueado", usuarioActivo);
             model.addAttribute("user", usuarioActivo);
+
             boolean esAdmin = "admin@gym.com".equalsIgnoreCase(usuarioActivo.getEmail());
             model.addAttribute("esAdmin", esAdmin);
 
             if (!esAdmin) {
-                // Cálculo dinámico de IMC
-                if (usuarioActivo.getAltura() != null && usuarioActivo.getAltura() > 0 && usuarioActivo.getPesoActual() != null) {
-                    double imc = usuarioActivo.getPesoActual() / (usuarioActivo.getAltura() * usuarioActivo.getAltura());
-                    model.addAttribute("imcValue", String.format("%.1f", imc));
-                    
-                    String clasificacion = "Normal";
-                    if (imc < 18.5) clasificacion = "Bajo Peso";
-                    else if (imc >= 25 && imc < 30) clasificacion = "Sobrepeso";
-                    else if (imc >= 30) clasificacion = "Obesidad";
-                    model.addAttribute("imcClasificacion", clasificacion);
-                }
+                agregarImcAlModelo(usuarioActivo, model);
             } else {
-                List<Usuario> usuarios = usuarioRepository.findAll();
+                List<Usuario> usuarios = usuarioService.findAll();
+
                 long totalUsuarios = usuarios.size();
+
                 long usuariosActivos = usuarios.stream()
-                        .filter(u -> u.getMembresia() != null && !u.getMembresia().equalsIgnoreCase("Inactivo"))
+                        .filter(u -> u.getMembresia() != null
+                                && !u.getMembresia().equalsIgnoreCase("Inactivo"))
                         .count();
-                long usuariosPremium = usuarios.stream()
-                        .filter(u -> u.getMembresia() != null && u.getMembresia().equalsIgnoreCase("Premium"))
-                        .count();
-                long totalEntrenamientos = historialRepository.count();
+
+                long totalEntrenamientos = historialService.count();
 
                 model.addAttribute("adminTotalUsuarios", totalUsuarios);
                 model.addAttribute("adminUsuariosActivos", usuariosActivos);
-                model.addAttribute("adminUsuariosPremium", usuariosPremium);
                 model.addAttribute("adminEntrenamientosTotales", totalEntrenamientos);
             }
 
-            // Cargar historial ordenado desde SQL Server
-            List<HistorialEntrenamiento> ultimasRutinas = historialRepository.findByUsuarioEmailOrderByFechaHoraDesc(usuarioActivo.getEmail());
+            List<HistorialEntrenamiento> ultimasRutinas = historialService
+                    .findByUsuarioEmailOrderByFechaHoraDesc(usuarioActivo.getEmail());
+
             if (ultimasRutinas != null && !ultimasRutinas.isEmpty()) {
                 if (ultimasRutinas.size() > 5) {
                     ultimasRutinas = ultimasRutinas.subList(0, 5);
@@ -75,55 +69,112 @@ public class CuentaController {
             } else {
                 ultimasRutinas = new java.util.ArrayList<>();
             }
-            model.addAttribute("historialReal", ultimasRutinas);
 
+            model.addAttribute("historialReal", ultimasRutinas);
         } else {
             model.addAttribute("user", null);
         }
-        
+
         return "cuenta";
     }
 
     @PostMapping("/cuenta/editar")
-    public String editarPerfil(@Valid @ModelAttribute("user") Usuario usuarioFormulario, 
-                               BindingResult result, 
-                               HttpSession session, 
-                               Model model) {
-        
+    public String editarPerfil(@ModelAttribute("user") Usuario usuarioFormulario,
+            BindingResult result,
+            HttpSession session,
+            Model model) {
+
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+
         if (usuarioLogueado == null) {
             return "redirect:/login";
         }
 
-        // Si hay errores de validación, recargamos la vista sin guardar
+        validarFormularioPerfil(usuarioFormulario, result);
+
         if (result.hasErrors()) {
-            if (usuarioLogueado.getAltura() != null && usuarioLogueado.getAltura() > 0 && usuarioLogueado.getPesoActual() != null) {
-                double imc = usuarioLogueado.getPesoActual() / (usuarioLogueado.getAltura() * usuarioLogueado.getAltura());
-                model.addAttribute("imcValue", String.format("%.1f", imc));
-                model.addAttribute("imcClasificacion", imc < 18.5 ? "Bajo Peso" : (imc >= 25 ? "Sobrepeso" : "Normal"));
-            }
-            
-            List<HistorialEntrenamiento> ultimasRutinas = historialRepository.findByUsuarioEmailOrderByFechaHoraDesc(usuarioLogueado.getEmail());
-            model.addAttribute("historialReal", (ultimasRutinas != null) ? ultimasRutinas : new java.util.ArrayList<>());
-            
+            Usuario usuarioActivo = usuarioService.findByEmail(usuarioLogueado.getEmail())
+                    .orElse(usuarioLogueado);
+
+            model.addAttribute("user", usuarioFormulario);
+
+            boolean esAdmin = "admin@gym.com".equalsIgnoreCase(usuarioActivo.getEmail());
+            model.addAttribute("esAdmin", esAdmin);
+
+            agregarImcAlModelo(usuarioActivo, model);
+            agregarHistorialAlModelo(usuarioActivo, model);
+
             model.addAttribute("mostrarModalErrores", true);
-            return "cuenta"; 
+
+            return "cuenta";
         }
 
-        // SI TODO ESTÁ BIEN: Guardamos los parámetros fisiológicos y el NUEVO OBJETIVO
-        Usuario usuario = usuarioRepository.findById(usuarioLogueado.getEmail()).orElse(null);
+        Usuario usuario = usuarioService.findByEmail(usuarioLogueado.getEmail()).orElse(null);
+
         if (usuario != null) {
             usuario.setPesoActual(usuarioFormulario.getPesoActual());
             usuario.setAltura(usuarioFormulario.getAltura());
             usuario.setMetaCalorias(usuarioFormulario.getMetaCalorias());
-            usuario.setObjetivo(usuarioFormulario.getObjetivo()); // <--- Línea clave añadida
-            
-            usuarioRepository.save(usuario);
-            
-            // Sincronizamos la sesión con el nuevo objetivo
-            session.setAttribute("usuarioLogueado", usuario);
+            usuario.setObjetivo(usuarioFormulario.getObjetivo());
+
+            Usuario usuarioActualizado = usuarioService.save(usuario);
+
+            session.setAttribute("usuarioLogueado", usuarioActualizado);
         }
 
         return "redirect:/cuenta";
+    }
+
+    private void validarFormularioPerfil(Usuario usuarioFormulario, BindingResult result) {
+        if (usuarioFormulario.getPesoActual() == null || usuarioFormulario.getPesoActual() < 30) {
+            result.rejectValue("pesoActual", "error.user", "Ingrese un peso válido, mínimo 30 kg.");
+        }
+
+        if (usuarioFormulario.getAltura() == null || usuarioFormulario.getAltura() < 1.0) {
+            result.rejectValue("altura", "error.user", "Ingrese una altura válida, mínimo 1.0 m.");
+        }
+
+        if (usuarioFormulario.getMetaCalorias() == null || usuarioFormulario.getMetaCalorias() < 1200) {
+            result.rejectValue("metaCalorias", "error.user", "La meta calórica debe ser de al menos 1200 kcal.");
+        }
+
+        if (usuarioFormulario.getObjetivo() == null || usuarioFormulario.getObjetivo().isBlank()) {
+            result.rejectValue("objetivo", "error.user", "El objetivo es obligatorio.");
+        }
+    }
+
+    private void agregarImcAlModelo(Usuario usuario, Model model) {
+        if (usuario.getAltura() != null && usuario.getAltura() > 0 && usuario.getPesoActual() != null) {
+            double imc = usuario.getPesoActual() / (usuario.getAltura() * usuario.getAltura());
+
+            model.addAttribute("imcValue", String.format("%.1f", imc));
+
+            String clasificacion = "Normal";
+
+            if (imc < 18.5) {
+                clasificacion = "Bajo Peso";
+            } else if (imc >= 25 && imc < 30) {
+                clasificacion = "Sobrepeso";
+            } else if (imc >= 30) {
+                clasificacion = "Obesidad";
+            }
+
+            model.addAttribute("imcClasificacion", clasificacion);
+        }
+    }
+
+    private void agregarHistorialAlModelo(Usuario usuario, Model model) {
+        List<HistorialEntrenamiento> ultimasRutinas = historialService
+                .findByUsuarioEmailOrderByFechaHoraDesc(usuario.getEmail());
+
+        if (ultimasRutinas != null && !ultimasRutinas.isEmpty()) {
+            if (ultimasRutinas.size() > 5) {
+                ultimasRutinas = ultimasRutinas.subList(0, 5);
+            }
+        } else {
+            ultimasRutinas = new java.util.ArrayList<>();
+        }
+
+        model.addAttribute("historialReal", ultimasRutinas);
     }
 }

@@ -28,11 +28,11 @@ public class Ejercicio {
     @JoinColumn(name = "rutina_id", nullable = false)
     private Rutina rutina;
 
-    // 🛠️ SOLUCIÓN AQUÍ: El constructor vacío explícito que JPA necesita obligatoriamente
+
     public Ejercicio() {
     }
 
-    // Tu constructor con argumentos actual se queda intacto abajo
+
     public Ejercicio(String nombre, int series, int repeticiones, String pesoSugerido, Rutina rutina) {
         this.nombre = nombre;
         this.series = series;
@@ -41,7 +41,6 @@ public class Ejercicio {
         this.rutina = rutina;
     }
 
-    // ========== GETTERS Y SETTERS ==========
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     public String getNombre() { return nombre; }
