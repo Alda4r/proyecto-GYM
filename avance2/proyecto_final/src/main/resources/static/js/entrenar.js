@@ -1,4 +1,4 @@
-const state = {
+var state = {
     exercises: [],
     currentIdx: 0,
     currentSet: 1,
@@ -14,10 +14,11 @@ const state = {
 };
 
 function initWorkout(exercises, restSeconds) {
+    console.log('initWorkout called with', JSON.stringify(exercises));
     state.exercises = exercises;
     state.configRest = restSeconds || 60;
     state.restSeconds = state.configRest;
-    state.totalSets = exercises.reduce((sum, e) => sum + e.series, 0);
+    state.totalSets = exercises.reduce(function(sum, e) { return sum + e.series; }, 0);
 
     if (!exercises || exercises.length === 0) {
         document.getElementById('exerciseDisplay').innerHTML =
@@ -62,7 +63,8 @@ function renderExercise() {
 }
 
 function completeSet() {
-    const ex = getCurrentExercise();
+    console.log('completeSet called');
+    var ex = getCurrentExercise();
     if (!ex || state.completed) return;
 
     document.getElementById('completeBtn').disabled = true;
@@ -93,7 +95,7 @@ function startRest() {
     updateRestTimer();
 
     if (state.restTimer) clearInterval(state.restTimer);
-    state.restTimer = setInterval(() => {
+    state.restTimer = setInterval(function() {
         state.restRemaining--;
         updateRestTimer();
 
@@ -107,14 +109,14 @@ function startRest() {
 }
 
 function updateRestTimer() {
-    const mins = Math.floor(state.restRemaining / 60);
-    const secs = state.restRemaining % 60;
+    var mins = Math.floor(state.restRemaining / 60);
+    var secs = state.restRemaining % 60;
     document.getElementById('restValue').textContent =
         String(mins).padStart(2, '0') + ':' + String(secs).padStart(2, '0');
 
-    const total = state.configRest;
-    const elapsed = total - state.restRemaining;
-    const degrees = (elapsed / total) * 360;
+    var total = state.configRest;
+    var elapsed = total - state.restRemaining;
+    var degrees = (elapsed / total) * 360;
     document.getElementById('restRing').style.background =
         'conic-gradient(var(--primary, #f97316) ' + degrees + 'deg, var(--border-color, #eee) ' + degrees + 'deg)';
 }
@@ -156,8 +158,8 @@ function showCompletion() {
     document.getElementById('restOverlay').classList.remove('active');
     document.getElementById('nextBtn').style.display = 'none';
 
-    const elapsed = Math.floor((Date.now() - state.startTime) / 60000);
-    const calories = elapsed * 8;
+    var elapsed = Math.floor((Date.now() - state.startTime) / 60000);
+    var calories = elapsed * 8;
 
     document.getElementById('compSets').textContent = state.totalSets;
     document.getElementById('compTime').textContent = elapsed + ' min';
@@ -183,9 +185,9 @@ function updateProgress() {
 
 function playBeep() {
     try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
+        var ctx = new (window.AudioContext || window.webkitAudioContext)();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
         osc.connect(gain);
         gain.connect(ctx.destination);
         osc.frequency.value = 880;
@@ -195,9 +197,9 @@ function playBeep() {
         osc.start(ctx.currentTime);
         osc.stop(ctx.currentTime + 0.5);
 
-        setTimeout(() => {
-            const osc2 = ctx.createOscillator();
-            const gain2 = ctx.createGain();
+        setTimeout(function() {
+            var osc2 = ctx.createOscillator();
+            var gain2 = ctx.createGain();
             osc2.connect(gain2);
             gain2.connect(ctx.destination);
             osc2.frequency.value = 1100;
@@ -207,5 +209,7 @@ function playBeep() {
             osc2.start(ctx.currentTime);
             osc2.stop(ctx.currentTime + 0.5);
         }, 200);
-    } catch(e) { /* ignore */ }
+    } catch(e) {
+        console.log('Beep failed:', e);
+    }
 }
