@@ -25,3 +25,9 @@
 .guest-icon { color: #f97316; }
 .guest-btn-login { border-radius: 8px; }
 .guest-btn-register { border-radius: 8px; }
+
+body.dark-mode .avatar-section-custom { background: linear-gradient(135deg, #0f1115, #1a1d23) !important; }
+body.dark-mode .stat-card-mini { background: var(--card-bg); }
+body.dark-mode .profile-card { background: var(--card-bg); }
+body.dark-mode .guest-card-dark { background-color: #0f1115; }
+body.dark-mode .table-dark-custom { background-color: #0f1115; }

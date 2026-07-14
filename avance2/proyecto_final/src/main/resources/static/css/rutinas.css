@@ -44,9 +44,16 @@ body { background-color: var(--main-bg); font-family: 'Inter', 'Segoe UI', sans-
 .btn-finish { border-radius: 10px; }
 
 body.dark-mode .exercise-mini-list li { color: var(--text-muted); }
-body.dark-mode .badge-series { background-color: #2a2d35; color: #d97706; }
+body.dark-mode .badge-series { background-color: #1e2128; color: var(--primary); }
 body.dark-mode .tips-card { background-color: #1a1d23; }
 body.dark-mode .back-link { color: var(--text-muted); }
 body.dark-mode .back-link:hover { color: var(--text-dark); }
 body.dark-mode .routine-card { background: var(--card-bg); }
 body.dark-mode .card.bg-white { background-color: var(--card-bg); }
+body.dark-mode .difficulty-badge { opacity: 0.9; }
+body.dark-mode .diff-easy { background-color: #064e3b; color: #6ee7b7; }
+body.dark-mode .diff-medium { background: #78350f; color: #fde68a; }
+body.dark-mode .diff-hard { background: #7f1d1d; color: #fca5a5; }
+body.dark-mode .routine-card { border: 1px solid var(--border-color); }
+body.dark-mode .exercise-card { background-color: var(--card-bg); }
+body.dark-mode .routine-body h4 { color: var(--text-dark); }

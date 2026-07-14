@@ -15,4 +15,10 @@
 
 body.dark-mode .ring-visual { border-color: #2a2d35; border-top-color: #f97316; }
 body.dark-mode .calorie-ring-container { background: var(--card-bg); }
-body.dark-mode .macro-tag.bg-carb { background: #2a2d35; }
+body.dark-mode .food-table { background: var(--card-bg); }
+body.dark-mode .macro-tag.bg-prot { background: #1e1b4b; color: #a5b4fc; border-left-color: #6366f1; }
+body.dark-mode .macro-tag.bg-carb { background: #451a03; color: #fde68a; border-left-color: #f59e0b; }
+body.dark-mode .macro-tag.bg-fat { background: #2e1065; color: #c4b5fd; border-left-color: #8b5cf6; }
+body.dark-mode .card.bg-dark { background-color: #0a0c0f !important; }
+body.dark-mode .card.text-white { color: var(--text-dark) !important; }
+body.dark-mode .card.bg-white { background-color: var(--card-bg) !important; }
