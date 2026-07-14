@@ -1,201 +1,52 @@
+body { background-color: var(--main-bg); font-family: 'Inter', 'Segoe UI', sans-serif; margin: 0; }
 
+.sidebar { background-color: var(--sidebar-bg); height: 100vh; border-right: 1px solid var(--border-color); padding: 25px; position: fixed; width: 260px; z-index: 100; }
 
+.nav-link { color: var(--nav-text); padding: 14px 18px; border-radius: 12px; margin-bottom: 8px; display: flex; align-items: center; text-decoration: none; transition: all 0.3s ease; }
 
-body {
-    background-color: var(--main-bg);
-    font-family: 'Inter', 'Segoe UI', sans-serif;
-    margin: 0;
-}
-
-/* sidebar */
-.sidebar {
-    background-color: var(--sidebar-bg);
-    height: 100vh;
-    border-right: 1px solid #eee;
-    padding: 25px;
-    position: fixed;
-    width: 260px;
-    z-index: 100;
-}
-
-.nav-link {
-    color: var(--text-gray);
-    padding: 14px 18px;
-    border-radius: 12px;
-    margin-bottom: 8px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-    transition: all 0.3s ease;
-}
-.diff-easy {
-    background-color: #d1e7dd; /* Fondo verde claro */
-    color: #0f5132;            /* Texto verde oscuro */
-    font-weight: bold;
-}
-
-.nav-link i {
-    margin-right: 15px !important;
-    width: 20px;
-    text-align: center;
-}
-
-.nav-link.active {
-    background-color: var(--primary-blue);
-    color: white !important;
-    font-weight: 600;
-    box-shadow: 0 4px 12px rgba(13, 110, 253, 0.2);
-}
-
-/* contenido principal */
-.main-content {
-    margin-left: 260px;
-    padding: 40px;
-}
-
-/* pestañas de navegacion */
-.nav-pills .nav-link {
-    color: var(--text-gray);
-    font-weight: 600;
-    border-radius: 50px;
-    padding: 10px 25px;
-    background: white;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-    margin-right: 12px;
-    border: 1px solid transparent;
-}
-
-.nav-pills .nav-link.active {
-    background-color: var(--primary-blue) !important;
-    color: white !important;
-}
-
-/* grid de rutinas*/
-.routine-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 30px;
-    margin-top: 20px;
-}
-
-.routine-card {
-    background: white;
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: var(--card-shadow);
-    transition: transform 0.3s ease;
-    border: none;
-}
-
-.routine-card:hover {
-    transform: translateY(-10px);
-}
-
-.routine-header {
-    height: 160px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 3.5rem;
-}
-
-.routine-body {
-    padding: 25px;
-}
-
-
-.difficulty-badge {
-    font-size: 0.75rem;
-    padding: 6px 15px;
-    border-radius: 20px;
-    font-weight: 700;
-    text-transform: uppercase;
-}
-
+.diff-easy { background-color: #d1e7dd; color: #0f5132; font-weight: bold; }
 .diff-medium { background: #fff4e5; color: #ff8a00; }
 .diff-hard { background: #ffebeb; color: #ef4444; }
 
-/* estilo de lista de ejercicios */
-.exercise-mini-list {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0;
-}
+.nav-link i { margin-right: 15px !important; width: 20px; text-align: center; }
+.nav-link.active { background-color: var(--primary); color: white !important; font-weight: 600; box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3); }
+.nav-link:hover:not(.active) { background-color: var(--hover-bg); transform: translateX(5px); }
 
-.exercise-mini-list li {
-    font-size: 0.95rem;
-    color: #555;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-}
+.main-content { margin-left: 260px; padding: 40px; }
 
-.exercise-mini-list li i {
-    font-size: 0.5rem;
-    margin-right: 12px;
-    color: var(--primary-blue);
-}
-.routine-header.header-espalda {
-    background: linear-gradient(135deg, #00b4db, #00d2d3) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 160px;
-}
+.nav-pills .nav-link { color: var(--nav-text); font-weight: 600; border-radius: 50px; padding: 10px 25px; background: var(--card-bg); box-shadow: 0 2px 5px var(--shadow-color); margin-right: 12px; border: 1px solid transparent; }
+.nav-pills .nav-link.active { background-color: var(--primary) !important; color: white !important; }
 
-.routine-header.header-pecho {
-    background: linear-gradient(135deg, #6a11cb, #2575fc) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 160px;
-}
+.routine-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 30px; margin-top: 20px; }
+.routine-card { background: var(--card-bg); border-radius: 25px; overflow: hidden; box-shadow: var(--card-shadow); transition: transform 0.3s ease; border: none; }
+.routine-card:hover { transform: translateY(-10px); }
+.routine-header { height: 160px; display: flex; align-items: center; justify-content: center; color: white; font-size: 3.5rem; }
+.routine-body { padding: 25px; }
 
-.routine-header.header-pierna {
-    background: linear-gradient(135deg, #f093fb, #f5576c) !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 160px;
-}
+.difficulty-badge { font-size: 0.75rem; padding: 6px 15px; border-radius: 20px; font-weight: 700; text-transform: uppercase; }
 
-/*estilo detalle_rutina*/
-.exercise-card {
-    transition: transform 0.2s;
-    border-radius: 15px;
-}
+.exercise-mini-list { list-style: none; padding: 0; margin: 20px 0; }
+.exercise-mini-list li { font-size: 0.95rem; color: #555; margin-bottom: 10px; display: flex; align-items: center; }
+.exercise-mini-list li i { font-size: 0.5rem; margin-right: 12px; color: var(--primary); }
 
-.exercise-card:hover {
-    transform: scale(1.02);
-}
+.routine-header.header-espalda { background: linear-gradient(135deg, #00b4db, #00d2d3) !important; display: flex; align-items: center; justify-content: center; height: 160px; }
+.routine-header.header-pecho { background: linear-gradient(135deg, #6a11cb, #2575fc) !important; display: flex; align-items: center; justify-content: center; height: 160px; }
+.routine-header.header-pierna { background: linear-gradient(135deg, #f093fb, #f5576c) !important; display: flex; align-items: center; justify-content: center; height: 160px; }
 
-.badge-series {
-    background-color: #1e272e;
-    color: #00d2d3;
-    font-weight: bold;
-}
+.exercise-card { transition: transform 0.2s; border-radius: 15px; }
+.exercise-card:hover { transform: scale(1.02); }
 
-.back-link {
-    color: #7f8c8d;
-    text-decoration: none;
-    transition: color 0.2s;
-}
+.badge-series { background-color: #1e272e; color: #d97706; font-weight: bold; }
+.back-link { color: #7f8c8d; text-decoration: none; transition: color 0.2s; }
+.back-link:hover { color: #1e272e; }
+.icon-dumbbell { color: #d97706; }
+.tips-card { border-radius: 15px; background-color: #1e272e; color: white; }
+.btn-finish { border-radius: 10px; }
 
-.back-link:hover {
-    color: #1e272e;
-}
-
-.icon-dumbbell {
-    color: #00d2d3;
-}
-
-.tips-card {
-    border-radius: 15px;
-    background-color: #1e272e;
-    color: white;
-}
-
-.btn-finish {
-    border-radius: 10px;
-}
+body.dark-mode .exercise-mini-list li { color: var(--text-muted); }
+body.dark-mode .badge-series { background-color: #2a2d35; color: #d97706; }
+body.dark-mode .tips-card { background-color: #1a1d23; }
+body.dark-mode .back-link { color: var(--text-muted); }
+body.dark-mode .back-link:hover { color: var(--text-dark); }
+body.dark-mode .routine-card { background: var(--card-bg); }
+body.dark-mode .card.bg-white { background-color: var(--card-bg); }

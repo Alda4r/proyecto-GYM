@@ -19,7 +19,7 @@
         </div>
         <div th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
     <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin' ? 'active' : ''}">
-        <i class="fas fa-user-shield me-2"></i> Gestión Admin
+        <i class="fas fa-user-shield me-2"></i> Gesti&oacute;n Admin
     </a>
 </div>
         <nav>
@@ -27,11 +27,18 @@
                th:href="@{/dashboard}"
                th:class="${paginaActual == 'dashboard' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-home"></i> Dashboard</a>
             <a th:href="@{/rutinas}" th:class="${paginaActual == 'rutinas' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-calendar-alt"></i> Rutinas</a>
-            <a th:href="@{/calorias}" th:class="${paginaActual == 'calorias' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-apple-alt"></i> Calorías</a>
+            <a th:href="@{/calorias}" th:class="${paginaActual == 'calorias' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a>
             <a th:href="@{/progreso}" th:class="${paginaActual == 'progreso' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-chart-line"></i> Progreso</a>
             <a th:href="@{/cuenta}" th:class="${paginaActual == 'cuenta' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-user"></i> Cuenta</a>
 
-            <div class="mt-auto pt-5 border-top">
+            <div class="theme-toggle">
+                <button type="button" onclick="toggleDarkMode()" id="themeToggleBtn">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                    <span id="themeLabel">Modo Oscuro</span>
+                </button>
+            </div>
+
+            <div class="mt-2 pt-2 border-top">
                 <form th:action="@{/logout}" method="post" style="display: inline;">
                     <button type="submit" class="nav-link text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
                         <i class="fas fa-power-off"></i> Salir
@@ -40,6 +47,32 @@
             </div>
         </nav>
     </div>
+
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            var isDark = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDark ? 'true' : 'false');
+            var icon = document.getElementById('themeIcon');
+            var label = document.getElementById('themeLabel');
+            if (isDark) {
+                icon.className = 'fas fa-sun';
+                label.textContent = 'Modo Claro';
+            } else {
+                icon.className = 'fas fa-moon';
+                label.textContent = 'Modo Oscuro';
+            }
+        }
+        (function() {
+            if (localStorage.getItem('darkMode') === 'true') {
+                document.body.classList.add('dark-mode');
+                var icon = document.getElementById('themeIcon');
+                var label = document.getElementById('themeLabel');
+                if (icon) { icon.className = 'fas fa-sun'; }
+                if (label) { label.textContent = 'Modo Claro'; }
+            }
+        })();
+    </script>
 
 </body>
 </html>

@@ -1,112 +1,27 @@
+.avatar-section-custom { background: linear-gradient(135deg, #1e272e 0%, #2f3640 100%); color: white; padding: 3rem; border-radius: 15px 15px 0 0; }
 
+.user-icon-main { color: #f97316; filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.3)); }
 
+.stat-card-mini { background: var(--card-bg); border-radius: 15px; padding: 1.5rem; border-left: 5px solid #f97316; transition: all 0.3s ease; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+.stat-card-mini:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
 
-/* Contenedor de la cabecera del perfil */
-.avatar-section-custom {
-    background: linear-gradient(135deg, var(--dark-carbon) 0%, #2f3640 100%);
-    color: white;
-    padding: 3rem;
-    border-radius: 15px 15px 0 0;
-}
+.stat-label { color: var(--text-muted); font-weight: 700; font-size: 0.75rem; text-transform: uppercase; display: block; }
+.stat-value { color: var(--text-dark); font-size: 1.5rem; font-weight: 800; }
 
-.user-icon-main {
-    color: var(--accent-cyan);
-    filter: drop-shadow(0 0 10px rgba(0, 210, 211, 0.3));
-}
+.guest-card-dark { max-width: 500px; margin: 80px auto; border-radius: 25px; background-color: #1e272e; color: white; padding: 3.5rem; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.2); }
+.guest-icon { color: #f97316; margin-bottom: 1.5rem; }
 
-/* Tarjetas de estadísticas rápidas */
-.stat-card-mini {
-    background: white;
-    border-radius: 15px;
-    padding: 1.5rem;
-    border-left: 5px solid var(--accent-cyan);
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-}
+.activity-table-container { border-radius: 15px; overflow: hidden; border: none; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+.table-dark-custom { background-color: #1e272e; color: white; }
 
-.stat-card-mini:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-}
+.btn-edit-profile { padding: 10px 25px; border-radius: 50px; font-size: 0.9rem; }
+.profile-card { border-radius: 15px; }
+.user-icon { color: #d97706; }
 
-.stat-label {
-    color: var(--text-muted);
-    font-weight: 700;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    display: block;
-}
+.stat-card-dark { border-left-color: #1e272e; }
+.stat-card-green { border-left-color: #10b981; }
 
-.stat-value {
-    color: var(--dark-carbon);
-    font-size: 1.5rem;
-    font-weight: 800;
-}
-
-/* Tarjeta de Modo Invitado */
-.guest-card-dark {
-    max-width: 500px;
-    margin: 80px auto;
-    border-radius: 25px;
-    background-color: var(--dark-carbon);
-    color: white;
-    padding: 3.5rem;
-    text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-}
-
-.guest-icon {
-    color: var(--accent-cyan);
-    margin-bottom: 1.5rem;
-}
-
-/* Estilos de la tabla de actividad */
-.activity-table-container {
-    border-radius: 15px;
-    overflow: hidden;
-    border: none;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-}
-
-.table-dark-custom {
-    background-color: var(--dark-carbon);
-    color: white;
-}
-.btn-edit-profile {
-    padding: 10px 25px;
-    border-radius: 50px;
-    font-size: 0.9rem;
-}
-
-.profile-card {
-    border-radius: 15px;
-}
-
-.user-icon {
-    color: #00d2d3;
-}
-
-.stat-card-dark {
-    border-left-color: #1e272e;
-}
-
-.stat-card-green {
-    border-left-color: #1dd1a1;
-}
-
-.routine-table-card {
-    border-radius: 15px;
-    overflow: hidden;
-}
-
-.guest-icon {
-    color: #00d2d3;
-}
-
-.guest-btn-login {
-    border-radius: 8px;
-}
-
-.guest-btn-register {
-    border-radius: 8px;
-}
+.routine-table-card { border-radius: 15px; overflow: hidden; }
+.guest-icon { color: #f97316; }
+.guest-btn-login { border-radius: 8px; }
+.guest-btn-register { border-radius: 8px; }
