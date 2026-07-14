@@ -163,6 +163,21 @@ public class RutinasController {
         return "detalle_rutina";
     }
 
+    @GetMapping("/rutina/entrenar")
+    public String iniciarEntrenamiento(@RequestParam("id") Long idRutina, Model model, HttpSession session) {
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuarioLogueado == null) return "redirect:/login";
+
+        Rutina rutina = rutinaService.findById(idRutina).orElse(null);
+        if (rutina == null) return "redirect:/rutinas";
+
+        model.addAttribute("idRutina", rutina.getId());
+        model.addAttribute("nombreRutina", rutina.getNombre().replaceAll(" - .*", ""));
+        model.addAttribute("ejercicios", ejercicioService.findByRutinaId(rutina.getId()));
+
+        return "entrenar";
+    }
+
     @PostMapping("/rutina/personalizar")
     public String guardarRutinaPersonalizada(
             @RequestParam("idRutinaBase") Long idRutinaBase,
@@ -434,6 +449,25 @@ public class RutinasController {
         historialService.save(historial);
 
         return "redirect:/dashboard";
+    }
+
+    @PostMapping("/rutina/entrenar/finalizar")
+    public String finalizarEntrenamiento(
+            @RequestParam("id") Long idRutina,
+            @RequestParam("nombre") String nombreRutina,
+            @RequestParam("duracion") int duracionMinutos,
+            @RequestParam("calorias") int caloriasQuemadas,
+            HttpSession session) {
+
+        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        if (usuarioLogueado == null) return "redirect:/login";
+
+        HistorialEntrenamiento historial = new HistorialEntrenamiento(
+                usuarioLogueado.getEmail(), nombreRutina, caloriasQuemadas, duracionMinutos);
+        historialService.save(historial);
+
+        return "redirect:/dashboard?entrenamientoCompletado="
+                + java.net.URLEncoder.encode(nombreRutina, java.nio.charset.StandardCharsets.UTF_8) + "&tab=";
     }
 
     private int extraerDuracion(String tiempo) {

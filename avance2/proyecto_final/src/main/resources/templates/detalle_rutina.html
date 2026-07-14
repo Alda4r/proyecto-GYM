@@ -81,10 +81,14 @@
                                 Mantente hidratado durante toda la sesión.
                             </li>
                         </ul>
+                        <a th:href="@{/rutina/entrenar(id=${idRutina})}"
+                           class="btn btn-primary btn-lg rounded-pill w-100 mb-2">
+                            <i class="fas fa-play me-2"></i>Iniciar Entrenamiento en Vivo
+                        </a>
                         <form th:action="@{/rutina/finalizar}" method="post">
                              <input type="hidden" name="id" th:value="${idRutina}" />
                              <input type="hidden" name="nombre" th:value="${nombreRutina}" />
-                             <button type="submit" class="btn btn-success btn-lg rounded-pill">Finalizar Entrenamiento</button>
+                             <button type="submit" class="btn btn-success btn-lg rounded-pill w-100">Finalizar Rápido</button>
                         </form>
                     </div>
                 </div>
