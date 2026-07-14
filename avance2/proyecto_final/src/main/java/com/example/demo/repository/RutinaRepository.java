@@ -9,11 +9,12 @@ import com.example.demo.model.Rutina;
 
 @Repository
 public interface RutinaRepository extends JpaRepository<Rutina, Long> {
-    
 
     List<Rutina> findByGrupoMuscular(String grupoMuscular);
 
     List<Rutina> findByObjetivoAsociado(String objetivoAsociado);
 
     List<Rutina> findByUsuarioEmail(String usuarioEmail);
+
+    boolean existsByNombre(String nombre);
 }

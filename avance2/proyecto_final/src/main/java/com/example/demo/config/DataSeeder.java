@@ -50,7 +50,7 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedRoutines() {
-        if (rutinaRepository.count() > 0) return;
+        if (rutinaRepository.count() >= 16) return;
 
         // ========== OBJETIVO: GANAR PESO ==========
         crearRutina("Rutina Pecho - Volumen", "Intermedio", "50 min", "Torso", "Ganar Peso", null, List.of(
@@ -77,6 +77,22 @@ public class DataSeeder implements CommandLineRunner {
             new Ejercicio("Elevación de talones", 4, 15, "50 kg", null)
         ));
 
+        crearRutina("Rutina Pecho y Hombros - Masa", "Intermedio", "45 min", "Torso", "Ganar Peso", null, List.of(
+            new Ejercicio("Press militar con barra", 4, 10, "35 kg", null),
+            new Ejercicio("Press inclinado con barra", 4, 10, "55 kg", null),
+            new Ejercicio("Elevaciones laterales", 3, 15, "10 kg", null),
+            new Ejercicio("Aperturas en polea alta", 3, 12, "12 kg", null),
+            new Ejercicio("Face pull", 3, 15, "15 kg", null)
+        ));
+
+        crearRutina("Rutina Espalda y Trapecio - Volumen", "Intermedio", "50 min", "Torso", "Ganar Peso", null, List.of(
+            new Ejercicio("Peso muerto con barra", 4, 8, "90 kg", null),
+            new Ejercicio("Remo en T", 4, 10, "45 kg", null),
+            new Ejercicio("Dominadas con lastre", 4, 8, "10 kg", null),
+            new Ejercicio("Encogimientos de trapecio", 4, 12, "50 kg", null),
+            new Ejercicio("Remo de cara con polea", 3, 15, "20 kg", null)
+        ));
+
         // ========== OBJETIVO: PERDER PESO ==========
         crearRutina("Rutina Pecho - Quema Grasa", "Principiante", "40 min", "Torso", "Perder Peso", null, List.of(
             new Ejercicio("Press de banca con mancuernas", 3, 12, "15 kg", null),
@@ -97,6 +113,21 @@ public class DataSeeder implements CommandLineRunner {
             new Ejercicio("Zancadas", 3, 12, "10 kg", null),
             new Ejercicio("Elevación de cadera", 3, 15, "20 kg", null),
             new Ejercicio("Saltos de tijera", 3, 20, "peso corporal", null)
+        ));
+
+        crearRutina("Rutina Pecho - Circuito Quema", "Principiante", "35 min", "Torso", "Perder Peso", null, List.of(
+            new Ejercicio("Flexiones diamante", 3, 12, "peso corporal", null),
+            new Ejercicio("Press con mancuernas alterno", 3, 14, "12 kg", null),
+            new Ejercicio("Fondos entre bancos", 3, 12, "peso corporal", null),
+            new Ejercicio("Cruce de poleas", 3, 18, "7 kg", null)
+        ));
+
+        crearRutina("Rutina Pierna - Cardio Fuerte", "Principiante", "40 min", "Tren Inferior", "Perder Peso", null, List.of(
+            new Ejercicio("Sentadilla con salto", 3, 15, "peso corporal", null),
+            new Ejercicio("Zancadas laterales", 3, 12, "8 kg", null),
+            new Ejercicio("Burpees", 3, 12, "peso corporal", null),
+            new Ejercicio("Step ups en banco", 3, 15, "10 kg", null),
+            new Ejercicio("Plancha con elevación de pierna", 3, 20, "peso corporal", null)
         ));
 
         // ========== OBJETIVO: HACERSE MÁS FUERTE ==========
@@ -129,11 +160,26 @@ public class DataSeeder implements CommandLineRunner {
             new Ejercicio("Peso muerto", 4, 5, "100 kg", null)
         ));
 
-        System.out.println("10 rutinas con ejercicios creadas exitosamente.");
+        crearRutina("Rutina Pecho - Potencia Pura", "Avanzado", "45 min", "Torso", "Hacerse más fuerte", null, List.of(
+            new Ejercicio("Press de banca explosivo", 5, 3, "70 kg", null),
+            new Ejercicio("Press inclinado pesado", 5, 5, "65 kg", null),
+            new Ejercicio("Flexiones con palmada", 4, 6, "peso corporal", null),
+            new Ejercicio("Press con mancuernas a una mano", 4, 6, "30 kg", null)
+        ));
+
+        crearRutina("Rutina Fuerza - Press y Sentadilla", "Avanzado", "55 min", "Torso", "Hacerse más fuerte", null, List.of(
+            new Ejercicio("Sentadilla frontal pesada", 5, 5, "100 kg", null),
+            new Ejercicio("Press de banca estricto", 5, 5, "75 kg", null),
+            new Ejercicio("Peso muerto sumo", 4, 5, "130 kg", null),
+            new Ejercicio("Press militar pesado", 4, 6, "45 kg", null)
+        ));
+
+        System.out.println("16 rutinas con ejercicios creadas exitosamente.");
     }
 
     private void crearRutina(String nombre, String nivel, String tiempo, String grupoMuscular,
                              String objetivoAsociado, String usuarioEmail, List<Ejercicio> ejercicios) {
+        if (rutinaRepository.existsByNombre(nombre)) return;
         Rutina rutina = new Rutina(nombre, nivel, tiempo, grupoMuscular, objetivoAsociado, null, usuarioEmail);
         for (Ejercicio e : ejercicios) {
             e.setRutina(rutina);
