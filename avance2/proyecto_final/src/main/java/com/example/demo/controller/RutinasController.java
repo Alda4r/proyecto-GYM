@@ -171,9 +171,27 @@ public class RutinasController {
         Rutina rutina = rutinaService.findById(idRutina).orElse(null);
         if (rutina == null) return "redirect:/rutinas";
 
+        List<Ejercicio> ejercicios = ejercicioService.findByRutinaId(rutina.getId());
+
         model.addAttribute("idRutina", rutina.getId());
         model.addAttribute("nombreRutina", rutina.getNombre().replaceAll(" - .*", ""));
-        model.addAttribute("ejercicios", ejercicioService.findByRutinaId(rutina.getId()));
+        model.addAttribute("ejercicios", ejercicios);
+
+        // Build JSON array for JavaScript
+        StringBuilder json = new StringBuilder("[");
+        for (int i = 0; i < ejercicios.size(); i++) {
+            Ejercicio e = ejercicios.get(i);
+            if (i > 0) json.append(",");
+            json.append("{")
+                .append("\"id\":").append(e.getId()).append(",")
+                .append("\"nombre\":\"").append(e.getNombre().replace("\\", "\\\\").replace("\"", "\\\"")).append("\",")
+                .append("\"series\":").append(e.getSeries()).append(",")
+                .append("\"repeticiones\":").append(e.getRepeticiones()).append(",")
+                .append("\"pesoSugerido\":\"").append(e.getPesoSugerido().replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
+                .append("}");
+        }
+        json.append("]");
+        model.addAttribute("ejerciciosJson", json.toString());
 
         return "entrenar";
     }
