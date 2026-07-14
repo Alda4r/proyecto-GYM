@@ -159,13 +159,12 @@ function showCompletion() {
     document.getElementById('nextBtn').style.display = 'none';
 
     var elapsed = Math.floor((Date.now() - state.startTime) / 60000);
+    if (elapsed < 1) elapsed = 1;
     var calories = elapsed * 8;
 
     document.getElementById('compSets').textContent = state.totalSets;
     document.getElementById('compTime').textContent = elapsed + ' min';
     document.getElementById('compCalories').textContent = calories;
-    document.getElementById('compRoutineName').textContent =
-        document.getElementById('routineName').textContent;
 
     document.getElementById('completionScreen').style.display = 'block';
 

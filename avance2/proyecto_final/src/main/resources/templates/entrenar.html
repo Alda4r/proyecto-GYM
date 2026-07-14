@@ -67,8 +67,9 @@
                 <div class="trophy-icon">
                     <i class="fas fa-trophy"></i>
                 </div>
-                <h2>¡Entrenamiento Completado!</h2>
-                <p class="text-muted" th:text="${nombreRutina}">Rutina</p>
+                <h2>¡Felicidades!</h2>
+                <h3 class="fw-bold" style="color: var(--primary, #f97316);" th:text="${nombreRutina}">Rutina</h3>
+                <p class="text-muted">Completaste todas las series. ¡Sigue así!</p>
 
                 <div class="completion-stats">
                     <div class="completion-stat">
@@ -91,7 +92,7 @@
                     <input type="hidden" name="duracion" value="0" />
                     <input type="hidden" name="calorias" value="0" />
                     <button type="submit" class="btn-finish">
-                        <i class="fas fa-check me-2"></i>Finalizar Entrenamiento
+                        <i class="fas fa-check me-2"></i>Guardar y Volver al Inicio
                     </button>
                 </form>
             </div>
