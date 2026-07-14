@@ -126,17 +126,18 @@ body.dark-mode {
     --main-bg: #0f1115;
     --card-bg: #1a1d23;
     --border-color: #2a2d35;
-    --text-dark: #e4e6eb;
-    --text-muted: #9ca3af;
+    --text-dark: #f0f2f5;
+    --text-muted: #adb5bd;
     --card-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    --hover-bg: #252830;
-    --nav-text: #9ca3af;
+    --hover-bg: #2d3039;
+    --nav-text: #d1d5db;
     --input-bg: #252830;
     --input-border: #3a3d45;
     --shadow-color: rgba(0,0,0,0.4);
 }
-body.dark-mode { background-color: var(--main-bg); }
+body.dark-mode { background-color: var(--main-bg); color: var(--text-dark); }
 body.dark-mode .sidebar { background-color: var(--sidebar-bg); border-right-color: var(--border-color); }
+body.dark-mode .brand-section h4, body.dark-mode .brand-section small { color: #f3f4f6 !important; }
 body.dark-mode a:not(.btn):not(.nav-link):not(.page-link) { color: #fbbf24; }
 body.dark-mode .stat-card,
 body.dark-mode .content-card,
@@ -149,7 +150,7 @@ body.dark-mode li, body.dark-mode .small, body.dark-mode strong, body.dark-mode 
 body.dark-mode label:not(.form-label) { color: var(--text-dark); }
 body.dark-mode h1, body.dark-mode h2, body.dark-mode h3,
 body.dark-mode h4, body.dark-mode h5, body.dark-mode h6 { color: #f3f4f6; }
-body.dark-mode .fw-bold:not(.text-success):not(.text-warning):not(.text-info):not(.text-danger):not(.text-primary) { color: inherit; }
+
 body.dark-mode .text-dark { color: var(--text-dark) !important; }
 body.dark-mode .text-body { color: var(--text-dark) !important; }
 body.dark-mode .text-muted { color: var(--text-muted) !important; }
@@ -203,6 +204,9 @@ body.dark-mode .bg-opacity-10 { opacity: 0.25; }
 body.dark-mode .nav-pills .nav-link { background-color: var(--card-bg); color: var(--text-muted); border-color: var(--border-color); }
 body.dark-mode .nav-pills .nav-link.active { background-color: var(--primary) !important; color: white !important; }
 body.dark-mode .nav-pills .nav-link:hover:not(.active) { background-color: var(--hover-bg); }
+body.dark-mode .nav-link { color: var(--nav-text); }
+body.dark-mode .nav-link:hover:not(.active) { background-color: var(--hover-bg); color: white !important; }
+body.dark-mode .nav-link i { color: inherit; }
 body.dark-mode .btn-outline-secondary { color: var(--text-muted); border-color: var(--border-color); }
 body.dark-mode .btn-outline-secondary:hover { background-color: var(--primary); color: white; border-color: var(--primary); }
 body.dark-mode .btn-outline-primary { color: var(--primary); border-color: var(--primary); }
