@@ -194,30 +194,30 @@ public class DataSeeder implements CommandLineRunner {
         if (productoRepository.count() > 0) return;
 
         java.util.List<Producto> productos = java.util.List.of(
-            crearProducto("Whey Protein Isolate 2lb", "Proteína de suero aislada de rápida absorción. Ideal post-entreno.", 39.99,
-                "https://m.media-amazon.com/images/I/71p4bGUMKaL._AC_SL1500_.jpg", "Proteínas", 50),
-            crearProducto("Whey Protein 5lb", "Proteína de suero concentrada. Ahorro en presentación familiar.", 69.99,
-                "https://m.media-amazon.com/images/I/71QzY2mE5tL._AC_SL1500_.jpg", "Proteínas", 30),
-            crearProducto("Creatina Monohidratada 500g", "Creatina pura en polvo para fuerza y rendimiento.", 29.99,
-                "https://m.media-amazon.com/images/I/81KqLwHJPzL._AC_SL1500_.jpg", "Creatina", 40),
-            crearProducto("Pre-Entreno Explosivo 300g", "Fórmula completa con cafeína, beta-alanina y citrulina.", 34.99,
-                "https://m.media-amazon.com/images/I/71Y0gAFFMfL._AC_SL1500_.jpg", "Pre-Entreno", 25),
-            crearProducto("Multivitamínico Deportivo 90 tabs", "Complejo B, zinc, magnesio y vitamina D para atletas.", 19.99,
-                "https://m.media-amazon.com/images/I/71ojnT3oz6L._AC_SL1500_.jpg", "Vitaminas", 60),
-            crearProducto("Barra de Proteína 12 pack", "Snack alto en proteína con 20g por barra. Surtido.", 24.99,
-                "https://m.media-amazon.com/images/I/81eZbKLKfmL._AC_SL1500_.jpg", "Proteínas", 100),
-            crearProducto("Creatina HCL 120 caps", "Creatina clorhidrato de alta absorción en cápsulas.", 27.99,
-                "https://m.media-amazon.com/images/I/71VXFeq4MvL._AC_SL1500_.jpg", "Creatina", 35),
-            crearProducto("Shaker 700ml", "Shaker con mezclador de acero inoxidable. Libre de BPA.", 12.99,
-                "https://m.media-amazon.com/images/I/61wXe6tT9TL._AC_SL1500_.jpg", "Accesorios", 80),
-            crearProducto("Guantes de Gimnasio", "Guantes con soporte de muñeca y gel antideslizante.", 15.99,
-                "https://m.media-amazon.com/images/I/71b2GZZ3lCL._AC_SL1500_.jpg", "Accesorios", 45),
-            crearProducto("Camiseta Deportiva", "Camiseta dry-fit de manga corta. Varios colores.", 22.99,
-                "https://m.media-amazon.com/images/I/71hVpWcFGzL._AC_SL1500_.jpg", "Ropa", 70),
-            crearProducto("Short de Entreno", "Short ligero con bolsillos y cintura elástica.", 19.99,
-                "https://m.media-amazon.com/images/I/81EKBWB0bDL._AC_SL1500_.jpg", "Ropa", 50),
-            crearProducto("BCAA 2:1:1 400 caps", "Aminoácidos ramificados para recuperación muscular.", 25.99,
-                "https://m.media-amazon.com/images/I/71KH0bK1YXL._AC_SL1500_.jpg", "Vitaminas", 30)
+            crearProducto("Whey Protein Isolate 2lb", "Proteína de suero aislada de rápida absorción. Ideal post-entreno.", 89.90,
+                "https://images.unsplash.com/photo-1593095948071-474c5cc2c1cf?w=400&q=80", "Proteínas", 50),
+            crearProducto("Whey Protein 5lb", "Proteína de suero concentrada. Ahorro en presentación familiar.", 159.90,
+                "https://images.unsplash.com/photo-1579722820308-d74e571900a9?w=400&q=80", "Proteínas", 30),
+            crearProducto("Creatina Monohidratada 500g", "Creatina pura en polvo para fuerza y rendimiento.", 69.90,
+                "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=400&q=80", "Creatina", 40),
+            crearProducto("Pre-Entreno Explosivo 300g", "Fórmula completa con cafeína, beta-alanina y citrulina.", 79.90,
+                "https://images.unsplash.com/photo-1540497077202-7c8a3999166f?w=400&q=80", "Pre-Entreno", 25),
+            crearProducto("Multivitamínico Deportivo 90 tabs", "Complejo B, zinc, magnesio y vitamina D para atletas.", 45.90,
+                "https://images.unsplash.com/photo-1576671081837-49000212a370?w=400&q=80", "Vitaminas", 60),
+            crearProducto("Barra de Proteína 12 pack", "Snack alto en proteína con 20g por barra. Surtido.", 55.90,
+                "https://images.unsplash.com/photo-1622485831862-1004e1a1b379?w=400&q=80", "Proteínas", 100),
+            crearProducto("Creatina HCL 120 caps", "Creatina clorhidrato de alta absorción en cápsulas.", 65.90,
+                "https://images.unsplash.com/photo-1614729939124-032f0c56b5c2?w=400&q=80", "Creatina", 35),
+            crearProducto("Shaker 700ml", "Shaker con mezclador de acero inoxidable. Libre de BPA.", 29.90,
+                "https://images.unsplash.com/photo-1605899435973-ca2d1b8868cf?w=400&q=80", "Accesorios", 80),
+            crearProducto("Guantes de Gimnasio", "Guantes con soporte de muñeca y gel antideslizante.", 35.90,
+                "https://images.unsplash.com/photo-1598289431512-b97b0917affc?w=400&q=80", "Accesorios", 45),
+            crearProducto("Camiseta Deportiva", "Camiseta dry-fit de manga corta. Varios colores.", 49.90,
+                "https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=400&q=80", "Ropa", 70),
+            crearProducto("Short de Entreno", "Short ligero con bolsillos y cintura elástica.", 45.90,
+                "https://images.unsplash.com/photo-1591195853828-11db59a44f6b?w=400&q=80", "Ropa", 50),
+            crearProducto("BCAA 2:1:1 400 caps", "Aminoácidos ramificados para recuperación muscular.", 59.90,
+                "https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&q=80", "Vitaminas", 30)
         );
         for (Producto p : productos) {
             productoRepository.save(p);
@@ -228,10 +228,10 @@ public class DataSeeder implements CommandLineRunner {
     private void seedPlanes() {
         if (planMembresiaRepository.count() > 0) return;
 
-        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(29.99); p1.setActivo(true); planMembresiaRepository.save(p1);
-        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(69.99); p2.setActivo(true); planMembresiaRepository.save(p2);
-        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(119.99); p3.setActivo(true); planMembresiaRepository.save(p3);
-        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(199.99); p4.setActivo(true); planMembresiaRepository.save(p4);
+        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(59.90); p1.setActivo(true); planMembresiaRepository.save(p1);
+        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(149.90); p2.setActivo(true); planMembresiaRepository.save(p2);
+        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(269.90); p3.setActivo(true); planMembresiaRepository.save(p3);
+        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(429.90); p4.setActivo(true); planMembresiaRepository.save(p4);
         System.out.println("4 planes de membresía creados.");
     }
 

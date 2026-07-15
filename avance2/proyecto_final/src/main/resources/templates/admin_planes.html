@@ -60,7 +60,7 @@
                             <td class="ps-4" th:text="${p.id}">1</td>
                             <td class="fw-bold" th:text="${p.nombre}">Plan</td>
                             <td th:text="${p.duracionMeses + ' meses'}">6 meses</td>
-                            <td th:text="'$' + ${#numbers.formatDecimal(p.precio, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
+                            <td th:text="'S/' + ${#numbers.formatDecimal(p.precio, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
                             <td>
                                 <span class="badge" th:classappend="${p.activo} ? 'bg-success' : 'bg-danger'"
                                       th:text="${p.activo} ? 'Activo' : 'Inactivo'">Activo</span>

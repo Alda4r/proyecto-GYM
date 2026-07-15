@@ -66,14 +66,14 @@
                                 <tr th:each="d : ${pedido.detalles}">
                                     <td th:text="${d.productoNombre}">Producto</td>
                                     <td class="text-center" th:text="${d.cantidad}">1</td>
-                                    <td class="text-end" th:text="'$' + ${#numbers.formatDecimal(d.subtotal, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
+                                    <td class="text-end" th:text="'S/' + ${#numbers.formatDecimal(d.subtotal, 0, 'COMMA', 2, 'POINT')}">$0.00</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="d-flex justify-content-between align-items-center pt-2 border-top">
-                        <strong>Total: <span class="text-primary" th:text="'$' + ${#numbers.formatDecimal(pedido.total, 0, 'COMMA', 2, 'POINT')}">$0.00</span></strong>
+                        <strong>Total: <span class="text-primary" th:text="'S/' + ${#numbers.formatDecimal(pedido.total, 0, 'COMMA', 2, 'POINT')}">$0.00</span></strong>
 
                         <form th:if="${isAdmin}" th:action="@{/tienda/actualizar-estado}" method="post" class="d-flex gap-2">
                             <input type="hidden" name="pedidoId" th:value="${pedido.id}">
