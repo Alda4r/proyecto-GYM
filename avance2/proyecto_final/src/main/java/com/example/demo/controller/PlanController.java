@@ -2,6 +2,8 @@ package com.example.demo.controller;
 
 import java.time.LocalDate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,6 +20,8 @@ import jakarta.servlet.http.HttpSession;
 @Controller
 public class PlanController {
 
+    private static final Logger log = LoggerFactory.getLogger(PlanController.class);
+
     @Autowired
     private PlanMembresiaService planMembresiaService;
 
@@ -26,14 +30,19 @@ public class PlanController {
 
     @GetMapping("/planes")
     public String verPlanes(Model model, HttpSession session) {
-        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
-        if (user == null) return "redirect:/login";
+        try {
+            Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
+            if (user == null) return "redirect:/login";
 
-        boolean isAdmin = "admin@gym.com".equalsIgnoreCase(user.getEmail());
-        model.addAttribute("planes", isAdmin ? planMembresiaService.findAll() : planMembresiaService.findAllActivos());
-        model.addAttribute("planActual", user.getPlanMembresia());
-        model.addAttribute("isAdmin", isAdmin);
-        return "planes";
+            boolean isAdmin = "admin@gym.com".equalsIgnoreCase(user.getEmail());
+            model.addAttribute("planes", isAdmin ? planMembresiaService.findAll() : planMembresiaService.findAllActivos());
+            model.addAttribute("planActual", user.getPlanMembresia());
+            model.addAttribute("isAdmin", isAdmin);
+            return "planes";
+        } catch (Exception e) {
+            log.error("Error en /planes", e);
+            throw e;
+        }
     }
 
     @PostMapping("/planes/seleccionar")
