@@ -247,7 +247,7 @@ public class DataSeeder implements CommandLineRunner {
             existente.setDescripcion(plan.getDescripcion());
             existente.setDuracionMeses(plan.getDuracionMeses());
             existente.setPrecio(plan.getPrecio());
-            existente.setActivo(plan.getActivo());
+            existente.setActivo(plan.isActivo());
             planMembresiaRepository.save(existente);
         } else {
             planMembresiaRepository.save(plan);
