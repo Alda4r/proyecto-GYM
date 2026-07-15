@@ -11,86 +11,116 @@
 
     <th:block th:fragment="sidebar-fitgym(paginaActual)">
         <!-- Top Navbar -->
-        <nav class="top-navbar navbar navbar-expand-lg fixed-top">
-            <div class="container-fluid px-3 px-lg-4">
-                <a class="navbar-brand" th:href="@{/dashboard}">
+        <nav class="top-navbar navbar fixed-top">
+            <div class="container-fluid px-3 px-lg-4 d-flex align-items-center">
+
+                <!-- Menu button (always visible) -->
+                <button class="menu-btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sideMenu" aria-controls="sideMenu">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Brand -->
+                <a class="navbar-brand me-3" th:href="@{/dashboard}">
                     <i class="fa-solid fa-dumbbell brand-icon"></i>
                     <span class="brand-text">Fit-Factory Gym</span>
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fas fa-bars"></i>
-                </button>
+                <!-- Nav links (always visible, wrap on small screens) -->
+                <ul class="nav-list">
+                    <!-- Dashboard dropdown -->
+                    <li class="nav-item dropdown dropdown-hover">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                           th:classappend="${paginaActual == 'dashboard' or paginaActual == 'rutinas' or paginaActual == 'calorias' or paginaActual == 'progreso'} ? 'active' : ''">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'rutinas'} ? 'active' : ''" th:href="@{/rutinas}"><i class="fas fa-calendar-alt"></i> Rutinas</a></li>
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'calorias'} ? 'active' : ''" th:href="@{/calorias}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a></li>
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'progreso'} ? 'active' : ''" th:href="@{/progreso}"><i class="fas fa-chart-line"></i> Progreso</a></li>
+                        </ul>
+                    </li>
 
-                <div class="collapse navbar-collapse" id="mainNav">
-                    <ul class="navbar-nav mx-auto">
-                        <!-- Dashboard dropdown with hover -->
-                        <li class="nav-item dropdown dropdown-hover">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
-                               th:classappend="${paginaActual == 'dashboard' or paginaActual == 'rutinas' or paginaActual == 'calorias' or paginaActual == 'progreso'} ? 'active' : ''">
-                                <i class="fas fa-home"></i> Dashboard
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'rutinas'} ? 'active' : ''" th:href="@{/rutinas}"><i class="fas fa-calendar-alt"></i> Rutinas</a></li>
-                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'calorias'} ? 'active' : ''" th:href="@{/calorias}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a></li>
-                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'progreso'} ? 'active' : ''" th:href="@{/progreso}"><i class="fas fa-chart-line"></i> Progreso</a></li>
-                            </ul>
-                        </li>
+                    <li class="nav-item">
+                        <a th:href="@{/planes}" class="nav-link" th:classappend="${paginaActual == 'planes'} ? 'active' : ''"><i class="fas fa-id-card"></i> Planes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/tienda}" class="nav-link" th:classappend="${paginaActual == 'tienda'} ? 'active' : ''"><i class="fas fa-store"></i> Suplementos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/cuenta}" class="nav-link" th:classappend="${paginaActual == 'cuenta'} ? 'active' : ''"><i class="fas fa-user"></i> Cuenta</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
+                        <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin'} ? 'active' : ''"><i class="fas fa-user-shield"></i> Admin</a>
+                    </li>
+                </ul>
 
-                        <!-- Planes -->
-                        <li class="nav-item">
-                            <a th:href="@{/planes}" class="nav-link" th:classappend="${paginaActual == 'planes'} ? 'active' : ''">
-                                <i class="fas fa-id-card"></i> Planes
-                            </a>
-                        </li>
-
-                        <!-- Tienda -->
-                        <li class="nav-item">
-                            <a th:href="@{/tienda}" class="nav-link" th:classappend="${paginaActual == 'tienda'} ? 'active' : ''">
-                                <i class="fas fa-store"></i> Suplementos
-                            </a>
-                        </li>
-
-                        <!-- Cuenta -->
-                        <li class="nav-item">
-                            <a th:href="@{/cuenta}" class="nav-link" th:classappend="${paginaActual == 'cuenta'} ? 'active' : ''">
-                                <i class="fas fa-user"></i> Cuenta
-                            </a>
-                        </li>
-
-                        <!-- Admin -->
-                        <li class="nav-item" th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
-                            <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin'} ? 'active' : ''">
-                                <i class="fas fa-user-shield"></i> Admin
-                            </a>
-                        </li>
-                    </ul>
-
-                    <!-- Right side: theme toggle + logout -->
-                    <div class="d-flex align-items-center gap-2">
-                        <button class="theme-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Modo oscuro">
-                            <i class="fas fa-moon" id="themeIcon"></i>
+                <!-- Right side -->
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <button class="theme-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Modo oscuro">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="logout-btn" title="Cerrar sesión">
+                            <i class="fas fa-power-off"></i>
                         </button>
-                        <form th:action="@{/logout}" method="post" class="m-0">
-                            <button type="submit" class="logout-btn" title="Cerrar sesión">
-                                <i class="fas fa-power-off"></i>
-                            </button>
-                        </form>
-                    </div>
+                    </form>
                 </div>
             </div>
         </nav>
 
+        <!-- Offcanvas side menu -->
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="sideMenu" aria-labelledby="sideMenuLabel">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title fw-bold" id="sideMenuLabel">
+                    <i class="fa-solid fa-dumbbell me-2" style="color:#f97316;"></i>Fit-Factory Gym
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
+            </div>
+            <div class="offcanvas-body p-0">
+                <div class="list-group list-group-flush">
+                    <a href="/dashboard" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                        <i class="fas fa-home" style="color:#f97316;width:20px;"></i> Inicio
+                    </a>
+                    <a href="/planes" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                        <i class="fas fa-id-card" style="color:#f97316;width:20px;"></i> Planes y Precios
+                    </a>
+                    <a href="/tienda" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                        <i class="fas fa-store" style="color:#f97316;width:20px;"></i> Tienda de Suplementos
+                    </a>
+                    <a href="/cuenta" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                        <i class="fas fa-user" style="color:#f97316;width:20px;"></i> Mi Cuenta
+                    </a>
+                    <div class="border-top my-2"></div>
+                    <a th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}" href="/admin" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
+                        <i class="fas fa-user-shield" style="color:#f97316;width:20px;"></i> Panel Admin
+                    </a>
+                    <div class="border-top my-2"></div>
+                    <div class="px-3 pt-2 pb-1">
+                        <small class="text-muted fw-bold text-uppercase" style="font-size:0.7rem;">Apariencia</small>
+                    </div>
+                    <button class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 border-0" onclick="toggleDarkMode()">
+                        <i class="fas fa-moon" id="menuThemeIcon" style="color:#f97316;width:20px;"></i> <span id="menuThemeLabel">Modo Oscuro</span>
+                    </button>
+                    <div class="border-top my-2"></div>
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3 border-0 text-danger w-100 text-start">
+                            <i class="fas fa-power-off" style="width:20px;"></i> Cerrar Sesión
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <script th:src="@{/js/dark-mode.js}"></script>
         <script>
-            // Close mobile menu on link click
+            // Close offcanvas on link click
             document.addEventListener('DOMContentLoaded', function() {
-                var navLinks = document.querySelectorAll('#mainNav .nav-link, #mainNav .dropdown-item');
-                var navbarCollapse = document.getElementById('mainNav');
-                navLinks.forEach(function(link) {
+                var offcanvasLinks = document.querySelectorAll('#sideMenu .list-group-item-action');
+                var offcanvasEl = document.getElementById('sideMenu');
+                offcanvasLinks.forEach(function(link) {
                     link.addEventListener('click', function() {
-                        var bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
-                        if (bsCollapse) bsCollapse.hide();
+                        var offcanvas = bootstrap.Offcanvas.getInstance(offcanvasEl);
+                        if (offcanvas) offcanvas.hide();
                     });
                 });
             });
