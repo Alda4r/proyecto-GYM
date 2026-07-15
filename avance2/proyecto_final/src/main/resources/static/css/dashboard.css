@@ -50,27 +50,36 @@ body {
     font-size: 1.4rem;
 }
 
-/* Menu button (always visible) */
-.menu-btn {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    width: 40px;
-    height: 40px;
+/* Wide dropdown for Menu */
+.dropdown-menu-wide {
+    min-width: 280px !important;
+    padding: 8px !important;
+}
+.dropdown-promo-header {
+    padding: 8px 14px 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+.dropdown-menu-wide .dropdown-item {
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 0.88rem;
+    color: var(--nav-text);
     display: flex;
     align-items: center;
-    justify-content: center;
-    color: var(--text-dark);
-    font-size: 1.15rem;
-    cursor: pointer;
-    margin-right: 12px;
-    transition: all 0.2s;
-    flex-shrink: 0;
+    gap: 10px;
+    transition: all 0.15s;
 }
-.menu-btn:hover {
-    background: var(--hover-bg);
-    border-color: var(--primary);
+.dropdown-menu-wide .dropdown-item i {
     color: var(--primary);
+    width: 18px;
+}
+.dropdown-menu-wide .dropdown-item:hover {
+    background: var(--hover-bg);
+    color: var(--text-dark);
 }
 
 /* Nav list inline */
@@ -254,180 +263,7 @@ body {
 
 .exercise-row { padding: 12px; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; }
 
-/* ========== PROMO MINI CARDS (offcanvas) ========== */
-.promo-mini-card {
-    border-radius: 14px;
-    padding: 16px;
-    color: white;
-    position: relative;
-    overflow: hidden;
-}
-.promo-mini-tag {
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.85;
-    margin-bottom: 4px;
-}
-.promo-mini-title {
-    font-weight: 800;
-    font-size: 1.1rem;
-    margin-bottom: 2px;
-}
-.promo-mini-price {
-    font-size: 1.4rem;
-    font-weight: 900;
-    margin-bottom: 8px;
-}
-.promo-mini-price small {
-    font-size: 0.75rem;
-    font-weight: 400;
-    opacity: 0.8;
-}
-.promo-mini-cta {
-    display: inline-flex;
-    align-items: center;
-    background: rgba(255,255,255,0.25);
-    backdrop-filter: blur(4px);
-    color: white;
-    border-radius: 50px;
-    padding: 5px 16px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-decoration: none;
-    transition: all 0.2s;
-}
-.promo-mini-cta:hover {
-    background: white;
-    color: #111;
-}
 
-/* ========== PROMOTIONS CAROUSEL ========== */
-.promo-section { margin: 28px 0; }
-.promo-slide {
-    position: relative;
-    height: 380px;
-    background-size: cover;
-    background-position: center;
-    display: flex;
-    align-items: center;
-}
-.promo-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 50%, rgba(0,0,0,0.1) 100%);
-    z-index: 1;
-}
-.promo-slide-content {
-    position: relative;
-    z-index: 2;
-    padding: 60px 50px;
-    max-width: 600px;
-    animation: promoFadeIn 0.8s ease;
-}
-@keyframes promoFadeIn {
-    from { opacity: 0; transform: translateY(30px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-.carousel-item .promo-slide-content {
-    animation: none;
-}
-.carousel-item.active .promo-slide-content {
-    animation: promoFadeIn 0.8s ease;
-}
-.promo-slide-content .promo-tag {
-    display: inline-block;
-    background: rgba(249,115,22,0.9);
-    padding: 5px 20px;
-    border-radius: 50px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    margin-bottom: 14px;
-    color: white;
-}
-.promo-slide-content h3 {
-    font-weight: 900;
-    font-size: 2.5rem;
-    color: white;
-    margin-bottom: 6px;
-    line-height: 1.1;
-}
-.promo-slide-content .promo-desc {
-    color: rgba(255,255,255,0.85);
-    font-size: 1.05rem;
-    margin-bottom: 14px;
-}
-.promo-slide-content .promo-price {
-    font-size: 2.8rem;
-    font-weight: 900;
-    color: #f97316;
-    line-height: 1;
-    margin-bottom: 16px;
-}
-.promo-slide-content .promo-price small {
-    font-size: 1rem;
-    font-weight: 400;
-    color: rgba(255,255,255,0.7);
-}
-.promo-slide-content .promo-cta {
-    display: inline-flex;
-    align-items: center;
-    background: #f97316;
-    color: white;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 32px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    transition: all 0.25s;
-    text-decoration: none;
-}
-.promo-slide-content .promo-cta:hover {
-    background: #d95f0e;
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(249,115,22,0.4);
-    color: white;
-}
-#promoCarousel .carousel-indicators button {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.5);
-    background: transparent;
-}
-#promoCarousel .carousel-indicators button.active {
-    background: #f97316;
-    border-color: #f97316;
-    width: 28px;
-    border-radius: 5px;
-}
-#promoCarousel .carousel-control-prev,
-#promoCarousel .carousel-control-next {
-    width: 50px;
-    height: 50px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: rgba(255,255,255,0.15);
-    border-radius: 50%;
-    backdrop-filter: blur(4px);
-    margin: 0 12px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-#promoCarousel:hover .carousel-control-prev,
-#promoCarousel:hover .carousel-control-next {
-    opacity: 1;
-}
-
-@media (max-width: 767.98px) {
-    .promo-slide { height: 320px; }
-    .promo-slide-content { padding: 40px 28px; }
-    .promo-slide-content h3 { font-size: 1.8rem; }
-    .promo-slide-content .promo-price { font-size: 2rem; }
-}
 
 /* ========== DARK MODE ========== */
 body.dark-mode {
@@ -511,13 +347,7 @@ body.dark-mode .dropdown-item:hover { background-color: var(--hover-bg); color: 
 body.dark-mode hr { border-color: var(--border-color); opacity: 1; }
 body.dark-mode .theme-btn { background: var(--hover-bg); color: var(--nav-text); }
 body.dark-mode .logout-btn { border-color: var(--border-color); }
-body.dark-mode .menu-btn { border-color: var(--border-color); color: var(--nav-text); }
-body.dark-mode .menu-btn:hover { border-color: var(--primary); color: var(--primary); }
-body.dark-mode .offcanvas { background-color: var(--card-bg); color: var(--text-dark); }
-body.dark-mode .offcanvas .btn-close { filter: invert(0.8); }
-body.dark-mode .offcanvas .list-group-item { background-color: var(--card-bg); color: var(--text-dark); border-color: var(--border-color); }
-body.dark-mode .offcanvas .list-group-item:hover { background-color: var(--hover-bg); }
-body.dark-mode .offcanvas-header { border-bottom-color: var(--border-color) !important; }
+
 
 /* ========== RESPONSIVE ========== */
 @media (max-width: 991.98px) {
