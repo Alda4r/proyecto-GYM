@@ -68,8 +68,8 @@
                 <div class="content-card">
                     <h5 class="fw-bold mb-4">Objetivos Semanales</h5>
                     <div class="mb-4">
-                        <div class="d-flex justify-content-between small mb-1"><span>Entrenamientos</span><b>4/5</b></div>
-                        <div class="progress"><div class="progress-bar bg-dark" style="width: 80%"></div></div>
+                        <div class="d-flex justify-content-between small mb-1"><span>Entrenamientos</span><b th:text="${entrenamientosSemana} + '/5'">0/5</b></div>
+                        <div class="progress"><div class="progress-bar bg-dark" th:style="'width: ' + (${entrenamientosSemana} * 100 / 5) + '%'" style="width: 0%"></div></div>
                     </div>
                     <div class="mb-4">
                         <div class="d-flex justify-content-between small mb-1"><span>Calorías</span><b th:text="${totalCalorias} + '/3000'"></b></div>

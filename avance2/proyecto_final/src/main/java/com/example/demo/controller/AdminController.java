@@ -49,6 +49,17 @@ public class AdminController {
         model.addAttribute("totalCalorias", hist.stream().mapToInt(HistorialEntrenamiento::getCaloriasQuemadas).sum());
         model.addAttribute("racha", calcularRacha(hist));
 
+        /*
+         * Calcular cuántos entrenamientos llevas esta semana
+         * para mostrarlo en lugar del hardcoded "4/5".
+         */
+        java.time.LocalDate hoy = java.time.LocalDate.now();
+        java.time.LocalDate lunes = hoy.with(java.time.DayOfWeek.MONDAY);
+        long estaSemana = hist.stream()
+            .filter(h -> !h.getFechaHora().toLocalDate().isBefore(lunes))
+            .count();
+        model.addAttribute("entrenamientosSemana", (int) estaSemana);
+
         return "dashboard";
     }
 
