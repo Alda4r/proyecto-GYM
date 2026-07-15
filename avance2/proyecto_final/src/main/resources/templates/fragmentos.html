@@ -13,26 +13,17 @@
         <nav class="top-navbar navbar fixed-top">
             <div class="container-fluid px-3 px-lg-4 d-flex align-items-center">
 
-                <a class="navbar-brand me-3" th:href="@{/dashboard}">
+                <a class="navbar-brand me-3" th:href="@{/menu}">
                     <i class="fa-solid fa-dumbbell brand-icon"></i>
                     <span class="brand-text">Fit-Factory Gym</span>
                 </a>
 
                 <ul class="nav-list">
-                    <!-- Menu dropdown -->
-                    <li class="nav-item dropdown dropdown-hover">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <!-- Menu direct link -->
+                    <li class="nav-item">
+                        <a th:href="@{/menu}" class="nav-link" th:classappend="${paginaActual == 'menu'} ? 'active' : ''">
                             <i class="fas fa-th-large"></i> Men&uacute;
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-wide">
-                            <li class="dropdown-promo-header">Promociones</li>
-                            <li><a class="dropdown-item" th:href="@{/planes}"><i class="fas fa-fire"></i> <span class="fw-bold">Plan Trimestral</span> <span class="ms-auto text-warning fw-bold">S/149.90</span></a></li>
-                            <li><a class="dropdown-item" th:href="@{/planes}"><i class="fas fa-crown"></i> <span class="fw-bold">Plan Semestral</span> <span class="ms-auto text-warning fw-bold">S/269.90</span></a></li>
-                            <li><a class="dropdown-item" th:href="@{/tienda}"><i class="fas fa-shopping-bag"></i> <span class="fw-bold">Pack Prote&iacute;nas</span> <span class="ms-auto text-warning fw-bold">S/89.90</span></a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" th:href="@{/planes}"><i class="fas fa-id-card"></i> Ver todos los planes</a></li>
-                            <li><a class="dropdown-item" th:href="@{/tienda}"><i class="fas fa-store"></i> Ir a la tienda</a></li>
-                        </ul>
                     </li>
 
                     <!-- Dashboard dropdown -->
