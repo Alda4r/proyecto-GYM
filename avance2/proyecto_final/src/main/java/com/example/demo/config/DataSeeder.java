@@ -186,8 +186,6 @@ public class DataSeeder implements CommandLineRunner {
     private void seedProductos() {
         if (productoRepository.count() > 0) return;
 
-        productoRepository.save(new Producto());
-        // Necesitamos usar setters porque no hay constructor con params
         java.util.List<Producto> productos = java.util.List.of(
             crearProducto("Whey Protein Isolate 2lb", "Proteína de suero aislada de rápida absorción. Ideal post-entreno.", 39.99,
                 "https://m.media-amazon.com/images/I/71p4bGUMKaL._AC_SL1500_.jpg", "Proteínas", 50),
