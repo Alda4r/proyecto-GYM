@@ -60,8 +60,10 @@ public class TiendaController {
     }
 
     @GetMapping("/tienda")
-    public String verTienda(Model model) {
+    public String verTienda(Model model, HttpSession session) {
         model.addAttribute("productos", productoService.findAllActivos());
+        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
+        model.addAttribute("isAdmin", user != null && "admin@gym.com".equalsIgnoreCase(user.getEmail()));
         return "tienda";
     }
 
@@ -282,6 +284,20 @@ public class TiendaController {
         }
     }
 
+    @PostMapping("/tienda/admin/toggle-estado")
+    public String toggleEstadoProducto(@RequestParam("id") Long id,
+                                        HttpSession session) {
+        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
+        if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
+            return "redirect:/login";
+        }
+        productoService.findById(id).ifPresent(p -> {
+            p.setActivo(!p.isActivo());
+            productoService.save(p);
+        });
+        return "redirect:/tienda/admin";
+    }
+
     @PostMapping("/tienda/admin/eliminar")
     public String eliminarProducto(@RequestParam("id") Long id,
                                    HttpSession session) {
@@ -289,11 +305,7 @@ public class TiendaController {
         if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
             return "redirect:/login";
         }
-        // Marcar como inactivo en vez de borrar
-        productoService.findById(id).ifPresent(p -> {
-            p.setActivo(false);
-            productoService.save(p);
-        });
+        productoService.deleteById(id);
         return "redirect:/tienda/admin";
     }
 }
