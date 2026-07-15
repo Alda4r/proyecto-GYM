@@ -30,18 +30,25 @@ public class PlanController {
 
     @GetMapping("/planes")
     public String verPlanes(Model model, HttpSession session) {
-        try {
-            Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
-            if (user == null) return "redirect:/login";
+        log.warn("=== INICIO /planes ===");
+        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
+        if (user == null) {
+            log.warn("Usuario null, redirect a login");
+            return "redirect:/login";
+        }
+        log.warn("Usuario: {} admin: {}", user.getEmail(), "admin@gym.com".equalsIgnoreCase(user.getEmail()));
 
+        try {
             boolean isAdmin = "admin@gym.com".equalsIgnoreCase(user.getEmail());
-            model.addAttribute("planes", planMembresiaService.findAll());
+            var planes = planMembresiaService.findAll();
+            log.warn("Planes encontrados: {}", planes.size());
+            model.addAttribute("planes", planes);
             model.addAttribute("planActual", user.getPlanMembresia());
             model.addAttribute("isAdmin", isAdmin);
-            log.warn("Planes cargados: {} usuarios encontrados", model.getAttribute("planes") != null ? ((java.util.List)model.getAttribute("planes")).size() : 0);
-            return "planes";
+            log.warn("=== FIN /planes OK ===");
+            return "redirect:/tienda";
         } catch (Exception e) {
-            log.error("Error en /planes", e);
+            log.error("Error en /planes:", e);
             throw e;
         }
     }
