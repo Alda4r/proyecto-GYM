@@ -61,7 +61,14 @@ public class CaloriasController {
         model.addAttribute("objetivoActual", usuarioLogueado.getObjetivo());
 
         if (isAdmin) {
-            model.addAttribute("usuarios", usuarioService.findAll());
+            /*
+             * Excluir al admin del dropdown de destinatarios
+             * para que no pueda auto-asignarse dietas.
+             */
+            List<Usuario> alumnos = usuarioService.findAll().stream()
+                .filter(u -> !"admin@gym.com".equalsIgnoreCase(u.getEmail()))
+                .toList();
+            model.addAttribute("usuarios", alumnos);
             model.addAttribute("todasLasSugerencias", recomendacionService.findAll());
         } else {
             List<RecomendacionNutricional> sugerenciasAlumno = recomendacionService

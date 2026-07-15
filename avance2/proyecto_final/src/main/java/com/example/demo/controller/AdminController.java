@@ -59,17 +59,25 @@ public class AdminController {
             return "redirect:/login";
         }
 
-        List<Usuario> usuarios = usuarioService.findAll();
+        List<Usuario> todos = usuarioService.findAll();
+        /*
+         * Excluir al admin de la lista para que no pueda
+         * auto-gestionar su membresía.
+         */
+        List<Usuario> usuarios = todos.stream()
+            .filter(u -> !"admin@gym.com".equalsIgnoreCase(u.getEmail()))
+            .toList();
+
         List<HistorialEntrenamiento> todosHist = historialService.findAll();
 
-        long usuariosActivos = usuarios.stream()
+        long usuariosActivos = todos.stream()
             .filter(u -> u.getMembresia() != null
             && !u.getMembresia().equalsIgnoreCase("Inactivo"))
             .count();
 
         model.addAttribute("user", user);
         model.addAttribute("usuarios", usuarios);
-        model.addAttribute("totalUsuarios", usuarios.size());
+        model.addAttribute("totalUsuarios", todos.size());
         model.addAttribute("usuariosActivos", usuariosActivos);
         model.addAttribute("totalEntrenamientos", todosHist.size());
         model.addAttribute("totalCalorias", todosHist.stream().mapToInt(HistorialEntrenamiento::getCaloriasQuemadas).sum());
