@@ -67,6 +67,7 @@ body::after {
     box-shadow: 0 1px 0 rgba(0,0,0,0.02), 0 4px 24px rgba(0,0,0,0.04);
     display: flex;
     align-items: center;
+    z-index: 1030;
 }
 .top-navbar .navbar-brand {
     display: flex;
@@ -450,13 +451,13 @@ body.dark-mode .nav-list .dropdown-menu { background: rgba(26,29,35,0.96); borde
     }
     .dropdown-hover .dropdown-menu {
         position: fixed;
-        top: 68px;
+        top: 72px;
         left: 12px;
         right: 12px;
         width: auto;
         max-width: calc(100vw - 24px);
         margin-top: 0;
-        z-index: 1055;
+        z-index: 9999;
     }
     .nav-list::-webkit-scrollbar { display: none; }
     .nav-list .nav-link {
