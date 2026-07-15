@@ -14,6 +14,13 @@
 
     <div class="main-content">
         <div class="workout-container">
+            <!-- Spinner de carga mientras se obtienen los datos de la API -->
+            <div id="loadingSpinner" class="text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status" style="width:3rem;height:3rem;">
+                    <span class="visually-hidden">Cargando ejercicios...</span>
+                </div>
+                <p class="text-muted">Cargando ejercicios...</p>
+            </div>
             <div class="workout-header">
                 <h2 class="fw-bold" id="routineName" th:text="${nombreRutina}">Rutina</h2>
                 <div class="workout-progress-bar">
@@ -115,13 +122,50 @@
         </div>
     </div>
 
-    <input type="hidden" id="ejerciciosJson" th:value="${ejerciciosJson}" />
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/entrenar.js}"></script>
     <script>
+        /*
+         * En lugar de leer un <input hidden> con JSON incrustado en HTML,
+         * ahora llamamos a nuestra propia API REST con fetch().
+         *
+         * fetch() es la forma moderna de hacer peticiones HTTP en JS.
+         * Es asíncrona: devuelve una Promise que se resuelve cuando
+         * el servidor responde.
+         *
+         * Flujo:
+         *   1. fetch(URL) → pide datos al servidor
+         *   2. .then(res => res.json()) → convierte la respuesta a objeto JS
+         *   3. .then(data => initWorkout(data, 60)) → inicia el entrenamiento
+         *
+         * thymeleaf reemplaza ${idRutina} con el número real de la rutina.
+         * Así la URL queda: /api/rutinas/5/ejercicios
+         */
         document.addEventListener('DOMContentLoaded', function() {
-            var raw = document.getElementById('ejerciciosJson').value;
-            initWorkout(JSON.parse(raw), 60);
+            var rutinaId = [[${idRutina}]];
+            var apiUrl = '/api/rutinas/' + rutinaId + '/ejercicios';
+
+            console.log('Fetching exercises from API:', apiUrl);
+
+            fetch(apiUrl)
+                .then(function(res) {
+                    if (!res.ok) {
+                        throw new Error('Error HTTP: ' + res.status);
+                    }
+                    return res.json();
+                })
+                .then(function(ejercicios) {
+                    console.log('Received', ejercicios.length, 'exercises');
+                    // Ocultar spinner y mostrar el workout
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    initWorkout(ejercicios, 60)
+                })
+                .catch(function(err) {
+                    console.error('Error al cargar ejercicios desde API:', err);
+                    document.getElementById('loadingSpinner').innerHTML =
+                        '<p class="text-danger">Error al cargar los ejercicios. ' +
+                        '<a href="javascript:location.reload()">Reintentar</a></p>';
+                });
         });
     </script>
 </body>

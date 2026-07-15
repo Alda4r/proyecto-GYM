@@ -175,23 +175,21 @@ public class RutinasController {
 
         model.addAttribute("idRutina", rutina.getId());
         model.addAttribute("nombreRutina", rutina.getNombre().replaceAll(" - .*", ""));
-        model.addAttribute("ejercicios", ejercicios);
 
-        // Build JSON array for JavaScript
-        StringBuilder json = new StringBuilder("[");
-        for (int i = 0; i < ejercicios.size(); i++) {
-            Ejercicio e = ejercicios.get(i);
-            if (i > 0) json.append(",");
-            json.append("{")
-                .append("\"id\":").append(e.getId()).append(",")
-                .append("\"nombre\":\"").append(e.getNombre().replace("\\", "\\\\").replace("\"", "\\\"")).append("\",")
-                .append("\"series\":").append(e.getSeries()).append(",")
-                .append("\"repeticiones\":").append(e.getRepeticiones()).append(",")
-                .append("\"pesoSugerido\":\"").append(e.getPesoSugerido().replace("\\", "\\\\").replace("\"", "\\\"")).append("\"")
-                .append("}");
-        }
-        json.append("]");
-        model.addAttribute("ejerciciosJson", json.toString());
+        /*
+         * Antes construíamos un JSON manual con StringBuilder y lo metíamos
+         * en un <input hidden>. Ahora el frontend llama a nuestra API REST:
+         *
+         *   GET /api/rutinas/{id}/ejercicios
+         *
+         * El controlador solo pasa los datos mínimos que necesita la template
+         * (idRutina, nombreRutina). Los ejercicios los obtiene el JS vía fetch().
+         *
+         * Ventajas:
+         *   - Código más limpio (sin escaped String manual)
+         *   - La API puede ser reusada por una app mobile
+         *   - Separación de responsabilidades (backend sirve datos, frontend los consume)
+         */
 
         return "entrenar";
     }
