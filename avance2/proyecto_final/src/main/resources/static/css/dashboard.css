@@ -317,24 +317,65 @@ body.dark-mode .text-danger { color: #f87171 !important; }
     .stat-card {
         flex-direction: column;
         text-align: center;
-        gap: 8px;
+        gap: 6px;
+        padding: 14px 10px;
     }
-    .stat-card .ms-auto {
-        margin-left: 0 !important;
+    .stat-card .stat-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    .stat-card h3 {
+        font-size: 1.2rem;
+    }
+    .stat-card .small {
+        font-size: 0.7rem;
     }
     .training-item {
-        flex-direction: column;
-        text-align: center;
-        gap: 8px;
+        flex-direction: row;
+        align-items: center;
+        gap: 4px;
+        padding: 10px !important;
+    }
+    .training-item .rounded-circle {
+        width: 36px;
+        height: 36px;
+        padding: 8px !important;
+        font-size: 0.85rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .training-item h6 {
+        font-size: 0.85rem;
+        margin-bottom: 0;
     }
     .training-item .text-end {
-        text-align: center !important;
+        text-align: right !important;
+        white-space: nowrap;
+    }
+    .training-item .text-end span {
+        font-size: 0.8rem;
     }
     .header-section {
-        margin-bottom: 1.5rem !important;
+        margin-bottom: 1rem !important;
     }
     .header-section h2 {
-        font-size: 1.4rem;
+        font-size: 1.3rem;
+    }
+    .header-section p {
+        font-size: 0.85rem;
+        margin-bottom: 0;
+    }
+    .content-card {
+        padding: 14px !important;
+    }
+    .content-card h5 {
+        font-size: 1rem;
+        margin-bottom: 12px !important;
+    }
+    .progress {
+        height: 6px !important;
     }
 }
 
