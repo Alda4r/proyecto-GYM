@@ -36,6 +36,7 @@ public class CuentaController {
 
             session.setAttribute("usuarioLogueado", usuarioActivo);
             model.addAttribute("user", usuarioActivo);
+            model.addAttribute("planActual", usuarioActivo.getPlanMembresia());
 
             boolean esAdmin = "admin@gym.com".equalsIgnoreCase(usuarioActivo.getEmail());
             model.addAttribute("esAdmin", esAdmin);

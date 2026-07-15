@@ -3,98 +3,270 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Planes - FitGym</title>
+    <title>Planes - Fit-Factory Gym</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" th:href="@{/css/dashboard.css}">
     <style>
-        .plan-card {
-            background: var(--card-bg);
-            border-radius: 24px;
-            padding: 2rem;
-            box-shadow: var(--card-shadow);
-            transition: transform 0.3s ease;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            border: 2px solid transparent;
+        /* Hero */
+        .planes-hero {
+            background: linear-gradient(135deg, #1e272e 0%, #2d3436 50%, #1e272e 100%);
+            border-radius: 32px;
+            padding: 3rem 2rem;
+            margin-bottom: 3rem;
+            text-align: center;
             position: relative;
             overflow: hidden;
         }
+        .planes-hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(249,115,22,0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 50%, rgba(249,115,22,0.05) 0%, transparent 50%);
+        }
+        .planes-hero h1 {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: white;
+            position: relative;
+        }
+        .planes-hero p {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.15rem;
+            max-width: 600px;
+            margin: 1rem auto 0;
+            position: relative;
+        }
+        .planes-hero .highlight {
+            color: #f97316;
+        }
+
+        /* Plan cards */
+        .plan-card-wrap {
+            perspective: 1000px;
+        }
+        .plan-card {
+            background: var(--card-bg);
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 2px solid transparent;
+        }
         .plan-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.12);
         }
         .plan-card.featured {
-            border-color: var(--primary);
+            border-color: #f97316;
+            transform: scale(1.03);
         }
-        .plan-card.featured::before {
-            content: 'MÁS POPULAR';
-            position: absolute;
-            top: 12px;
-            right: -30px;
-            background: var(--primary);
+        .plan-card.featured:hover {
+            transform: scale(1.05) translateY(-12px);
+        }
+        .plan-card-header {
+            padding: 2rem 1.5rem 1.5rem;
+            text-align: center;
             color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 35px;
-            transform: rotate(45deg);
+            position: relative;
         }
-        .plan-card.current {
-            border-color: #10b981;
-        }
-        .plan-card.current::after {
-            content: 'PLAN ACTUAL';
-            position: absolute;
-            top: 12px;
-            right: -30px;
-            background: #10b981;
-            color: white;
-            font-size: 0.7rem;
-            font-weight: 700;
-            padding: 4px 35px;
-            transform: rotate(45deg);
-        }
-        .plan-price {
+        .plan-card-header .plan-icon {
             font-size: 2.5rem;
+            margin-bottom: 0.8rem;
+        }
+        .plan-card-header h3 {
             font-weight: 800;
-            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.3rem;
         }
-        .plan-price small {
+        .plan-card-header .plan-sub {
+            font-size: 0.85rem;
+            opacity: 0.85;
+        }
+        .plan-card-body {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .plan-price-box {
+            text-align: center;
+            padding: 0.5rem 0 1.2rem;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 1.2rem;
+        }
+        .plan-price-box .price {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--text-dark);
+        }
+        .plan-price-box .price small {
             font-size: 1rem;
-            color: var(--text-muted);
             font-weight: 400;
-        }
-        .plan-duration {
-            font-size: 1rem;
             color: var(--text-muted);
+        }
+        .plan-price-box .price-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 2px;
         }
         .plan-features {
             list-style: none;
             padding: 0;
-            margin: 1.5rem 0;
+            margin: 0 0 1.5rem;
             flex: 1;
         }
         .plan-features li {
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             font-size: 0.95rem;
+            border-bottom: 1px solid var(--border-color);
         }
-        .plan-features li i {
+        .plan-features li:last-child {
+            border-bottom: none;
+        }
+        .plan-features li .fa-check {
             color: #10b981;
-            margin-right: 10px;
+            font-size: 0.9rem;
+            width: 20px;
+            flex-shrink: 0;
         }
-        .btn-plan {
+        .plan-features li .fa-times {
+            color: #ccc;
+            font-size: 0.9rem;
+            width: 20px;
+            flex-shrink: 0;
+        }
+        .plan-card .btn-plan {
             border-radius: 50px;
-            padding: 12px;
+            padding: 14px;
             font-weight: 700;
+            font-size: 1rem;
+            transition: all 0.3s;
+            border: none;
+        }
+        .plan-card .btn-plan:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(249,115,22,0.35);
+        }
+        .plan-card .btn-plan:disabled {
+            opacity: 1;
+            cursor: default;
+            transform: none;
+            box-shadow: none;
+        }
+        .badge-current {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #10b981;
+            color: white;
+            border-radius: 50px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        .badge-popular {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #f97316;
+            color: white;
+            border-radius: 50px;
+            padding: 4px 14px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+
+        /* Slider arrows for mobile */
+        .plans-slider {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding-bottom: 10px;
+        }
+        .plans-slider::-webkit-scrollbar { display: none; }
+        .plans-slider > * {
+            scroll-snap-align: start;
+            min-width: 300px;
+            flex: 1;
+        }
+        @media (min-width: 768px) {
+            .plans-slider {
+                overflow-x: visible;
+                flex-wrap: wrap;
+            }
+            .plans-slider > * {
+                min-width: 0;
+                flex: 0 0 auto;
+                width: calc(50% - 10px);
+            }
+        }
+        @media (min-width: 992px) {
+            .plans-slider > * {
+                width: calc(25% - 15px);
+            }
         }
         @media (max-width: 575.98px) {
-            .plan-price {
-                font-size: 2rem;
-            }
-            .plan-card {
-                padding: 1.5rem;
-            }
+            .planes-hero { padding: 2rem 1.2rem; }
+            .planes-hero h1 { font-size: 1.8rem; }
+            .plans-slider > * { min-width: 260px; }
+            .plan-card-header { padding: 1.5rem 1rem 1rem; }
+            .plan-card-header .plan-icon { font-size: 2rem; }
+            .plan-price-box .price { font-size: 2.2rem; }
+            .plan-card-body { padding: 1rem; }
+        }
+
+        /* Nav dots */
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 1rem;
+        }
+        .slider-dots .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ddd;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .slider-dots .dot.active {
+            background: #f97316;
+            width: 28px;
+            border-radius: 5px;
+        }
+        @media (min-width: 768px) {
+            .slider-dots { display: none; }
+        }
+
+        /* Success alert */
+        .alert-contratado {
+            background: linear-gradient(135deg, #064e3b, #065f46);
+            color: white;
+            border: none;
+            border-radius: 20px;
+            padding: 1.2rem 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
         }
     </style>
 </head>
@@ -102,70 +274,206 @@
     <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='planes')}"></div>
 
     <main class="main-content">
-        <div class="text-center mb-5" th:if="${param.contratado != null}">
-            <div class="alert alert-success d-inline-block rounded-pill px-4 py-2">
-                <i class="fas fa-check-circle me-2"></i>¡Plan contratado con éxito!
+
+        <!-- Success message -->
+        <div th:if="${param.contratado != null}" class="alert-contratado">
+            <i class="fas fa-check-circle me-2"></i>¡Plan contratado con éxito! Ahora disfruta de todos los beneficios.
+        </div>
+
+        <!-- Hero -->
+        <div class="planes-hero">
+            <h1>Elige tu <span class="highlight">Plan</span></h1>
+            <p>Selecciona la membresía que se ajuste a tus metas y empieza a transformar tu cuerpo hoy mismo.</p>
+        </div>
+
+        <!-- Current plan info -->
+        <div th:if="${planActual != null}" class="d-flex justify-content-center mb-4">
+            <div class="d-inline-flex align-items-center gap-3 bg-white rounded-pill shadow-sm px-4 py-2 border">
+                <i class="fas fa-crown text-warning"></i>
+                <span class="text-muted small">Plan actual:</span>
+                <strong class="text-dark" th:text="${planActual.nombre}">Básico</strong>
+                <span class="text-muted small" th:if="${session.usuarioLogueado.fechaFinPlan != null}">
+                    — Vence: <strong th:text="${session.usuarioLogueado.fechaFinPlan}">2025-01-01</strong>
+                </span>
+                <a href="/tienda" class="btn btn-sm btn-outline-primary rounded-pill px-3 ms-2">
+                    <i class="fas fa-store me-1"></i>Tienda
+                </a>
             </div>
         </div>
 
-        <div class="header-section mb-5 text-center">
-            <h2 class="fw-bold">Elige tu Plan</h2>
-            <p class="text-muted">Selecciona la membresía que mejor se adapte a ti</p>
-        </div>
-
-        <div th:if="${planActual != null}" class="text-center mb-4">
-            <div class="d-inline-block bg-light rounded-3 p-3">
-                <p class="mb-1 text-muted small">Plan actual: <strong th:text="${planActual.nombre}">Básico</strong></p>
-                <p class="mb-0 text-muted small" th:if="${session.usuarioLogueado.fechaFinPlan != null}">
-                    Válido hasta: <strong th:text="${session.usuarioLogueado.fechaFinPlan}">2025-01-01</strong>
-                </p>
-            </div>
-        </div>
-
-        <div class="row g-4 justify-content-center">
-            <div class="col-12 col-sm-6 col-lg-4" th:each="plan : ${planes}">
+        <!-- Plans slider/carousel -->
+        <div class="plans-slider" id="plansSlider">
+            <div th:each="plan : ${planes}" class="plan-card-wrap">
                 <div class="plan-card"
-                     th:classappend="${planActual != null and planActual.id == plan.id} ? 'current' :
-                                      (plan.duracionMeses == 6 ? 'featured' : '')">
-                    <div class="text-center mb-3">
-                        <h4 class="fw-bold" th:text="${plan.nombre}">Básico</h4>
-                        <p class="text-muted small" th:text="${plan.descripcion}">Descripción</p>
-                    </div>
-                    <div class="text-center mb-3">
-                        <span class="plan-price" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 2, 'POINT')}">$0.00</span>
-                        <div class="plan-duration">
-                            <i class="far fa-calendar-alt me-1"></i>
-                            <span th:text="${plan.duracionMeses == 1 ? '1 mes' : plan.duracionMeses + ' meses'}">1 mes</span>
-                            <span class="text-muted small ms-2" th:if="${plan.duracionMeses >= 6}"
-                                  th:text="'($' + ${#numbers.formatDecimal(plan.precio / plan.duracionMeses, 0, 'COMMA', 2, 'POINT')} + '/mes)'">$0.00/mes</span>
+                     th:classappend="${planActual != null and planActual.id == plan.id} ? 'featured' :
+                                      (plan.duracionMeses == 6 and planActual == null) ? 'featured' : ''">
+
+                    <!-- Badges -->
+                    <span class="badge-current" th:if="${planActual != null and planActual.id == plan.id}">
+                        <i class="fas fa-check me-1"></i>Actual
+                    </span>
+                    <span class="badge-popular" th:if="${plan.duracionMeses == 6 and (planActual == null or planActual.id != plan.id)}">
+                        <i class="fas fa-fire me-1"></i>Popular
+                    </span>
+
+                    <!-- Header gradient -->
+                    <div class="plan-card-header"
+                         th:style="'background: linear-gradient(135deg, ' + (${plan.duracionMeses <= 1} ? '#6366f1,#4f46e5' :
+                               ${plan.duracionMeses <= 3} ? '#f97316,#d97706' :
+                               ${plan.duracionMeses <= 6} ? '#059669,#047857' :
+                               '#1e272e,#2d3436') + ');'">
+
+                        <div class="plan-icon">
+                            <i th:class="${plan.duracionMeses <= 1} ? 'fas fa-calendar-alt' :
+                                         ${plan.duracionMeses <= 3} ? 'fas fa-leaf' :
+                                         ${plan.duracionMeses <= 6} ? 'fas fa-fire' :
+                                         'fas fa-crown'"></i>
                         </div>
+                        <h3 th:text="${plan.nombre}">Plan</h3>
+                        <div class="plan-sub" th:text="${plan.descripcion}">Descripción</div>
                     </div>
-                    <ul class="plan-features">
-                        <li><i class="fas fa-check"></i> Acceso al gimnasio</li>
-                        <li><i class="fas fa-check"></i> Rutinas personalizadas</li>
-                        <li th:if="${plan.duracionMeses >= 3}"><i class="fas fa-check"></i> Seguimiento nutricional</li>
-                        <li th:if="${plan.duracionMeses < 3}"><i class="fas fa-times" style="color:#ccc;"></i> Seguimiento nutricional</li>
-                        <li th:if="${plan.duracionMeses >= 6}"><i class="fas fa-check"></i> Evaluación física mensual</li>
-                        <li th:if="${plan.duracionMeses < 6}"><i class="fas fa-times" style="color:#ccc;"></i> Evaluación física mensual</li>
-                        <li th:if="${plan.duracionMeses >= 12}"><i class="fas fa-check"></i> Acceso a eventos exclusivos</li>
-                        <li th:if="${plan.duracionMeses < 12}"><i class="fas fa-times" style="color:#ccc;"></i> Acceso a eventos exclusivos</li>
-                        <li><i class="fas fa-check"></i> Estacionamiento gratis</li>
-                    </ul>
-                    <form th:action="@{/planes/seleccionar}" method="post" th:if="${planActual == null or planActual.id != plan.id}">
-                        <input type="hidden" name="planId" th:value="${plan.id}">
-                        <button type="submit" class="btn btn-primary btn-plan w-100"
-                                th:classappend="${plan.duracionMeses == 6} ? 'btn-primary' : 'btn-outline-primary'">
-                            <i class="fas fa-crown me-2"></i>Contratar
+
+                    <!-- Body -->
+                    <div class="plan-card-body">
+                        <div class="plan-price-box">
+                            <div class="price">
+                                $<span th:text="${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 2, 'POINT')}">0.00</span>
+                                <small>/ total</small>
+                            </div>
+                            <div class="price-note">
+                                <i class="far fa-clock me-1"></i>
+                                <span th:text="${plan.duracionMeses == 1 ? '1 mes' : plan.duracionMeses + ' meses'}">6 meses</span>
+                                <span th:if="${plan.duracionMeses > 1}" class="ms-2" style="color:#f97316;font-weight:600;">
+                                    ($<span th:text="${#numbers.formatDecimal(plan.precio / plan.duracionMeses, 0, 'COMMA', 2, 'POINT')}">0.00</span>/mes)
+                                </span>
+                            </div>
+                        </div>
+
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Acceso completo al gimnasio</li>
+                            <li><i class="fas fa-check"></i> Rutinas personalizadas</li>
+                            <li><i th:class="${plan.duracionMeses >= 3} ? 'fas fa-check' : 'fas fa-times'"></i> Seguimiento nutricional</li>
+                            <li><i th:class="${plan.duracionMeses >= 6} ? 'fas fa-check' : 'fas fa-times'"></i> Evaluación física mensual</li>
+                            <li><i th:class="${plan.duracionMeses >= 12} ? 'fas fa-check' : 'fas fa-times'"></i> Acceso a eventos exclusivos</li>
+                            <li><i class="fas fa-check"></i> Estacionamiento gratis</li>
+                            <li><i class="fas fa-check"></i> Acceso a la app Fit-Factory</li>
+                        </ul>
+
+                        <!-- Button -->
+                        <form th:action="@{/planes/seleccionar}" method="post" th:if="${planActual == null or planActual.id != plan.id}">
+                            <input type="hidden" name="planId" th:value="${plan.id}">
+                            <button type="submit" class="btn btn-primary btn-plan w-100"
+                                    th:classappend="${plan.duracionMeses == 6} ? 'btn-primary' : 'btn-outline-primary'">
+                                <i class="fas fa-crown me-2"></i>Contratar Ahora
+                            </button>
+                        </form>
+                        <button class="btn btn-success btn-plan w-100" th:if="${planActual != null and planActual.id == plan.id}" disabled>
+                            <i class="fas fa-check-circle me-2"></i>Plan Actual
                         </button>
-                    </form>
-                    <button class="btn btn-success btn-plan w-100" th:if="${planActual != null and planActual.id == plan.id}" disabled>
-                        <i class="fas fa-check-circle me-2"></i>Plan Actual
-                    </button>
+                    </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Dots navigation for mobile -->
+        <div class="slider-dots" id="sliderDots"></div>
+
+        <!-- Comparison table -->
+        <div class="content-card p-3 p-md-5 mt-5">
+            <h4 class="fw-bold text-center mb-4">Comparativa de Planes</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center mb-0">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-start ps-3">Beneficio</th>
+                            <th th:each="plan : ${planes}" th:text="${plan.nombre}" class="fw-bold">Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Duración</td>
+                            <td th:each="plan : ${planes}" th:text="${plan.duracionMeses == 1 ? '1 mes' : plan.duracionMeses + ' meses'}">6m</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Precio Total</td>
+                            <td th:each="plan : ${planes}" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 2, 'POINT')}">$0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Precio por Mes</td>
+                            <td th:each="plan : ${planes}" th:text="'$' + ${#numbers.formatDecimal(plan.precio / plan.duracionMeses, 0, 'COMMA', 2, 'POINT')}">$0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Acceso al Gym</td>
+                            <td th:each="plan : ${planes}"><i class="fas fa-check text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Rutinas Personalizadas</td>
+                            <td th:each="plan : ${planes}"><i class="fas fa-check text-success"></i></td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Nutrición</td>
+                            <td th:each="plan : ${planes}">
+                                <i th:if="${plan.duracionMeses >= 3}" class="fas fa-check text-success"></i>
+                                <i th:if="${plan.duracionMeses < 3}" class="fas fa-times text-muted"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Evaluación Física</td>
+                            <td th:each="plan : ${planes}">
+                                <i th:if="${plan.duracionMeses >= 6}" class="fas fa-check text-success"></i>
+                                <i th:if="${plan.duracionMeses < 6}" class="fas fa-times text-muted"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Eventos Exclusivos</td>
+                            <td th:each="plan : ${planes}">
+                                <i th:if="${plan.duracionMeses >= 12}" class="fas fa-check text-success"></i>
+                                <i th:if="${plan.duracionMeses < 12}" class="fas fa-times text-muted"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Slider dots for mobile
+        (function() {
+            var slider = document.getElementById('plansSlider');
+            var dotsContainer = document.getElementById('sliderDots');
+            if (!slider || !dotsContainer) return;
+
+            var items = slider.children;
+            for (var i = 0; i < items.length; i++) {
+                var dot = document.createElement('span');
+                dot.className = 'dot' + (i === 0 ? ' active' : '');
+                dot.dataset.index = i;
+                dot.addEventListener('click', function() {
+                    var idx = parseInt(this.dataset.index);
+                    var target = items[idx];
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+                    }
+                });
+                dotsContainer.appendChild(dot);
+            }
+
+            slider.addEventListener('scroll', function() {
+                var scrollLeft = slider.scrollLeft;
+                var dots = dotsContainer.querySelectorAll('.dot');
+                for (var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    var offset = item.offsetLeft;
+                    var width = item.offsetWidth;
+                    if (scrollLeft >= offset - width * 0.3 && scrollLeft < offset + width * 0.7) {
+                        dots.forEach(function(d) { d.classList.remove('active'); });
+                        if (dots[i]) dots[i].classList.add('active');
+                    }
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
