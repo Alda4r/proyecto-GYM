@@ -175,14 +175,20 @@ body::after {
 }
 @media (max-width: 991.98px) {
     .dropdown-hover .dropdown-menu {
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(10px) scale(0.97);
+        pointer-events: none;
+        background: rgba(255,255,255,0.96);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0,0,0,0.06);
+        box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+    }
+    .dropdown-hover .dropdown-menu.show {
         opacity: 1;
         visibility: visible;
-        transform: none;
+        transform: translateY(0) scale(1);
         pointer-events: auto;
-        background: transparent;
-        backdrop-filter: none;
-        border: none;
-        box-shadow: none;
     }
 }
 .nav-list .dropdown-toggle::after {
@@ -417,7 +423,7 @@ body.dark-mode .form-label { color: var(--text-muted); }
 body.dark-mode .card-header.bg-dark { background-color: #0a0c0f !important; }
 body.dark-mode .avatar-section-custom { background: linear-gradient(135deg, #1a1d23, #2a2d35) !important; }
 body.dark-mode .nav-link { color: var(--nav-text); }
-body.dark-mode .dropdown-menu { background: rgba(26,29,35,0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-color: var(--border-color); }
+body.dark-mode .dropdown-menu, body.dark-mode .nav-list .dropdown-menu { background: rgba(26,29,35,0.95); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-color: var(--border-color); }
 body.dark-mode .dropdown-item { color: var(--text-dark); }
 body.dark-mode .dropdown-item:hover { background-color: var(--hover-bg); color: var(--text-dark); }
 body.dark-mode hr { border-color: var(--border-color); opacity: 1; }
@@ -426,6 +432,7 @@ body.dark-mode .logout-btn { border-color: var(--border-color); }
 body.dark-mode .top-icon-btn { background: var(--hover-bg); color: var(--nav-text); }
 body.dark-mode .top-icon-btn:hover { background: var(--primary); color: white; }
 body.dark-mode .features-strip { background: #111; border-color: #222; }
+body.dark-mode .nav-list .dropdown-menu { background: rgba(26,29,35,0.96); border-color: var(--border-color); }
 
 
 /* ========== RESPONSIVE ========== */
@@ -438,6 +445,20 @@ body.dark-mode .features-strip { background: #111; border-color: #222; }
         gap: 0;
     }
     .nav-list::-webkit-scrollbar { display: none; }
+    .dropdown-hover {
+        position: static;
+    }
+    .dropdown-hover .dropdown-menu {
+        position: fixed;
+        top: 68px;
+        left: 12px;
+        right: 12px;
+        width: auto;
+        max-width: calc(100vw - 24px);
+        margin-top: 0;
+        z-index: 1055;
+    }
+    .nav-list::-webkit-scrollbar { display: none; }
     .nav-list .nav-link {
         padding: 8px 12px;
         font-size: 0.82rem;
@@ -446,9 +467,10 @@ body.dark-mode .features-strip { background: #111; border-color: #222; }
     .nav-list .nav-link.active::after { display: none; }
     .nav-list .nav-link.active { background: rgba(249,115,22,0.12); }
     .nav-list .dropdown-menu {
-        box-shadow: none;
-        padding-left: 12px;
-        background: transparent;
+        box-shadow: 0 16px 48px rgba(0,0,0,0.08);
+        background: rgba(255,255,255,0.96);
+        backdrop-filter: blur(20px);
+        border: 1px solid rgba(0,0,0,0.06);
     }
     .nav-list .dropdown-item {
         padding: 10px 14px;
