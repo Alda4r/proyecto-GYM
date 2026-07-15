@@ -91,6 +91,30 @@
                         <i class="fas fa-user" style="color:#f97316;width:20px;"></i> Mi Cuenta
                     </a>
                     <div class="border-top my-2"></div>
+                    <div class="px-3 pt-2 pb-1">
+                        <small class="text-muted fw-bold text-uppercase" style="font-size:0.7rem;">Promociones</small>
+                    </div>
+                    <div class="px-3 pb-3">
+                        <div class="promo-mini-card" style="background:linear-gradient(135deg,#f97316,#d97706);">
+                            <div class="promo-mini-tag">Oferta Especial</div>
+                            <div class="promo-mini-title">Plan Trimestral</div>
+                            <div class="promo-mini-price">S/149.90</div>
+                            <a href="/planes" class="promo-mini-cta">Ver Planes <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                        <div class="promo-mini-card mt-2" style="background:linear-gradient(135deg,#059669,#047857);">
+                            <div class="promo-mini-tag">M&aacute;s Popular</div>
+                            <div class="promo-mini-title">Plan Semestral</div>
+                            <div class="promo-mini-price">S/269.90</div>
+                            <a href="/planes" class="promo-mini-cta">Ver Planes <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                        <div class="promo-mini-card mt-2" style="background:linear-gradient(135deg,#6366f1,#4f46e5);">
+                            <div class="promo-mini-tag">Nutrici&oacute;n</div>
+                            <div class="promo-mini-title">Pack Prote&iacute;nas</div>
+                            <div class="promo-mini-price">S/89.90</div>
+                            <a href="/tienda" class="promo-mini-cta">Comprar <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                    <div class="border-top my-2"></div>
                     <a th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}" href="/admin" class="list-group-item list-group-item-action d-flex align-items-center gap-3 py-3">
                         <i class="fas fa-user-shield" style="color:#f97316;width:20px;"></i> Panel Admin
                     </a>
