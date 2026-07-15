@@ -214,8 +214,7 @@ public class TiendaController {
         if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
             return "redirect:/login";
         }
-        model.addAttribute("productos", productoService.findAll());
-        return "admin_productos";
+        return "redirect:/tienda";
     }
 
     @PostMapping("/tienda/admin/guardar")
