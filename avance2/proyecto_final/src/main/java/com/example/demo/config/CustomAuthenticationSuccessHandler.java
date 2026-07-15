@@ -54,7 +54,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
         if (isAdmin || "admin@gym.com".equalsIgnoreCase(email)) {
             response.sendRedirect("/admin");
         } else {
-            response.sendRedirect("/dashboard");
+            response.sendRedirect("/menu");
         }
     }
 }
