@@ -13,6 +13,29 @@
 .food-item { padding: 15px 0; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; }
 .food-item:last-child { border-bottom: none; }
 
+/* ========== RESPONSIVE ========== */
+@media (max-width: 991.98px) {
+    .nutrition-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .ring-visual {
+        width: 140px;
+        height: 140px;
+        border-width: 12px;
+    }
+    .macro-tag {
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+    }
+    .calorie-ring-container {
+        padding: 20px;
+    }
+}
+
 body.dark-mode .ring-visual { border-color: #2a2d35; border-top-color: #f97316; }
 body.dark-mode .calorie-ring-container { background: var(--card-bg); }
 body.dark-mode .food-table { background: var(--card-bg); }

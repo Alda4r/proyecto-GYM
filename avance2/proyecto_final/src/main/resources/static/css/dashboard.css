@@ -301,16 +301,6 @@ body.dark-mode .text-danger { color: #f87171 !important; }
 }
 
 @media (max-width: 767.98px) {
-    .main-content table:not(.table-responsive):not(.table) {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    .main-content .table {
-        display: table;
-        min-width: 500px;
-    }
     .main-content .table-responsive {
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -322,6 +312,20 @@ body.dark-mode .text-danger { color: #f87171 !important; }
     }
     .stat-card .ms-auto {
         margin-left: 0 !important;
+    }
+    .training-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    .training-item .text-end {
+        text-align: center !important;
+    }
+    .header-section {
+        margin-bottom: 1.5rem !important;
+    }
+    .header-section h2 {
+        font-size: 1.4rem;
     }
 }
 
