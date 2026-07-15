@@ -24,21 +24,13 @@
 
                 <div class="collapse navbar-collapse" id="mainNav">
                     <ul class="navbar-nav mx-auto">
-                        <!-- Dashboard -->
-                        <li class="nav-item" th:if="${session.usuarioLogueado == null || session.usuarioLogueado.email != 'admin@gym.com'}">
-                            <a th:href="@{/dashboard}" class="nav-link" th:classappend="${paginaActual == 'dashboard'} ? 'active' : ''">
-                                <i class="fas fa-home"></i> Dashboard
-                            </a>
-                        </li>
-
-                        <!-- Entrenamiento dropdown -->
-                        <li class="nav-item dropdown">
+                        <!-- Dashboard dropdown with hover -->
+                        <li class="nav-item dropdown dropdown-hover">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
                                th:classappend="${paginaActual == 'dashboard' or paginaActual == 'rutinas' or paginaActual == 'calorias' or paginaActual == 'progreso'} ? 'active' : ''">
-                                <i class="fas fa-dumbbell"></i> Entrenamiento
+                                <i class="fas fa-home"></i> Dashboard
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'dashboard'} ? 'active' : ''" th:href="@{/dashboard}"><i class="fas fa-chart-pie"></i> Resumen</a></li>
                                 <li><a class="dropdown-item" th:classappend="${paginaActual == 'rutinas'} ? 'active' : ''" th:href="@{/rutinas}"><i class="fas fa-calendar-alt"></i> Rutinas</a></li>
                                 <li><a class="dropdown-item" th:classappend="${paginaActual == 'calorias'} ? 'active' : ''" th:href="@{/calorias}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a></li>
                                 <li><a class="dropdown-item" th:classappend="${paginaActual == 'progreso'} ? 'active' : ''" th:href="@{/progreso}"><i class="fas fa-chart-line"></i> Progreso</a></li>

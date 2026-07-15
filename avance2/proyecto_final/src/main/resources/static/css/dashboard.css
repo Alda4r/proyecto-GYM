@@ -85,6 +85,33 @@ body {
     min-width: 200px;
     background: var(--card-bg);
 }
+/* Hover dropdown — opens on hover like a sidebar slide */
+.dropdown-hover {
+    position: relative;
+}
+.dropdown-hover .dropdown-menu {
+    display: block;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.2s ease;
+    pointer-events: none;
+}
+.dropdown-hover:hover .dropdown-menu,
+.dropdown-hover .dropdown-menu.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+@media (max-width: 991.98px) {
+    .dropdown-hover .dropdown-menu {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        pointer-events: auto;
+    }
+}
 .top-navbar .navbar-nav .dropdown-item {
     border-radius: 8px;
     padding: 10px 14px;
