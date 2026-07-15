@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        .plan-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .plan-card:hover {
+            transform: translateY(-5px);
+        }
+        .plan-card.featured {
+            border-color: var(--primary);
+        }
+        .plan-card.featured::before {
+            content: 'MÁS POPULAR';
+            position: absolute;
+            top: 12px;
+            right: -30px;
+            background: var(--primary);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 35px;
+            transform: rotate(45deg);
+        }
+        .plan-card.current {
+            border-color: #10b981;
+        }
+        .plan-card.current::after {
+            content: 'PLAN ACTUAL';
+            position: absolute;
+            top: 12px;
+            right: -30px;
+            background: #10b981;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 4px 35px;
+            transform: rotate(45deg);
+        }
+        .plan-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .plan-price small {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+        .plan-duration {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+        .plan-features {
+            list-style: none;
+            padding: 0;
+            margin: 1.5rem 0;
+            flex: 1;
+        }
+        .plan-features li {
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+        .plan-features li i {
+            color: #10b981;
+            margin-right: 10px;
+        }
+        .btn-plan {
+            border-radius: 50px;
+            padding: 12px;
+            font-weight: 700;
+        }
+        @media (max-width: 575.98px) {
+            .plan-price {
+                font-size: 2rem;
+            }
+            .plan-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='planes')}"></div>
+
+    <main class="main-content">
+        <div class="text-center mb-5" th:if="${param.contratado != null}">
+            <div class="alert alert-success d-inline-block rounded-pill px-4 py-2">
+                <i class="fas fa-check-circle me-2"></i>¡Plan contratado con éxito!
+            </div>
+        </div>
+
+        <div class="header-section mb-5 text-center">
+            <h2 class="fw-bold">Elige tu Plan</h2>
+            <p class="text-muted">Selecciona la membresía que mejor se adapte a ti</p>
+        </div>
+
+        <div th:if="${planActual != null}" class="text-center mb-4">
+            <div class="d-inline-block bg-light rounded-3 p-3">
+                <p class="mb-1 text-muted small">Plan actual: <strong th:text="${planActual.nombre}">Básico</strong></p>
+                <p class="mb-0 text-muted small" th:if="${session.usuarioLogueado.fechaFinPlan != null}">
+                    Válido hasta: <strong th:text="${session.usuarioLogueado.fechaFinPlan}">2025-01-01</strong>
+                </p>
+            </div>
+        </div>
+
+        <div class="row g-4 justify-content-center">
+            <div class="col-12 col-sm-6 col-lg-4" th:each="plan : ${planes}">
+                <div class="plan-card"
+                     th:classappend="${planActual != null and planActual.id == plan.id} ? 'current' :
+                                      (plan.duracionMeses == 6 ? 'featured' : '')">
+                    <div class="text-center mb-3">
+                        <h4 class="fw-bold" th:text="${plan.nombre}">Básico</h4>
+                        <p class="text-muted small" th:text="${plan.descripcion}">Descripción</p>
+                    </div>
+                    <div class="text-center mb-3">
+                        <span class="plan-price" th:text="'$' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 2, 'POINT')}">$0.00</span>
+                        <div class="plan-duration">
+                            <i class="far fa-calendar-alt me-1"></i>
+                            <span th:text="${plan.duracionMeses == 1 ? '1 mes' : plan.duracionMeses + ' meses'}">1 mes</span>
+                            <span class="text-muted small ms-2" th:if="${plan.duracionMeses >= 6}"
+                                  th:text="'($' + ${#numbers.formatDecimal(plan.precio / plan.duracionMeses, 0, 'COMMA', 2, 'POINT')} + '/mes)'">$0.00/mes</span>
+                        </div>
+                    </div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check"></i> Acceso al gimnasio</li>
+                        <li><i class="fas fa-check"></i> Rutinas personalizadas</li>
+                        <li th:if="${plan.duracionMeses >= 3}"><i class="fas fa-check"></i> Seguimiento nutricional</li>
+                        <li th:if="${plan.duracionMeses < 3}"><i class="fas fa-times" style="color:#ccc;"></i> Seguimiento nutricional</li>
+                        <li th:if="${plan.duracionMeses >= 6}"><i class="fas fa-check"></i> Evaluación física mensual</li>
+                        <li th:if="${plan.duracionMeses < 6}"><i class="fas fa-times" style="color:#ccc;"></i> Evaluación física mensual</li>
+                        <li th:if="${plan.duracionMeses >= 12}"><i class="fas fa-check"></i> Acceso a eventos exclusivos</li>
+                        <li th:if="${plan.duracionMeses < 12}"><i class="fas fa-times" style="color:#ccc;"></i> Acceso a eventos exclusivos</li>
+                        <li><i class="fas fa-check"></i> Estacionamiento gratis</li>
+                    </ul>
+                    <form th:action="@{/planes/seleccionar}" method="post" th:if="${planActual == null or planActual.id != plan.id}">
+                        <input type="hidden" name="planId" th:value="${plan.id}">
+                        <button type="submit" class="btn btn-primary btn-plan w-100"
+                                th:classappend="${plan.duracionMeses == 6} ? 'btn-primary' : 'btn-outline-primary'">
+                            <i class="fas fa-crown me-2"></i>Contratar
+                        </button>
+                    </form>
+                    <button class="btn btn-success btn-plan w-100" th:if="${planActual != null and planActual.id == plan.id}" disabled>
+                        <i class="fas fa-check-circle me-2"></i>Plan Actual
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

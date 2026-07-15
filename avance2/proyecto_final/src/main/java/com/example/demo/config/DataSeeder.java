@@ -7,9 +7,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.Ejercicio;
+import com.example.demo.model.PlanMembresia;
 import com.example.demo.model.Producto;
 import com.example.demo.model.Rutina;
 import com.example.demo.model.Usuario;
+import com.example.demo.repository.PlanMembresiaRepository;
 import com.example.demo.repository.ProductoRepository;
 import com.example.demo.repository.RutinaRepository;
 import com.example.demo.repository.UsuarioRepository;
@@ -20,13 +22,17 @@ public class DataSeeder implements CommandLineRunner {
     private final UsuarioRepository usuarioRepository;
     private final RutinaRepository rutinaRepository;
     private final ProductoRepository productoRepository;
+    private final PlanMembresiaRepository planMembresiaRepository;
     private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(UsuarioRepository usuarioRepository, RutinaRepository rutinaRepository,
-                      ProductoRepository productoRepository, PasswordEncoder passwordEncoder) {
+                      ProductoRepository productoRepository,
+                      PlanMembresiaRepository planMembresiaRepository,
+                      PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.rutinaRepository = rutinaRepository;
         this.productoRepository = productoRepository;
+        this.planMembresiaRepository = planMembresiaRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -35,6 +41,7 @@ public class DataSeeder implements CommandLineRunner {
         seedAdmin();
         seedRoutines();
         seedProductos();
+        seedPlanes();
     }
 
     private void seedAdmin() {
@@ -216,6 +223,16 @@ public class DataSeeder implements CommandLineRunner {
             productoRepository.save(p);
         }
         System.out.println("12 productos de ejemplo creados.");
+    }
+
+    private void seedPlanes() {
+        if (planMembresiaRepository.count() > 0) return;
+
+        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(29.99); p1.setActivo(true); planMembresiaRepository.save(p1);
+        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(69.99); p2.setActivo(true); planMembresiaRepository.save(p2);
+        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(119.99); p3.setActivo(true); planMembresiaRepository.save(p3);
+        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(199.99); p4.setActivo(true); planMembresiaRepository.save(p4);
+        System.out.println("4 planes de membresía creados.");
     }
 
     private Producto crearProducto(String nombre, String descripcion, double precio, String imagenUrl, String categoria, int stock) {

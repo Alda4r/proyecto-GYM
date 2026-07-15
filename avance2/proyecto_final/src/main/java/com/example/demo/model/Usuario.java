@@ -5,6 +5,8 @@ import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.DecimalMin;
@@ -63,6 +65,16 @@ public class Usuario {
 
     @Column(length = 20)
     private String rol;
+
+    @ManyToOne
+    @JoinColumn(name = "plan_membresia_id")
+    private PlanMembresia planMembresia;
+
+    @Column(name = "fecha_inicio_plan")
+    private LocalDate fechaInicioPlan;
+
+    @Column(name = "fecha_fin_plan")
+    private LocalDate fechaFinPlan;
 
     public Usuario() {
     }
@@ -134,4 +146,13 @@ public class Usuario {
 
     public String getRol() { return rol; }
     public void setRol(String rol) { this.rol = rol; }
+
+    public PlanMembresia getPlanMembresia() { return planMembresia; }
+    public void setPlanMembresia(PlanMembresia planMembresia) { this.planMembresia = planMembresia; }
+
+    public LocalDate getFechaInicioPlan() { return fechaInicioPlan; }
+    public void setFechaInicioPlan(LocalDate fechaInicioPlan) { this.fechaInicioPlan = fechaInicioPlan; }
+
+    public LocalDate getFechaFinPlan() { return fechaFinPlan; }
+    public void setFechaFinPlan(LocalDate fechaFinPlan) { this.fechaFinPlan = fechaFinPlan; }
 }
