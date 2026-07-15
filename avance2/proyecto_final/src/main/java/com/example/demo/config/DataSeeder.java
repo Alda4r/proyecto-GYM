@@ -191,8 +191,6 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedProductos() {
-        if (productoRepository.count() > 0) return;
-
         java.util.List<Producto> productos = java.util.List.of(
             crearProducto("Whey Protein Isolate 2lb", "Proteína de suero aislada de rápida absorción. Ideal post-entreno.", 89.90,
                 "https://images.unsplash.com/photo-1593095948071-474c5cc2c1cf?w=400&q=80", "Proteínas", 50),
@@ -220,19 +218,40 @@ public class DataSeeder implements CommandLineRunner {
                 "https://images.unsplash.com/photo-1550572017-edd951b55104?w=400&q=80", "Vitaminas", 30)
         );
         for (Producto p : productos) {
-            productoRepository.save(p);
+            Producto existente = productoRepository.findByNombre(p.getNombre());
+            if (existente != null) {
+                existente.setImagenUrl(p.getImagenUrl());
+                existente.setPrecio(p.getPrecio());
+                existente.setDescripcion(p.getDescripcion());
+                existente.setCategoria(p.getCategoria());
+                existente.setStock(p.getStock());
+                productoRepository.save(existente);
+            } else {
+                productoRepository.save(p);
+            }
         }
-        System.out.println("12 productos de ejemplo creados.");
+        System.out.println("12 productos de ejemplo sincronizados.");
     }
 
     private void seedPlanes() {
-        if (planMembresiaRepository.count() > 0) return;
+        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(59.90); p1.setActivo(true); upsertPlan(p1);
+        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(149.90); p2.setActivo(true); upsertPlan(p2);
+        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(269.90); p3.setActivo(true); upsertPlan(p3);
+        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(429.90); p4.setActivo(true); upsertPlan(p4);
+        System.out.println("4 planes de membresía sincronizados.");
+    }
 
-        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(59.90); p1.setActivo(true); planMembresiaRepository.save(p1);
-        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(149.90); p2.setActivo(true); planMembresiaRepository.save(p2);
-        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(269.90); p3.setActivo(true); planMembresiaRepository.save(p3);
-        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(429.90); p4.setActivo(true); planMembresiaRepository.save(p4);
-        System.out.println("4 planes de membresía creados.");
+    private void upsertPlan(PlanMembresia plan) {
+        PlanMembresia existente = planMembresiaRepository.findByNombre(plan.getNombre());
+        if (existente != null) {
+            existente.setDescripcion(plan.getDescripcion());
+            existente.setDuracionMeses(plan.getDuracionMeses());
+            existente.setPrecio(plan.getPrecio());
+            existente.setActivo(plan.getActivo());
+            planMembresiaRepository.save(existente);
+        } else {
+            planMembresiaRepository.save(plan);
+        }
     }
 
     private Producto crearProducto(String nombre, String descripcion, double precio, String imagenUrl, String categoria, int stock) {

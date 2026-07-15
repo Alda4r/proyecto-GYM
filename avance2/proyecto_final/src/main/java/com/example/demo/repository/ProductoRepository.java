@@ -9,4 +9,5 @@ import com.example.demo.model.Producto;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
     List<Producto> findByActivoTrueOrderByCategoriaAscNombreAsc();
     List<Producto> findByCategoriaAndActivoTrue(String categoria);
+    Producto findByNombre(String nombre);
 }
