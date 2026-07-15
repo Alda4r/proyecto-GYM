@@ -67,6 +67,20 @@
             background: #fff; border-radius: 16px; padding: 2rem; margin-top: 3rem; border: 1px solid #e8e8e8;
         }
         .sf-compare h4 { font-weight: 800; margin-bottom: 1.5rem; text-align: center; color: #111; }
+        .admin-plan-btn {
+            position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; z-index: 2;
+        }
+        .admin-plan-btn .btn-icon {
+            width: 30px; height: 30px; border-radius: 50%; border: none;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem;
+            cursor: pointer; transition: 0.2s;
+        }
+        .admin-plan-btn .btn-icon:hover { transform: scale(1.1); }
+        .admin-plan-btn .btn-icon.edit:hover { background: #0d6efd; }
+        .admin-plan-btn .btn-icon.delete:hover { background: #dc3545; }
+        .admin-plan-btn .btn-icon.toggle:hover { background: #ffc107; color: #000; }
+        .sf-plan { position: relative; }
 
         .sf-success {
             background: #d1fae5; color: #065f46; border-radius: 16px; padding: 1rem 2rem;
@@ -102,6 +116,9 @@
         <div class="sf-hero">
             <h1>Compara los planes disponibles de Fit-Factory Gym</h1>
             <p>Planes accesibles para que entrenes y transformes tu cuerpo</p>
+            <button class="btn btn-success rounded-pill px-4 mt-3" th:if="${isAdmin}" data-bs-toggle="modal" data-bs-target="#planModal">
+                <i class="fas fa-plus me-2"></i>Nuevo Plan
+            </button>
         </div>
 
         <!-- Current plan banner -->
@@ -123,6 +140,32 @@
                 <div class="sf-plan"
                      th:classappend="${planActual != null and planActual.id == plan.id} ? 'featured' :
                                       (plan.duracionMeses == 6 and planActual == null) ? 'featured' : ''">
+
+                    <!-- Admin controls -->
+                    <div class="admin-plan-btn" th:if="${isAdmin}">
+                        <button class="btn-icon edit" title="Editar" data-bs-toggle="modal" data-bs-target="#planModal"
+                                th:data-id="${plan.id}"
+                                th:data-nombre="${plan.nombre}"
+                                th:data-descripcion="${plan.descripcion}"
+                                th:data-duracion="${plan.duracionMeses}"
+                                th:data-precio="${plan.precio}"
+                                onclick="editarPlan(this)">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <form th:action="@{/planes/admin/toggle-estado}" method="post" class="d-inline">
+                            <input type="hidden" name="id" th:value="${plan.id}">
+                            <button type="submit" class="btn-icon toggle" th:title="${plan.activo} ? 'Desactivar' : 'Activar'">
+                                <i class="fas" th:classappend="${plan.activo} ? 'fa-eye-slash' : 'fa-eye'"></i>
+                            </button>
+                        </form>
+                        <form th:action="@{/planes/admin/eliminar}" method="post" class="d-inline"
+                              onsubmit="return confirm('¿Eliminar el plan «${plan.nombre}» permanentemente?');">
+                            <input type="hidden" name="id" th:value="${plan.id}">
+                            <button type="submit" class="btn-icon delete" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
 
                     <!-- Tags -->
                     <span class="tag-popular" th:if="${plan.duracionMeses == 6 and (planActual == null or planActual.id != plan.id)}">
@@ -241,5 +284,64 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal Editar / Nuevo Plan -->
+    <div class="modal fade" id="planModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="planModalTitle">Nuevo Plan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/planes/admin/guardar}" method="post" id="planForm">
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="planId" value="">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label small">Nombre</label>
+                                <input type="text" name="nombre" id="planNombre" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small">Duración (meses)</label>
+                                <input type="number" name="duracionMeses" id="planDuracion" class="form-control" min="1" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small">Descripción</label>
+                                <textarea name="descripcion" id="planDescripcion" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small">Precio Total (S/)</label>
+                                <input type="number" step="0.01" name="precio" id="planPrecio" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-save me-2"></i>Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function editarPlan(btn) {
+            document.getElementById('planModalTitle').textContent = 'Editar Plan';
+            document.getElementById('planId').value = btn.dataset.id;
+            document.getElementById('planNombre').value = btn.dataset.nombre;
+            document.getElementById('planDescripcion').value = btn.dataset.descripcion;
+            document.getElementById('planDuracion').value = btn.dataset.duracion;
+            document.getElementById('planPrecio').value = btn.dataset.precio;
+        }
+        document.getElementById('planModal').addEventListener('show.bs.modal', function (e) {
+            if (!e.relatedTarget || !e.relatedTarget.dataset || !e.relatedTarget.dataset.id) {
+                document.getElementById('planModalTitle').textContent = 'Nuevo Plan';
+                document.getElementById('planForm').reset();
+                document.getElementById('planId').value = '';
+            }
+        });
+    </script>
 </body>
 </html>

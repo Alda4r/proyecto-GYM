@@ -29,8 +29,10 @@ public class PlanController {
         Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
         if (user == null) return "redirect:/login";
 
-        model.addAttribute("planes", planMembresiaService.findAllActivos());
+        boolean isAdmin = "admin@gym.com".equalsIgnoreCase(user.getEmail());
+        model.addAttribute("planes", isAdmin ? planMembresiaService.findAll() : planMembresiaService.findAllActivos());
         model.addAttribute("planActual", user.getPlanMembresia());
+        model.addAttribute("isAdmin", isAdmin);
         return "planes";
     }
 
@@ -55,16 +57,6 @@ public class PlanController {
         return "redirect:/planes?contratado=ok";
     }
 
-    @GetMapping("/planes/admin")
-    public String adminPlanes(Model model, HttpSession session) {
-        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
-        if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
-            return "redirect:/login";
-        }
-        model.addAttribute("planes", planMembresiaService.findAll());
-        return "admin_planes";
-    }
-
     @PostMapping("/planes/admin/guardar")
     public String guardarPlan(@RequestParam(value = "id", required = false) Long id,
                               @RequestParam("nombre") String nombre,
@@ -86,6 +78,31 @@ public class PlanController {
         plan.setActivo(true);
         planMembresiaService.save(plan);
 
-        return "redirect:/planes/admin";
+        return "redirect:/planes";
+    }
+
+    @PostMapping("/planes/admin/toggle-estado")
+    public String toggleEstadoPlan(@RequestParam("id") Long id,
+                                    HttpSession session) {
+        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
+        if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
+            return "redirect:/login";
+        }
+        planMembresiaService.findById(id).ifPresent(p -> {
+            p.setActivo(!p.isActivo());
+            planMembresiaService.save(p);
+        });
+        return "redirect:/planes";
+    }
+
+    @PostMapping("/planes/admin/eliminar")
+    public String eliminarPlan(@RequestParam("id") Long id,
+                                HttpSession session) {
+        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
+        if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
+            return "redirect:/login";
+        }
+        planMembresiaService.deleteById(id);
+        return "redirect:/planes";
     }
 }

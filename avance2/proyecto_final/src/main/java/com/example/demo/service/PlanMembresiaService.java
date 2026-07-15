@@ -30,4 +30,8 @@ public class PlanMembresiaService {
     public PlanMembresia save(PlanMembresia plan) {
         return planMembresiaRepository.save(plan);
     }
+
+    public void deleteById(Long id) {
+        planMembresiaRepository.deleteById(id);
+    }
 }
