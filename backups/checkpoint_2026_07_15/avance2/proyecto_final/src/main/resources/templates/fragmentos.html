@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="cabecera-comun">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+</head>
+<body>
+
+    <th:block th:fragment="sidebar-fitgym(paginaActual)">
+        <nav class="top-navbar navbar fixed-top">
+            <div class="container-fluid px-3 px-lg-4 d-flex align-items-center">
+
+                <a class="navbar-brand me-3" th:href="@{/menu}">
+                    <i class="fa-solid fa-dumbbell brand-icon"></i>
+                    <span class="brand-text">Fit-Factory Gym</span>
+                </a>
+
+                <ul class="nav-list">
+                    <!-- Menu direct link -->
+                    <li class="nav-item">
+                        <a th:href="@{/menu}" class="nav-link" th:classappend="${paginaActual == 'menu'} ? 'active' : ''">
+                            <i class="fas fa-th-large"></i> Men&uacute;
+                        </a>
+                    </li>
+
+                    <!-- Dashboard dropdown -->
+                    <li class="nav-item dropdown dropdown-hover">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                           th:classappend="${paginaActual == 'dashboard' or paginaActual == 'rutinas' or paginaActual == 'calorias' or paginaActual == 'progreso'} ? 'active' : ''">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'dashboard'} ? 'active' : ''" th:href="@{/dashboard}"><i class="fas fa-home"></i> Dashboard</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'rutinas'} ? 'active' : ''" th:href="@{/rutinas}"><i class="fas fa-calendar-alt"></i> Rutinas</a></li>
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'calorias'} ? 'active' : ''" th:href="@{/calorias}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a></li>
+                            <li><a class="dropdown-item" th:classappend="${paginaActual == 'progreso'} ? 'active' : ''" th:href="@{/progreso}"><i class="fas fa-chart-line"></i> Progreso</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item">
+                        <a th:href="@{/planes}" class="nav-link" th:classappend="${paginaActual == 'planes'} ? 'active' : ''"><i class="fas fa-id-card"></i> Planes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/tienda}" class="nav-link" th:classappend="${paginaActual == 'tienda'} ? 'active' : ''">
+                            <i class="fas fa-store"></i> Suplementos
+                            <span class="badge bg-warning text-dark ms-1 rounded-pill" th:text="${session.carritoCount}">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a th:href="@{/cuenta}" class="nav-link" th:classappend="${paginaActual == 'cuenta'} ? 'active' : ''"><i class="fas fa-user"></i> Cuenta</a>
+                    </li>
+                    <li class="nav-item" th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
+                        <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin'} ? 'active' : ''"><i class="fas fa-user-shield"></i> Admin</a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center gap-2 ms-auto">
+                    <a th:if="${session.usuarioLogueado == null or session.usuarioLogueado.email != 'admin@gym.com'}"
+                       href="/tienda/carrito" class="top-icon-btn position-relative" title="Carrito">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" th:text="${session.carritoCount}" style="font-size:0.6rem;">0</span>
+                    </a>
+                    <button class="theme-btn rounded-pill px-3 py-1 d-flex align-items-center gap-1" onclick="toggleDarkMode()" id="themeToggleBtn" title="Modo oscuro">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeLabel" style="font-size:0.8rem;">Modo oscuro</span>
+                    </button>
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="logout-btn rounded-pill px-3 py-1 d-flex align-items-center gap-1" title="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span style="font-size:0.8rem;">Salir</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+
+        <script th:src="@{/js/dark-mode.js}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                var navLinks = document.querySelectorAll('.nav-list .nav-link, .nav-list .dropdown-item');
+                navLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        var dropdowns = document.querySelectorAll('.dropdown-menu.show');
+                        dropdowns.forEach(function(d) { d.classList.remove('show'); });
+                    });
+                });
+            });
+        </script>
+    </th:block>
+
+</body>
+</html>

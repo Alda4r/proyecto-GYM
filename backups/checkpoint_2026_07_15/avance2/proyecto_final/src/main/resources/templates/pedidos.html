@@ -50,9 +50,6 @@
                                 <span th:if="${isAdmin}" class="small text-muted ms-2" th:text="'(' + ${pedido.usuarioEmail} + ')'">user@mail.com</span>
                             </h6>
                             <small class="text-muted" th:text="${pedido.fechaHora}">2024-01-01</small>
-                            <div class="mt-1">
-                                <span class="badge bg-info text-dark">Código: <span th:text="${pedido.codigoReclamacion}">ABC12345</span></span>
-                            </div>
                         </div>
                         <div>
                             <span class="badge rounded-pill px-3 py-2"

@@ -31,9 +31,6 @@ public class Pedido {
 
     private String estado; // Pendiente, Pagado, Enviado, Entregado, Cancelado
 
-    @Column(name = "codigo_reclamacion")
-    private String codigoReclamacion;
-
     @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DetallePedido> detalles = new ArrayList<>();
 
@@ -60,9 +57,6 @@ public class Pedido {
 
     public String getEstado() { return estado; }
     public void setEstado(String estado) { this.estado = estado; }
-
-    public String getCodigoReclamacion() { return codigoReclamacion; }
-    public void setCodigoReclamacion(String codigoReclamacion) { this.codigoReclamacion = codigoReclamacion; }
 
     public List<DetallePedido> getDetalles() { return detalles; }
     public void setDetalles(List<DetallePedido> detalles) { this.detalles = detalles; }

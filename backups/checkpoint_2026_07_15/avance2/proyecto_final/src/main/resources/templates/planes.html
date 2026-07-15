@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planes - Fit-Factory Gym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        * { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; }
+        .main-content { background: #f5f5f5; }
+        .sf-hero { padding: 3rem 0 2rem; text-align: center; }
+        .sf-hero h1 { font-size: 2.2rem; font-weight: 800; color: #111; }
+        .sf-hero p { color: #666; font-size: 1.05rem; max-width: 600px; margin: 0.5rem auto 0; }
+
+        .sf-plans { display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+        .sf-plan-wrap { flex: 1; min-width: 280px; max-width: 370px; }
+        .sf-plan {
+            background: #fff; border-radius: 16px; border: 2px solid #e8e8e8;
+            padding: 2rem 1.5rem; position: relative; transition: all 0.25s;
+            height: 100%; display: flex; flex-direction: column;
+        }
+        .sf-plan:hover { border-color: #f97316; box-shadow: 0 8px 30px rgba(249,115,22,0.10); }
+        .sf-plan.featured {
+            border-color: #f97316; box-shadow: 0 4px 20px rgba(249,115,22,0.12);
+            transform: scale(1.02); margin-top: -8px;
+        }
+        .sf-plan.featured:hover { transform: scale(1.03) translateY(-4px); }
+        .sf-plan .tag-popular {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: #f97316; color: #fff; font-size: 0.75rem; font-weight: 700;
+            padding: 4px 20px; border-radius: 50px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .sf-plan .tag-current {
+            position: absolute; top: 16px; right: 16px;
+            background: #10b981; color: #fff; font-size: 0.7rem; font-weight: 700;
+            padding: 3px 12px; border-radius: 50px; text-transform: uppercase;
+        }
+        .sf-plan .plan-name { font-size: 1.5rem; font-weight: 700; color: #111; margin-bottom: 0.2rem; }
+        .sf-plan .plan-name small { font-weight: 400; color: #888; display: block; font-size: 0.85rem; margin-top: 2px; }
+        .sf-plan .plan-desc { font-size: 0.9rem; color: #666; margin-bottom: 1.2rem; min-height: 2.5em; }
+        .sf-plan .plan-from { font-size: 0.8rem; color: #999; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 2px; }
+        .sf-plan .plan-price { font-size: 3rem; font-weight: 900; color: #111; line-height: 1; margin-bottom: 0.3rem; }
+        .sf-plan .plan-price small { font-size: 1rem; font-weight: 400; color: #888; }
+        .sf-plan .plan-meta { font-size: 0.85rem; color: #666; margin-bottom: 1rem; }
+        .sf-plan .plan-meta strong { color: #111; }
+        .sf-plan .btn-sf {
+            background: #111; color: #fff; border: none; border-radius: 50px;
+            padding: 14px; font-weight: 700; font-size: 1rem; width: 100%;
+            transition: all 0.25s; margin-bottom: 1.2rem;
+        }
+        .sf-plan .btn-sf:hover { background: #f97316; transform: translateY(-2px); }
+        .sf-plan .btn-sf:disabled { background: #ccc; cursor: default; transform: none; }
+        .sf-plan .btn-sf.featured-btn { background: #f97316; }
+        .sf-plan .btn-sf.featured-btn:hover { background: #d95f0e; }
+
+        .sf-benefits { list-style: none; padding: 0; margin: 0; flex: 1; }
+        .sf-benefits li {
+            padding: 10px 0; display: flex; align-items: flex-start; gap: 10px;
+            font-size: 0.9rem; color: #333; border-top: 1px solid #f0f0f0;
+        }
+        .sf-benefits li:first-child { border-top: none; }
+        .sf-benefits li i { color: #f97316; font-size: 0.8rem; margin-top: 3px; min-width: 16px; }
+
+        .sf-compare {
+            background: #fff; border-radius: 16px; padding: 2rem; margin-top: 3rem; border: 1px solid #e8e8e8;
+        }
+        .sf-compare h4 { font-weight: 800; margin-bottom: 1.5rem; text-align: center; color: #111; }
+        .admin-plan-btn {
+            position: absolute; top: 12px; right: 12px; display: flex; gap: 4px; z-index: 2;
+        }
+        .admin-plan-btn .btn-icon {
+            width: 30px; height: 30px; border-radius: 50%; border: none;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.5); color: #fff; font-size: 0.75rem;
+            cursor: pointer; transition: 0.2s;
+        }
+        .admin-plan-btn .btn-icon:hover { transform: scale(1.1); }
+        .admin-plan-btn .btn-icon.edit:hover { background: #0d6efd; }
+        .admin-plan-btn .btn-icon.delete:hover { background: #dc3545; }
+        .admin-plan-btn .btn-icon.toggle:hover { background: #ffc107; color: #000; }
+        .sf-plan { position: relative; }
+
+        .sf-success {
+            background: #d1fae5; color: #065f46; border-radius: 16px; padding: 1rem 2rem;
+            text-align: center; font-weight: 600; margin-bottom: 1rem; border: 1px solid #a7f3d0;
+        }
+        .sf-current-banner {
+            background: #fff; border: 2px solid #f97316; border-radius: 50px;
+            padding: 10px 24px; display: inline-flex; align-items: center; gap: 12px;
+            margin-bottom: 1.5rem; font-size: 0.9rem;
+        }
+        .sf-current-banner i { color: #f97316; }
+
+        body.dark-mode .main-content { background: transparent; }
+        body.dark-mode .sf-hero h1 { color: #f3f4f6; }
+        body.dark-mode .sf-hero p { color: #9ca3af; }
+        body.dark-mode .sf-plan { background: var(--card-bg); border-color: var(--border-color); }
+        body.dark-mode .sf-plan:hover { border-color: #f97316; }
+        body.dark-mode .sf-plan .plan-name { color: #f3f4f6; }
+        body.dark-mode .sf-plan .plan-name small { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-desc { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-from { color: #6b7280; }
+        body.dark-mode .sf-plan .plan-price { color: #f3f4f6; }
+        body.dark-mode .sf-plan .plan-price small { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-meta { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-meta strong { color: #e5e7eb; }
+        body.dark-mode .sf-plan .btn-sf { background: #f97316; color: #fff; }
+        body.dark-mode .sf-plan .btn-sf:hover { background: #d95f0e; }
+        body.dark-mode .sf-benefits li { color: #d1d5db; border-top-color: var(--border-color); }
+        body.dark-mode .sf-compare { background: var(--card-bg); border-color: var(--border-color); }
+        body.dark-mode .sf-compare h4 { color: #f3f4f6; }
+        body.dark-mode .sf-current-banner { background: var(--card-bg); border-color: #f97316; color: var(--text-dark); }
+        body.dark-mode .sf-success { background: #064e3b; color: #a7f3d0; border-color: #065f46; }
+
+        @media (max-width: 768px) {
+            .sf-hero h1 { font-size: 1.6rem; }
+            .sf-plans { flex-direction: column; align-items: center; }
+            .sf-plan-wrap { max-width: 100%; min-width: 0; width: 100%; }
+            .sf-plan.featured { transform: none; margin-top: 0; }
+            .sf-plan.featured:hover { transform: translateY(-4px); }
+            .sf-plan .plan-price { font-size: 2.4rem; }
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='planes')}"></div>
+
+    <main class="main-content">
+
+        <div th:if="${param.contratado != null}" class="sf-success">
+            <i class="fas fa-check-circle me-2"></i>¡Plan contratado con éxito! Ahora disfruta de todos los beneficios.
+        </div>
+
+        <!-- Hero style SmartFit -->
+        <div class="sf-hero">
+            <h1>Compara los planes disponibles de Fit-Factory Gym</h1>
+            <p>Planes accesibles para que entrenes y transformes tu cuerpo</p>
+            <button class="btn btn-success rounded-pill px-4 mt-3" th:if="${isAdmin}" data-bs-toggle="modal" data-bs-target="#planModal">
+                <i class="fas fa-plus me-2"></i>Nuevo Plan
+            </button>
+        </div>
+
+        <!-- Current plan banner -->
+        <div class="text-center" th:if="${planActual != null}">
+            <div class="sf-current-banner">
+                <i class="fas fa-crown"></i>
+                <span>Plan actual:</span>
+                <strong th:text="${planActual.nombre}">Black</strong>
+                <span th:if="${session.usuarioLogueado.fechaFinPlan != null}" class="text-muted">
+                    — Vence <strong th:text="${session.usuarioLogueado.fechaFinPlan}">2025-01-01</strong>
+                </span>
+                <a href="/cuenta" class="btn btn-sm btn-outline-dark rounded-pill px-3">Mi Cuenta</a>
+            </div>
+        </div>
+
+        <!-- Plans grid -->
+        <div class="sf-plans">
+            <div th:each="plan : ${planes}" class="sf-plan-wrap">
+                <div class="sf-plan"
+                     th:classappend="${(planActual != null and planActual.id == plan.id) or (plan.duracionMeses == 6 and planActual == null) ? 'featured' : ''}">
+
+                    <!-- Admin controls -->
+                    <div class="admin-plan-btn" th:if="${isAdmin}">
+                        <button class="btn-icon edit" title="Editar" data-bs-toggle="modal" data-bs-target="#planModal"
+                                th:data-id="${plan.id}"
+                                th:data-nombre="${plan.nombre}"
+                                th:data-descripcion="${plan.descripcion}"
+                                th:data-duracion="${plan.duracionMeses}"
+                                th:data-precio="${plan.precio}"
+                                th:data-beneficios="${plan.beneficios}"
+                                onclick="editarPlan(this)">
+                            <i class="fas fa-pen"></i>
+                        </button>
+                        <form th:action="@{/planes/admin/toggle-estado}" method="post" class="d-inline">
+                            <input type="hidden" name="id" th:value="${plan.id}">
+                            <button type="submit" class="btn-icon toggle" th:title="${plan.activo ? 'Desactivar' : 'Activar'}">
+                                <i class="fas" th:classappend="${plan.activo ? 'fa-eye-slash' : 'fa-eye'}"></i>
+                            </button>
+                        </form>
+                        <form th:action="@{/planes/admin/eliminar}" method="post" class="d-inline"
+                              onsubmit="return confirm('¿Eliminar el plan «${plan.nombre}» permanentemente?');">
+                            <input type="hidden" name="id" th:value="${plan.id}">
+                            <button type="submit" class="btn-icon delete" title="Eliminar">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Tags -->
+                    <span class="tag-popular" th:if="${plan.duracionMeses == 6 and (planActual == null or planActual.id != plan.id)}">
+                        El m&aacute;s <strong>ventajoso</strong>
+                    </span>
+                    <span class="tag-current" th:if="${planActual != null and planActual.id == plan.id}">
+                        <i class="fas fa-check me-1"></i>Actual
+                    </span>
+
+                    <!-- Name -->
+                    <div class="plan-name" th:text="${plan.nombre}">
+                        Plan Black<small>Entrena en +2,000 gimnasios</small>
+                    </div>
+                    <div class="plan-desc" th:text="${plan.descripcion}">Descripción del plan</div>
+
+                    <!-- Price -->
+                    <div class="plan-from">DESDE</div>
+                    <div class="plan-price">
+                        S/<span th:text="${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 2, 'POINT')}">599</span>
+                        <small>/ total</small>
+                    </div>
+                    <div class="plan-meta" th:if="${plan.duracionMeses > 1}">
+                        <strong th:text="'S/' + ${#numbers.formatDecimal(plan.precio / plan.duracionMeses, 0, 'COMMA', 2, 'POINT')} + '/mes'"></strong>
+                        &mdash; <span th:text="${plan.duracionMeses + ' meses de membresía'}">12 meses</span>
+                    </div>
+                    <div class="plan-meta" th:if="${plan.duracionMeses == 1}">
+                        <strong>1 mes de membresía</strong>
+                    </div>
+
+                    <!-- Button -->
+                    <a th:href="@{/planes/checkout(planId=${plan.id})}" th:if="${(planActual == null or planActual.id != plan.id) and !isAdmin}"
+                       class="btn-sf text-center text-decoration-none d-block"
+                       th:classappend="${plan.duracionMeses == 6 ? 'featured-btn' : ''}">
+                        <i class="fas fa-crown me-2"></i>Contratar Ahora
+                    </a>
+                    <button class="btn-sf" th:if="${planActual != null and planActual.id == plan.id}" disabled>
+                        <i class="fas fa-check-circle me-2"></i>Plan Actual
+                    </button>
+
+                    <!-- Benefits -->
+                    <ul class="sf-benefits">
+                        <li th:each="beneficio : ${plan.beneficiosList}">
+                            <i class="fas fa-check" style="color:#f97316"></i>
+                            <span th:text="${beneficio}">Beneficio</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Comparison table -->
+        <div class="sf-compare">
+            <h4>Comparativa de Planes</h4>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center mb-0" style="font-size:0.9rem;">
+                    <thead class="table-dark">
+                        <tr>
+                            <th class="text-start ps-3">Beneficio</th>
+                            <th th:each="plan : ${planes}" th:text="${plan.nombre}" class="fw-bold">Plan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Duración</td>
+                            <td th:each="plan : ${planes}" th:text="${plan.duracionMeses == 1 ? '1 mes' : plan.duracionMeses + ' meses'}">6m</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Precio Total</td>
+                            <td th:each="plan : ${planes}" th:text="'S/' + ${#numbers.formatDecimal(plan.precio, 0, 'COMMA', 2, 'POINT')}">S/0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Precio por Mes</td>
+                            <td th:each="plan : ${planes}" th:text="'S/' + ${#numbers.formatDecimal(plan.precio / plan.duracionMeses, 0, 'COMMA', 2, 'POINT')}">S/0</td>
+                        </tr>
+                        <tr><td class="text-start ps-3 fw-medium">Acceso al Gym</td><td th:each="plan : ${planes}"><i class="fas fa-check" style="color:#f97316"></i></td></tr>
+                        <tr><td class="text-start ps-3 fw-medium">Rutinas Personalizadas</td><td th:each="plan : ${planes}"><i class="fas fa-check" style="color:#f97316"></i></td></tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Nutrición</td>
+                            <td th:each="plan : ${planes}">
+                                <i th:if="${plan.duracionMeses >= 3}" class="fas fa-check" style="color:#f97316"></i>
+                                <i th:if="${plan.duracionMeses < 3}" class="fas fa-times" style="color:#ccc"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Evaluación Física</td>
+                            <td th:each="plan : ${planes}">
+                                <i th:if="${plan.duracionMeses >= 6}" class="fas fa-check" style="color:#f97316"></i>
+                                <i th:if="${plan.duracionMeses < 6}" class="fas fa-times" style="color:#ccc"></i>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-start ps-3 fw-medium">Eventos Exclusivos</td>
+                            <td th:each="plan : ${planes}">
+                                <i th:if="${plan.duracionMeses >= 12}" class="fas fa-check" style="color:#f97316"></i>
+                                <i th:if="${plan.duracionMeses < 12}" class="fas fa-times" style="color:#ccc"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Modal Editar / Nuevo Plan -->
+    <div class="modal fade" id="planModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="planModalTitle">Nuevo Plan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/planes/admin/guardar}" method="post" id="planForm">
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="planId" value="">
+                        <div class="row g-3">
+                            <div class="col-md-8">
+                                <label class="form-label small">Nombre</label>
+                                <input type="text" name="nombre" id="planNombre" class="form-control" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small">Duración (meses)</label>
+                                <input type="number" name="duracionMeses" id="planDuracion" class="form-control" min="1" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small">Descripción</label>
+                                <textarea name="descripcion" id="planDescripcion" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small">Precio Total (S/)</label>
+                                <input type="number" step="0.01" name="precio" id="planPrecio" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small">Beneficios (uno por línea)</label>
+                                <textarea name="beneficios" id="planBeneficios" class="form-control" rows="5" placeholder="Acceso completo al gimnasio&#10;Rutinas personalizadas&#10;..."></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-save me-2"></i>Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function editarPlan(btn) {
+            document.getElementById('planModalTitle').textContent = 'Editar Plan';
+            document.getElementById('planId').value = btn.dataset.id;
+            document.getElementById('planNombre').value = btn.dataset.nombre;
+            document.getElementById('planDescripcion').value = btn.dataset.descripcion;
+            document.getElementById('planDuracion').value = btn.dataset.duracion;
+            document.getElementById('planPrecio').value = btn.dataset.precio;
+            document.getElementById('planBeneficios').value = btn.dataset.beneficios || '';
+        }
+        document.getElementById('planModal').addEventListener('show.bs.modal', function (e) {
+            if (!e.relatedTarget || !e.relatedTarget.dataset || !e.relatedTarget.dataset.id) {
+                document.getElementById('planModalTitle').textContent = 'Nuevo Plan';
+                document.getElementById('planForm').reset();
+                document.getElementById('planId').value = '';
+                document.getElementById('planBeneficios').value = '';
+            }
+        });
+    </script>
+</body>
+</html>

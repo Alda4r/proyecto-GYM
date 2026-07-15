@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/cuenta.css}">
+</head>
+
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='admin')}"></div>
+
+    <main class="main-content">
+        <div class="container-fluid p-4">
+
+            <div class="mb-4">
+                <h2 class="fw-bold text-dark"><i class="fas fa-user-shield me-2" style="color: #f97316;"></i>Panel de Control
+                    Administrativo</h2>
+                <p class="text-muted">Gestiona accesos, membresías y monitorea la actividad global de los atletas de
+                    FitGym.</p>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                    <div class="p-3 bg-white rounded-4 shadow-sm border-start border-warning border-4"
+                        style="min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
+                        <small class="text-muted fw-bold text-uppercase"
+                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Atletas Registrados</small>
+                        <h3 class="fw-bold mb-0 text-dark mt-1" th:text="${totalUsuarios}">0</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white rounded-4 shadow-sm border-start border-success border-4"
+                        style="min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
+                        <small class="text-muted fw-bold text-uppercase"
+                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Usuarios Activos</small>
+                        <h3 class="fw-bold mb-0 text-dark mt-1" th:text="${usuariosActivos}">0</h3>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="p-3 bg-white rounded-4 shadow-sm border-start border-dark border-4"
+                        style="min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
+                        <small class="text-muted fw-bold text-uppercase"
+                            style="font-size: 0.75rem; letter-spacing: 0.5px;">Entrenamientos Totales</small>
+                        <h3 class="fw-bold mb-0 text-dark mt-1" th:text="${totalEntrenamientos}">0</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
+                <div class="card-header bg-dark text-white p-3">
+                    <h5 class="mb-0 fw-bold"><i class="fas fa-users me-2 text-info"></i> Control de Usuarios y
+                        Suscripciones</h5>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 bg-white">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">Nombre Completo</th>
+                                <th>Correo Electrónico</th>
+                                <th>Condición</th>
+                                <th>Membresía Actual</th>
+                                <th class="pe-4 text-center">Modificar Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="u : ${usuarios}">
+                                <td class="ps-4 fw-bold text-dark" th:text="${u.nombre}">Nombre</td>
+                                <td th:text="${u.email}">correo@gym.com</td>
+                                <td>
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary fw-semibold px-2 py-1"
+                                        th:text="${u.nivelEntrenamiento != null ? u.nivelEntrenamiento : 'Avanzado'}">Avanzado</span>
+                                </td>
+                                <td>
+
+                                    <span class="badge px-2 py-1 fw-semibold" th:text="${u.membresia}"
+                                        th:classappend="${u.membresia == 'Activo' ? 'bg-success' : 'bg-danger'}">
+                                        Estado
+                                    </span>
+                                </td>
+                                <td class="pe-4 text-center">
+                                    <form th:action="@{/admin/actualizar-membresia}" method="post"
+                                        class="d-inline-flex gap-2 justify-content-center">
+                                        <input type="hidden" name="email" th:value="${u.email}">
+
+                                        <!-- Selector con tus 3 nuevas opciones de control -->
+                                        <select name="membresia" class="form-select form-select-sm rounded-3"
+                                            style="width: 120px;">
+                                            <option value="Activo" th:selected="${u.membresia == 'Activo'}">
+                                                Activo</option>
+                                            <option value="Inactivo" th:selected="${u.membresia == 'Inactivo'}">Inactivo
+                                            </option>
+                                            <option value="Eliminar" style="color: red; font-weight: bold;">Eliminar
+                                            </option>
+                                        </select>
+                                        <button type="submit"
+                                            class="btn btn-dark btn-sm rounded-3 px-2">Actualizar</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

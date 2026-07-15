@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fit-Factory Gym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        .menu-page { background: #0f0f0f; min-height: 100vh; }
+        .menu-page .main-content { max-width: 100%; padding: 0; margin: 0; }
+
+        /* Hero carousel full-screen */
+        .menu-hero {
+            position: relative;
+            height: 100vh;
+            min-height: 560px;
+            max-height: 800px;
+            overflow: hidden;
+            border-radius: 0 0 32px 32px;
+        }
+        .menu-hero .hero-slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.2s ease;
+        }
+        .menu-hero .hero-slide.active {
+            opacity: 1;
+        }
+        .menu-hero .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.2) 100%);
+            z-index: 1;
+        }
+        .menu-hero .hero-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 8%;
+            max-width: 750px;
+        }
+        .menu-hero .hero-tag {
+            display: inline-block;
+            background: rgba(249,115,22,0.9);
+            padding: 6px 22px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 16px;
+            color: white;
+            width: fit-content;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        .menu-hero .hero-slide.active .hero-tag {
+            animation: heroIn 0.6s ease 0.2s forwards;
+        }
+        .menu-hero .hero-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 8px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .menu-hero .hero-slide.active .hero-title {
+            animation: heroIn 0.6s ease 0.4s forwards;
+        }
+        .menu-hero .hero-desc {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .menu-hero .hero-slide.active .hero-desc {
+            animation: heroIn 0.6s ease 0.6s forwards;
+        }
+        .menu-hero .hero-price {
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: #f97316;
+            line-height: 1;
+            margin-bottom: 16px;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .menu-hero .hero-slide.active .hero-price {
+            animation: heroIn 0.6s ease 0.8s forwards;
+        }
+        .menu-hero .hero-price small {
+            font-size: 1rem;
+            font-weight: 400;
+            color: rgba(255,255,255,0.6);
+        }
+        .menu-hero .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #f97316;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 14px 36px;
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+            transition: all 0.25s;
+            width: fit-content;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        .menu-hero .hero-slide.active .hero-cta {
+            animation: heroIn 0.6s ease 1s forwards;
+        }
+        .menu-hero .hero-cta:hover {
+            background: #d95f0e;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(249,115,22,0.4);
+        }
+
+        @keyframes heroIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero nav dots */
+        .hero-dots {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 3;
+            display: flex;
+            gap: 10px;
+        }
+        .hero-dots button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 2px solid rgba(255,255,255,0.5);
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s;
+            padding: 0;
+        }
+        .hero-dots button.active {
+            background: #f97316;
+            border-color: #f97316;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        /* Arrow controls */
+        .hero-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 3;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            pointer-events: none;
+        }
+        .hero-arrows button {
+            pointer-events: auto;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(4px);
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            opacity: 0;
+        }
+        .menu-hero:hover .hero-arrows button {
+            opacity: 1;
+        }
+        .hero-arrows button:hover {
+            background: #f97316;
+        }
+
+        /* Features section below hero */
+        .features-strip {
+            background: #1a1a1a;
+            padding: 30px 0;
+            text-align: center;
+            border-top: 1px solid #2a2a2a;
+            border-bottom: 1px solid #2a2a2a;
+        }
+        .features-strip .feature-item {
+            color: white;
+            padding: 10px;
+        }
+        .features-strip .feature-item i {
+            font-size: 1.8rem;
+            color: #f97316;
+            margin-bottom: 8px;
+        }
+        .features-strip .feature-item h6 {
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 2px;
+        }
+        .features-strip .feature-item small {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.75rem;
+        }
+
+        @media (max-width: 767.98px) {
+            .menu-hero { height: 85vh; min-height: 460px; max-height: 600px; }
+            .menu-hero .hero-content { padding: 0 5%; }
+            .menu-hero .hero-title { font-size: 1.6rem; }
+            .menu-hero .hero-price { font-size: 1.5rem; }
+            .menu-hero .hero-desc { font-size: 0.85rem; }
+            .menu-hero .hero-cta { padding: 10px 22px; font-size: 0.85rem; }
+            .hero-arrows button { width: 36px; height: 36px; font-size: 0.9rem; opacity: 1; }
+            .features-strip { padding: 16px 0; }
+            .features-strip .feature-item { padding: 4px 0; }
+            .features-strip .feature-item i { font-size: 1.2rem; }
+            .features-strip .feature-item h6 { font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body class="menu-page">
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='menu')}"></div>
+
+    <main class="main-content">
+        <!-- Full-screen Hero Carousel -->
+        <div class="menu-hero" id="heroCarousel">
+            <!-- Slide 1 -->
+            <div class="hero-slide active" style="background-image: url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1400&q=80');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="hero-tag">Oferta Especial</div>
+                    <h1 class="hero-title">Plan Trimestral</h1>
+                    <p class="hero-desc">3 meses de entrenamiento ilimitado con acceso a todas las &aacute;reas del gimnasio</p>
+                    <div class="hero-price">S/149.90 <small>/ total</small></div>
+                    <a href="/planes" class="hero-cta">Ver Planes <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=1400&q=80');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="hero-tag">M&aacute;s Popular</div>
+                    <h1 class="hero-title">Plan Semestral</h1>
+                    <p class="hero-desc">6 meses al mejor precio. Entrena m&aacute;s, paga menos por mes.</p>
+                    <div class="hero-price">S/269.90 <small>/ total</small></div>
+                    <a href="/planes" class="hero-cta">Ver Planes <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=1400&q=80');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="hero-tag">Nutrici&oacute;n</div>
+                    <h1 class="hero-title">Pack Prote&iacute;nas</h1>
+                    <p class="hero-desc">Compra 2 y ll&eacute;vate 3. Suplementos de alta calidad para potenciar tus resultados.</p>
+                    <div class="hero-price">S/89.90 <small>/ pack</small></div>
+                    <a href="/tienda" class="hero-cta">Ir a Tienda <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="hero-slide" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1400&q=80');">
+                <div class="hero-overlay"></div>
+                <div class="hero-content">
+                    <div class="hero-tag">Anual</div>
+                    <h1 class="hero-title">Plan Anual</h1>
+                    <p class="hero-desc">12 meses de membres&iacute;a con todos los beneficios. El mejor precio del a&ntilde;o.</p>
+                    <div class="hero-price">S/429.90 <small>/ total</small></div>
+                    <a href="/planes" class="hero-cta">Ver Planes <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <!-- Dots -->
+            <div class="hero-dots" id="heroDots"></div>
+
+            <!-- Arrows -->
+            <div class="hero-arrows">
+                <button onclick="prevSlide()"><i class="fas fa-chevron-left"></i></button>
+                <button onclick="nextSlide()"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Features strip -->
+        <div class="features-strip">
+            <div class="container">
+                <div class="row g-2">
+                    <div class="col-4 col-md-2">
+                        <div class="feature-item">
+                            <i class="fas fa-dumbbell"></i>
+                            <h6>Equipos</h6>
+                            <small>Modernos</small>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="feature-item">
+                            <i class="fas fa-users"></i>
+                            <h6>Clases</h6>
+                            <small>Grupales</small>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="feature-item">
+                            <i class="fas fa-apple-alt"></i>
+                            <h6>Nutrici&oacute;n</h6>
+                            <small>Asesor&iacute;a</small>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="feature-item">
+                            <i class="fas fa-chart-line"></i>
+                            <h6>Progreso</h6>
+                            <small>Seguimiento</small>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="feature-item">
+                            <i class="fas fa-clock"></i>
+                            <h6>24/7</h6>
+                            <small>Acceso</small>
+                        </div>
+                    </div>
+                    <div class="col-4 col-md-2">
+                        <div class="feature-item">
+                            <i class="fas fa-wifi"></i>
+                            <h6>WiFi</h6>
+                            <small>Gratis</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        var slides = document.querySelectorAll('.hero-slide');
+        var dotsContainer = document.getElementById('heroDots');
+        var current = 0;
+
+        function createDots() {
+            for (var i = 0; i < slides.length; i++) {
+                var btn = document.createElement('button');
+                btn.className = i === 0 ? 'active' : '';
+                btn.onclick = (function(idx) { return function() { goTo(idx); }; })(i);
+                dotsContainer.appendChild(btn);
+            }
+        }
+        createDots();
+        var dots = dotsContainer.querySelectorAll('button');
+
+        function goTo(idx) {
+            slides.forEach(function(s) { s.classList.remove('active'); });
+            dots.forEach(function(d) { d.classList.remove('active'); });
+            slides[idx].classList.add('active');
+            dots[idx].classList.add('active');
+            current = idx;
+            resetTimer();
+        }
+        function nextSlide() { goTo((current + 1) % slides.length); }
+        function prevSlide() { goTo((current - 1 + slides.length) % slides.length); }
+
+        var timer = setInterval(nextSlide, 6000);
+        function resetTimer() { clearInterval(timer); timer = setInterval(nextSlide, 6000); }
+
+        // Keyboard arrows
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+    </script>
+</body>
+</html>

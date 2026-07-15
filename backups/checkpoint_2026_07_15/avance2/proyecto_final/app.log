@@ -1,0 +1,252 @@
+[INFO] Scanning for projects...
+Downloading from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml
+Progress (1): 234 BProgress (2): 234 B | 249 BProgress (3): 234 B | 249 B | 243 BProgress (4): 234 B | 249 B | 243 B | 255 B                                           Downloaded from central: https://repo.maven.apache.org/maven2/org/springframework/boot/maven-metadata.xml (249 B at 510 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/flywaydb/maven-metadata.xml (234 B at 479 B/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/cyclonedx/maven-metadata.xml (243 B at 496 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml
+Downloaded from central: https://repo.maven.apache.org/maven2/io/github/git-commit-id/maven-metadata.xml (255 B at 520 B/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml
+Progress (1): 242 BProgress (2): 242 B | 394 B                           Downloaded from central: https://repo.maven.apache.org/maven2/org/graalvm/buildtools/maven-metadata.xml (242 B at 2.3 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/liquibase/maven-metadata.xml (394 B at 3.5 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml
+Downloading from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml
+Progress (1): 398 BProgress (2): 398 B | 375 B                           Downloaded from central: https://repo.maven.apache.org/maven2/org/jooq/maven-metadata.xml (398 B at 3.5 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/jetbrains/kotlin/maven-metadata.xml (375 B at 3.2 kB/s)
+Progress (1): 4.6 kBProgress (1): 9.7 kBProgress (1): 14 kB                    Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/plugins/maven-metadata.xml (14 kB at 492 kB/s)
+Progress (1): 3.2 kBProgress (1): 7.9 kBProgress (1): 8.2 kBProgress (1): 12 kB Progress (1): 17 kBProgress (1): 20 kBProgress (1): 21 kB                   Downloaded from central: https://repo.maven.apache.org/maven2/org/codehaus/mojo/maven-metadata.xml (21 kB at 97 kB/s)
+[INFO] 
+[INFO] --------------------------< com.example:demo >--------------------------
+[INFO] Building  0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.4.1:run (default-cli) > test-compile @ demo >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ demo ---
+[INFO] Copying 2 resources from src\main\resources to target\classes
+[INFO] Copying 27 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ demo ---
+[INFO] skip non existing resourceDirectory C:\Users\ronal\OneDrive\Documentos\avance3\avance2\proyecto_final\src\test\resources
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ demo ---
+[INFO] Nothing to compile - all classes are up to date.
+[INFO] 
+[INFO] <<< spring-boot:3.4.1:run (default-cli) < test-compile @ demo <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.4.1:run (default-cli) @ demo ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.1)
+
+2026-07-15T08:18:59.226-05:00  INFO 18584 --- [FitGym] [           main] com.example.demo.DemoApplication         : Starting DemoApplication using Java 25.0.2 with PID 18584 (C:\Users\ronal\OneDrive\Documentos\avance3\avance2\proyecto_final\target\classes started by ronal in C:\Users\ronal\OneDrive\Documentos\avance3\avance2\proyecto_final)
+2026-07-15T08:18:59.228-05:00  INFO 18584 --- [FitGym] [           main] com.example.demo.DemoApplication         : The following 1 profile is active: "h2"
+2026-07-15T08:18:59.800-05:00  INFO 18584 --- [FitGym] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-15T08:18:59.878-05:00  INFO 18584 --- [FitGym] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 70 ms. Found 10 JPA repository interfaces.
+WARNING: A restricted method in java.lang.System has been called
+WARNING: java.lang.System::load has been called by org.apache.tomcat.jni.Library in an unnamed module (file:/C:/Users/ronal/.m2/repository/org/apache/tomcat/embed/tomcat-embed-core/10.1.34/tomcat-embed-core-10.1.34.jar)
+WARNING: Use --enable-native-access=ALL-UNNAMED to avoid a warning for callers in this module
+WARNING: Restricted methods will be blocked in a future release unless native access is enabled
+
+2026-07-15T08:19:00.350-05:00  INFO 18584 --- [FitGym] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-07-15T08:19:00.364-05:00  INFO 18584 --- [FitGym] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-15T08:19:00.365-05:00  INFO 18584 --- [FitGym] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.34]
+2026-07-15T08:19:00.438-05:00  INFO 18584 --- [FitGym] [           main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2026-07-15T08:19:00.439-05:00  INFO 18584 --- [FitGym] [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1173 ms
+2026-07-15T08:19:00.565-05:00  INFO 18584 --- [FitGym] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-07-15T08:19:00.633-05:00  INFO 18584 --- [FitGym] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.4.Final
+2026-07-15T08:19:00.667-05:00  INFO 18584 --- [FitGym] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-07-15T08:19:00.929-05:00  INFO 18584 --- [FitGym] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-15T08:19:00.966-05:00  INFO 18584 --- [FitGym] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-07-15T08:19:01.181-05:00  INFO 18584 --- [FitGym] [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:file:./data/fitgym user=SA
+2026-07-15T08:19:01.183-05:00  INFO 18584 --- [FitGym] [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-07-15T08:19:01.211-05:00  WARN 18584 --- [FitGym] [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-07-15T08:19:01.229-05:00  INFO 18584 --- [FitGym] [           main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-07-15T08:19:02.135-05:00  INFO 18584 --- [FitGym] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: create table comidas_registro (id bigint generated by default as identity, calorias integer not null, carbohidratos integer not null, fecha date, grasas integer not null, nombre_alimento varchar(255), proteina integer not null, tipo_comida varchar(255), usuario_email varchar(255), primary key (id))
+Hibernate: create table detalle_pedido (id bigint generated by default as identity, cantidad integer not null, precio_unitario float(53), producto_nombre varchar(255), subtotal float(53) not null, pedido_id bigint not null, primary key (id))
+Hibernate: create table ejercicios (id bigint generated by default as identity, nombre varchar(255), peso_sugerido varchar(255), repeticiones integer not null, series integer not null, rutina_id bigint not null, primary key (id))
+Hibernate: create table entrenador_alimentos (id bigint generated by default as identity, calorias integer not null, nombre varchar(255), tipo_comida varchar(255), usuario_email varchar(255), primary key (id))
+Hibernate: create table historial_entrenamientos (id bigint generated by default as identity, calorias_quemadas integer not null, duracion_minutos integer not null, fecha_hora timestamp(6), rutina_nombre varchar(255), usuario_email varchar(255), primary key (id))
+Hibernate: create table pedidos (id bigint generated by default as identity, estado varchar(255), fecha_hora timestamp(6), total float(53) not null, usuario_email varchar(255) not null, primary key (id))
+Hibernate: create table planes_membresia (id bigint generated by default as identity, activo boolean, descripcion varchar(500), duracion_meses integer not null, nombre varchar(255) not null, precio float(53) not null, primary key (id))
+Hibernate: create table productos (id bigint generated by default as identity, activo boolean, categoria varchar(255), descripcion varchar(500), foto blob, foto_mime_type varchar(255), imagen_url varchar(255), nombre varchar(255) not null, precio float(53) not null, stock integer not null, primary key (id))
+Hibernate: create table rutinas (id bigint generated by default as identity, grupo_muscular varchar(50), nivel varchar(50), nombre varchar(100) not null, objetivo_asociado varchar(50) not null, tiempo varchar(30), usuario_email varchar(255), primary key (id))
+Hibernate: create table usuarios (email varchar(100) not null, altura float(53) not null, edad integer, fecha_fin_plan date, fecha_inicio_plan date, fecha_nacimiento date, genero varchar(20), membresia varchar(50), meta_calorias integer not null check (meta_calorias>=1200), nivel_entrenamiento varchar(50), nombre varchar(100) not null, objetivo varchar(50) not null, password varchar(255) not null, peso_actual float(53) not null, rol varchar(20), suspendido BOOLEAN DEFAULT FALSE not null, plan_membresia_id bigint, primary key (email))
+Hibernate: alter table if exists rutinas drop constraint if exists UKjnlna8n1k7dof9rp5fq3c9ukx
+Hibernate: alter table if exists rutinas add constraint UKjnlna8n1k7dof9rp5fq3c9ukx unique (nombre)
+Hibernate: alter table if exists detalle_pedido add constraint FKg9h17fjynh9lgf1kbn0v9p4kf foreign key (pedido_id) references pedidos
+Hibernate: alter table if exists ejercicios add constraint FK1qutlfhu4b5utydegnox6jo8l foreign key (rutina_id) references rutinas
+Hibernate: alter table if exists usuarios add constraint FKg3w54bvn75r6x72mlicaem0t7 foreign key (plan_membresia_id) references planes_membresia
+2026-07-15T08:19:02.208-05:00  INFO 18584 --- [FitGym] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-15T08:19:02.587-05:00  WARN 18584 --- [FitGym] [           main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-07-15T08:19:02.602-05:00  INFO 18584 --- [FitGym] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name customUserDetailsService
+2026-07-15T08:19:02.977-05:00  INFO 18584 --- [FitGym] [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:file:./data/fitgym'
+2026-07-15T08:19:03.033-05:00  INFO 18584 --- [FitGym] [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2026-07-15T08:19:03.040-05:00  INFO 18584 --- [FitGym] [           main] com.example.demo.DemoApplication         : Started DemoApplication in 4.15 seconds (process running for 4.436)
+Hibernate: select count(*) from usuarios u1_0 where u1_0.email=?
+Hibernate: select u1_0.email,u1_0.altura,u1_0.edad,u1_0.fecha_fin_plan,u1_0.fecha_inicio_plan,u1_0.fecha_nacimiento,u1_0.genero,u1_0.membresia,u1_0.meta_calorias,u1_0.nivel_entrenamiento,u1_0.nombre,u1_0.objetivo,u1_0.password,u1_0.peso_actual,pm1_0.id,pm1_0.activo,pm1_0.descripcion,pm1_0.duracion_meses,pm1_0.nombre,pm1_0.precio,u1_0.rol,u1_0.suspendido from usuarios u1_0 left join planes_membresia pm1_0 on pm1_0.id=u1_0.plan_membresia_id where u1_0.email=?
+Hibernate: insert into usuarios (altura,edad,fecha_fin_plan,fecha_inicio_plan,fecha_nacimiento,genero,membresia,meta_calorias,nivel_entrenamiento,nombre,objetivo,password,peso_actual,plan_membresia_id,rol,suspendido,email) values (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)
+Admin creado: admin@gym.com / admin123
+Hibernate: select count(*) from rutinas r1_0
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: select r1_0.id from rutinas r1_0 where r1_0.nombre=? fetch first ? rows only
+Hibernate: insert into rutinas (grupo_muscular,nivel,nombre,objetivo_asociado,tiempo,usuario_email,id) values (?,?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+Hibernate: insert into ejercicios (nombre,peso_sugerido,repeticiones,rutina_id,series,id) values (?,?,?,?,?,default)
+16 rutinas con ejercicios creadas exitosamente.
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+Hibernate: select p1_0.id,p1_0.activo,p1_0.categoria,p1_0.descripcion,p1_0.foto,p1_0.foto_mime_type,p1_0.imagen_url,p1_0.nombre,p1_0.precio,p1_0.stock from productos p1_0 where p1_0.nombre=?
+Hibernate: insert into productos (activo,categoria,descripcion,foto,foto_mime_type,imagen_url,nombre,precio,stock,id) values (?,?,?,?,?,?,?,?,?,default)
+12 productos de ejemplo sincronizados.
+Hibernate: select pm1_0.id,pm1_0.activo,pm1_0.descripcion,pm1_0.duracion_meses,pm1_0.nombre,pm1_0.precio from planes_membresia pm1_0 where pm1_0.nombre=?
+Hibernate: insert into planes_membresia (activo,descripcion,duracion_meses,nombre,precio,id) values (?,?,?,?,?,default)
+Hibernate: select pm1_0.id,pm1_0.activo,pm1_0.descripcion,pm1_0.duracion_meses,pm1_0.nombre,pm1_0.precio from planes_membresia pm1_0 where pm1_0.nombre=?
+Hibernate: insert into planes_membresia (activo,descripcion,duracion_meses,nombre,precio,id) values (?,?,?,?,?,default)
+Hibernate: select pm1_0.id,pm1_0.activo,pm1_0.descripcion,pm1_0.duracion_meses,pm1_0.nombre,pm1_0.precio from planes_membresia pm1_0 where pm1_0.nombre=?
+Hibernate: insert into planes_membresia (activo,descripcion,duracion_meses,nombre,precio,id) values (?,?,?,?,?,default)
+Hibernate: select pm1_0.id,pm1_0.activo,pm1_0.descripcion,pm1_0.duracion_meses,pm1_0.nombre,pm1_0.precio from planes_membresia pm1_0 where pm1_0.nombre=?
+Hibernate: insert into planes_membresia (activo,descripcion,duracion_meses,nombre,precio,id) values (?,?,?,?,?,default)
+4 planes de membresía sincronizados.

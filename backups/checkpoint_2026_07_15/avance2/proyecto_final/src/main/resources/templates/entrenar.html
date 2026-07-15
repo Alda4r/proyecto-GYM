@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrenar - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <link rel="stylesheet" th:href="@{/css/entrenar.css}">
+</head>
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='rutinas')}"></div>
+
+    <div class="main-content">
+        <div class="workout-container">
+            <!-- Spinner de carga mientras se obtienen los datos de la API -->
+            <div id="loadingSpinner" class="text-center py-5">
+                <div class="spinner-border text-primary mb-3" role="status" style="width:3rem;height:3rem;">
+                    <span class="visually-hidden">Cargando ejercicios...</span>
+                </div>
+                <p class="text-muted">Cargando ejercicios...</p>
+            </div>
+            <div class="workout-header">
+                <h2 class="fw-bold" id="routineName" th:text="${nombreRutina}">Rutina</h2>
+                <div class="workout-progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="d-flex justify-content-between workout-progress-text">
+                    <span id="progressText">0 de 0 series</span>
+                    <span id="progressPct">0%</span>
+                </div>
+            </div>
+
+            <!-- Exercise display -->
+            <div class="exercise-display" id="exerciseDisplay">
+                <div class="exercise-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <div class="exercise-name" id="exerciseName">Press de banca</div>
+                <div class="set-counter" id="setCounter">Set <strong>1</strong> de 4</div>
+
+                <div class="exercise-meta">
+                    <div class="meta-item">
+                        <div class="value" id="repsValue">10 reps</div>
+                        <div class="label">Repeticiones</div>
+                    </div>
+                    <div class="meta-item">
+                        <div class="value" id="weightValue">60 kg</div>
+                        <div class="label">Peso</div>
+                    </div>
+                </div>
+
+                <button class="btn-complete-set" id="completeBtn" onclick="completeSet()">
+                    <i class="fas fa-check-circle"></i>
+                    Completar Serie
+                </button>
+            </div>
+
+            <!-- Next exercise prompt -->
+            <div class="exercise-display text-center" id="nextBtn" style="display:none;">
+                <div class="exercise-icon">
+                    <i class="fas fa-arrow-right" style="font-size:2.5rem;"></i>
+                </div>
+                <h4 class="fw-bold mb-3">¡Siguiente ejercicio!</h4>
+                <p class="text-muted mb-4">Prepara: <strong id="nextExerciseName">Ejercicio</strong></p>
+                <button class="btn-next-exercise" onclick="goToNextExercise()">
+                    <i class="fas fa-play me-2"></i>Empezar Ejercicio
+                </button>
+            </div>
+
+            <!-- Completion screen -->
+            <div class="exercise-display completion-screen" id="completionScreen" style="display:none;">
+                <div class="trophy-icon">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h2>¡Felicidades!</h2>
+                <h3 class="fw-bold" style="color: var(--primary, #f97316);" th:text="${nombreRutina}">Rutina</h3>
+                <p class="text-muted">Completaste todas las series. ¡Sigue así!</p>
+
+                <div class="completion-stats">
+                    <div class="completion-stat">
+                        <div class="stat-num" id="compSets">0</div>
+                        <div class="stat-label">Series hechas</div>
+                    </div>
+                    <div class="completion-stat">
+                        <div class="stat-num" id="compTime">0 min</div>
+                        <div class="stat-label">Duración</div>
+                    </div>
+                    <div class="completion-stat">
+                        <div class="stat-num" id="compCalories">0</div>
+                        <div class="stat-label">Calorías</div>
+                    </div>
+                </div>
+
+                <form id="finishForm" th:action="@{/rutina/entrenar/finalizar}" method="post">
+                    <input type="hidden" name="id" th:value="${idRutina}" />
+                    <input type="hidden" name="nombre" th:value="${nombreRutina}" />
+                    <input type="hidden" name="duracion" value="0" />
+                    <input type="hidden" name="calorias" value="0" />
+                    <button type="submit" class="btn-finish">
+                        <i class="fas fa-check me-2"></i>Guardar y Volver al Inicio
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rest timer overlay -->
+    <div class="rest-timer-overlay" id="restOverlay">
+        <div class="rest-timer-card">
+            <div class="rest-timer-ring" id="restRing">
+                <div class="rest-timer-ring-inner">
+                    <div class="rest-timer-value" id="restValue">01:00</div>
+                    <div class="rest-timer-label">Descanso</div>
+                </div>
+            </div>
+            <p class="text-muted small mb-3">Descansa antes de la siguiente serie</p>
+            <button class="btn-skip" onclick="skipRest()">
+                <i class="fas fa-forward me-2"></i>Saltar descanso
+            </button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/entrenar.js}"></script>
+    <script>
+        /*
+         * En lugar de leer un <input hidden> con JSON incrustado en HTML,
+         * ahora llamamos a nuestra propia API REST con fetch().
+         *
+         * fetch() es la forma moderna de hacer peticiones HTTP en JS.
+         * Es asíncrona: devuelve una Promise que se resuelve cuando
+         * el servidor responde.
+         *
+         * Flujo:
+         *   1. fetch(URL) → pide datos al servidor
+         *   2. .then(res => res.json()) → convierte la respuesta a objeto JS
+         *   3. .then(data => initWorkout(data, 60)) → inicia el entrenamiento
+         *
+         * thymeleaf reemplaza ${idRutina} con el número real de la rutina.
+         * Así la URL queda: /api/rutinas/5/ejercicios
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            var rutinaId = [[${idRutina}]];
+            var apiUrl = '/api/rutinas/' + rutinaId + '/ejercicios';
+
+            console.log('Fetching exercises from API:', apiUrl);
+
+            fetch(apiUrl)
+                .then(function(res) {
+                    if (!res.ok) {
+                        throw new Error('Error HTTP: ' + res.status);
+                    }
+                    return res.json();
+                })
+                .then(function(ejercicios) {
+                    console.log('Received', ejercicios.length, 'exercises');
+                    // Ocultar spinner y mostrar el workout
+                    document.getElementById('loadingSpinner').style.display = 'none';
+                    initWorkout(ejercicios, 60)
+                })
+                .catch(function(err) {
+                    console.error('Error al cargar ejercicios desde API:', err);
+                    document.getElementById('loadingSpinner').innerHTML =
+                        '<p class="text-danger">Error al cargar los ejercicios. ' +
+                        '<a href="javascript:location.reload()">Reintentar</a></p>';
+                });
+        });
+    </script>
+</body>
+</html>

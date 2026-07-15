@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: transform 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-img {
+            height: 200px;
+            object-fit: cover;
+            background: #f0f4f8;
+        }
+        .product-img-placeholder {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            font-size: 3rem;
+        }
+        .product-body {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+        .product-stock {
+            font-size: 0.8rem;
+        }
+        .category-badge {
+            background: var(--hover-bg);
+            color: var(--text-muted);
+            border-radius: 50px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .admin-controls {
+            position: absolute; top: 8px; right: 8px;
+            display: flex; gap: 4px; z-index: 2;
+        }
+        .admin-controls .btn-icon {
+            width: 32px; height: 32px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(0,0,0,0.6); color: white; border: none;
+            font-size: 0.8rem; cursor: pointer; transition: 0.2s;
+        }
+        .admin-controls .btn-icon:hover { transform: scale(1.1); }
+        .admin-controls .btn-icon.edit:hover { background: #0d6efd; }
+        .admin-controls .btn-icon.delete:hover { background: #dc3545; }
+        .admin-controls .btn-icon.toggle:hover { background: #ffc107; color: #000; }
+        .product-img { position: relative; }
+        @media (max-width: 575.98px) {
+            .product-img, .product-img-placeholder {
+                height: 140px;
+            }
+            .product-body {
+                padding: 14px;
+            }
+            .product-price {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='tienda')}"></div>
+
+    <main class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold">Tienda de Suplementos</h2>
+                <p class="text-muted">Equípate con lo mejor para tu rendimiento</p>
+            </div>
+            <button class="btn btn-success rounded-pill px-4" th:if="${isAdmin}" data-bs-toggle="modal" data-bs-target="#productoModal">
+                <i class="fas fa-plus me-2"></i>Nuevo
+            </button>
+        </div>
+
+        <div class="row g-3" th:if="${#lists.isEmpty(productos)}">
+            <div class="col-12 text-center py-5">
+                <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No hay productos disponibles por ahora.</p>
+            </div>
+        </div>
+
+        <div class="row g-3 g-md-4" th:if="${!#lists.isEmpty(productos)}">
+            <div class="col-6 col-md-4 col-lg-3" th:each="p : ${productos}">
+                <div class="product-card">
+                    <div class="product-img" th:style="${p.imagenUrl != null and !p.imagenUrl.isEmpty()} ? 'background: url(' + ${p.imagenUrl} + ') center/cover no-repeat; position: relative;' : 'position: relative;'">
+                        <div th:if="${p.imagenUrl == null or p.imagenUrl.isEmpty()}" class="product-img-placeholder">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="admin-controls" th:if="${isAdmin}">
+                            <button class="btn-icon edit" title="Editar" data-bs-toggle="modal" data-bs-target="#productoModal"
+                                    th:data-id="${p.id}"
+                                    th:data-nombre="${p.nombre}"
+                                    th:data-categoria="${p.categoria}"
+                                    th:data-precio="${p.precio}"
+                                    th:data-stock="${p.stock}"
+                                    th:data-descripcion="${p.descripcion}"
+                                    th:data-imagen="${p.imagenUrl}"
+                                    onclick="editarProducto(this)">
+                                <i class="fas fa-pen"></i>
+                            </button>
+                            <form th:action="@{/tienda/admin/toggle-estado}" method="post" class="d-inline">
+                                <input type="hidden" name="id" th:value="${p.id}">
+                                <button type="submit" class="btn-icon toggle" th:title="${p.activo} ? 'Desactivar' : 'Activar'">
+                                    <i class="fas" th:classappend="${p.activo} ? 'fa-eye-slash' : 'fa-eye'"></i>
+                                </button>
+                            </form>
+                            <form th:action="@{/tienda/admin/eliminar}" method="post" class="d-inline"
+                                  onsubmit="return confirm('¿Eliminar «${p.nombre}» permanentemente?');">
+                                <input type="hidden" name="id" th:value="${p.id}">
+                                <button type="submit" class="btn-icon delete" title="Eliminar">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="product-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <h6 class="fw-bold mb-0" th:text="${p.nombre}">Proteína</h6>
+                            <span class="category-badge" th:text="${p.categoria}">Whey</span>
+                        </div>
+                        <p class="text-muted small mb-2" th:text="${p.descripcion}">Descripción</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="product-price" th:text="'S/' + ${#numbers.formatDecimal(p.precio, 0, 'COMMA', 2, 'POINT')}">S/0.00</span>
+                                <span class="product-stock text-muted" th:if="${p.stock > 0}" th:text="${p.stock + ' en stock'}">10</span>
+                                <span class="product-stock text-danger" th:if="${p.stock <= 0}">Agotado</span>
+                            </div>
+                            <form th:action="@{/tienda/agregar}" method="post" class="mt-2" th:if="${!isAdmin}">
+                                <input type="hidden" name="productoId" th:value="${p.id}">
+                                <input type="hidden" name="cantidad" value="1">
+                                <button type="submit" class="btn btn-primary w-100 btn-sm rounded-pill" th:disabled="${p.stock <= 0}">
+                                    <i class="fas fa-plus me-1"></i> Agregar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal Editar / Nuevo Producto -->
+    <div class="modal fade" id="productoModal" tabindex="-1">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold" id="modalTitle">Nuevo Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <form th:action="@{/tienda/admin/guardar}" method="post" enctype="multipart/form-data" id="productoForm">
+                    <div class="modal-body">
+                        <input type="hidden" name="id" id="prodId" value="">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small">Nombre</label>
+                                <input type="text" name="nombre" id="prodNombre" class="form-control" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small">Categoría</label>
+                                <select name="categoria" id="prodCategoria" class="form-select" required>
+                                    <option value="Proteínas">Proteínas</option>
+                                    <option value="Creatina">Creatina</option>
+                                    <option value="Pre-Entreno">Pre-Entreno</option>
+                                    <option value="Vitaminas">Vitaminas</option>
+                                    <option value="Ropa">Ropa</option>
+                                    <option value="Accesorios">Accesorios</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small">Precio (S/)</label>
+                                <input type="number" step="0.01" name="precio" id="prodPrecio" class="form-control" required>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label small">Stock</label>
+                                <input type="number" name="stock" id="prodStock" class="form-control" required>
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small">Descripción</label>
+                                <textarea name="descripcion" id="prodDescripcion" class="form-control" rows="2"></textarea>
+                            </div>
+                            <div class="col-md-8">
+                                <label class="form-label small">URL de Imagen (opcional si subes archivo)</label>
+                                <input type="url" name="imagenUrl" id="prodImagenUrl" class="form-control" placeholder="https://ejemplo.com/imagen.jpg">
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small">O subir archivo</label>
+                                <input type="file" name="imagenFile" id="prodImagenFile" class="form-control" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary rounded-pill px-4">
+                            <i class="fas fa-save me-2"></i>Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function editarProducto(btn) {
+            document.getElementById('modalTitle').textContent = 'Editar Producto';
+            document.getElementById('prodId').value = btn.dataset.id;
+            document.getElementById('prodNombre').value = btn.dataset.nombre;
+            document.getElementById('prodCategoria').value = btn.dataset.categoria;
+            document.getElementById('prodPrecio').value = btn.dataset.precio;
+            document.getElementById('prodStock').value = btn.dataset.stock;
+            document.getElementById('prodDescripcion').value = btn.dataset.descripcion;
+            document.getElementById('prodImagenUrl').value = btn.dataset.imagen || '';
+            document.getElementById('prodImagenFile').value = '';
+        }
+        document.getElementById('productoModal').addEventListener('show.bs.modal', function (e) {
+            if (!e.relatedTarget || !e.relatedTarget.dataset || !e.relatedTarget.dataset.id) {
+                document.getElementById('modalTitle').textContent = 'Nuevo Producto';
+                document.getElementById('productoForm').reset();
+                document.getElementById('prodId').value = '';
+                document.getElementById('prodImagenFile').value = '';
+            }
+        });
+    </script>
+</body>
+</html>
