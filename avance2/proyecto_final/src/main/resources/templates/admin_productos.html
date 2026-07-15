@@ -28,7 +28,7 @@
         <!-- Form -->
         <div class="content-card p-3 p-md-4 mb-4">
             <h5 class="fw-bold mb-3" id="formTitle">Nuevo Producto</h5>
-            <form th:action="@{/tienda/admin/guardar}" method="post" class="row g-3" id="productForm">
+            <form th:action="@{/tienda/admin/guardar}" method="post" class="row g-3" id="productForm" enctype="multipart/form-data">
                 <input type="hidden" name="id" id="productId" value="">
                 <div class="col-md-4">
                     <label class="form-label small">Nombre</label>
@@ -58,8 +58,12 @@
                     <textarea name="descripcion" id="editDescripcion" class="form-control" rows="2"></textarea>
                 </div>
                 <div class="col-md-8">
-                    <label class="form-label small">URL de Imagen</label>
+                    <label class="form-label small">URL de Imagen (opcional si subes archivo)</label>
                     <input type="url" name="imagenUrl" id="editImagenUrl" class="form-control" placeholder="https://ejemplo.com/imagen.jpg">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label small">O subir archivo</label>
+                    <input type="file" name="imagenFile" id="editImagenFile" class="form-control" accept="image/*">
                 </div>
                 <div class="col-md-4 d-flex align-items-end gap-2">
                     <button type="submit" class="btn btn-primary rounded-pill px-4">
@@ -139,6 +143,7 @@
             document.getElementById('editStock').value = btn.dataset.stock;
             document.getElementById('editDescripcion').value = btn.dataset.descripcion;
             document.getElementById('editImagenUrl').value = btn.dataset.imagen;
+            document.getElementById('editImagenFile').value = '';
             document.getElementById('formTitle').textContent = 'Editar Producto';
             document.getElementById('btnCancelar').style.display = 'inline-block';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -146,6 +151,7 @@
         function cancelarEdicion() {
             document.getElementById('productForm').reset();
             document.getElementById('productId').value = '';
+            document.getElementById('editImagenFile').value = '';
             document.getElementById('formTitle').textContent = 'Nuevo Producto';
             document.getElementById('btnCancelar').style.display = 'none';
         }
