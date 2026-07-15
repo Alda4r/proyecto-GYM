@@ -206,16 +206,8 @@ public class TiendaController {
     }
 
     /*
-     * Admin: CRUD de productos
+     * Admin: CRUD de productos (todo desde Suplementos via modal)
      */
-    @GetMapping("/tienda/admin")
-    public String adminProductos(Model model, HttpSession session) {
-        Usuario user = (Usuario) session.getAttribute("usuarioLogueado");
-        if (user == null || !"admin@gym.com".equalsIgnoreCase(user.getEmail())) {
-            return "redirect:/login";
-        }
-        return "redirect:/tienda";
-    }
 
     @PostMapping("/tienda/admin/guardar")
     public String guardarProducto(@RequestParam(value = "id", required = false) Long id,
