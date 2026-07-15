@@ -35,9 +35,10 @@ public class PlanController {
             if (user == null) return "redirect:/login";
 
             boolean isAdmin = "admin@gym.com".equalsIgnoreCase(user.getEmail());
-            model.addAttribute("planes", isAdmin ? planMembresiaService.findAll() : planMembresiaService.findAllActivos());
+            model.addAttribute("planes", planMembresiaService.findAll());
             model.addAttribute("planActual", user.getPlanMembresia());
             model.addAttribute("isAdmin", isAdmin);
+            log.warn("Planes cargados: {} usuarios encontrados", model.getAttribute("planes") != null ? ((java.util.List)model.getAttribute("planes")).size() : 0);
             return "planes";
         } catch (Exception e) {
             log.error("Error en /planes", e);
