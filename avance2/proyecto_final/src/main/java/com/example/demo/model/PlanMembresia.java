@@ -1,11 +1,16 @@
 package com.example.demo.model;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "planes_membresia")
@@ -30,7 +35,16 @@ public class PlanMembresia {
     @Column(name = "activo")
     private boolean activo = true;
 
+    @Column(columnDefinition = "TEXT")
+    private String beneficios;
+
     public PlanMembresia() {}
+
+    @Transient
+    public List<String> getBeneficiosList() {
+        if (beneficios == null || beneficios.isBlank()) return Collections.emptyList();
+        return Arrays.asList(beneficios.split("\\n"));
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -49,4 +63,7 @@ public class PlanMembresia {
 
     public boolean isActivo() { return activo; }
     public void setActivo(boolean activo) { this.activo = activo; }
+
+    public String getBeneficios() { return beneficios; }
+    public void setBeneficios(String beneficios) { this.beneficios = beneficios; }
 }

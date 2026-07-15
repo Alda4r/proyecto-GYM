@@ -7,22 +7,28 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final CustomAuthenticationSuccessHandler successHandler;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler) {
+    public SecurityConfig(CustomAuthenticationSuccessHandler successHandler,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.successHandler = successHandler;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"))
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/registro", "/css/**", "/js/**", "/images/**").permitAll()
+                .requestMatchers("/registro", "/css/**", "/js/**", "/images/**", "/api/auth/**").permitAll()
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

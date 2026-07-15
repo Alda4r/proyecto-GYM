@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pago - FitGym</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/dashboard.css}">
+    <style>
+        .card-form { max-width: 520px; margin: 0 auto; }
+        .card-preview {
+            background: linear-gradient(135deg, #1a1a2e, #16213e);
+            border-radius: 16px; padding: 24px; color: #fff; margin-bottom: 32px;
+            min-height: 200px; position: relative; font-family: 'Courier New', monospace;
+        }
+        .card-preview .chip { width: 48px; height: 36px; border-radius: 6px; }
+        .card-preview .card-number-display {
+            font-size: 1.5rem; letter-spacing: 3px; margin: 20px 0 12px;
+        }
+        .card-preview .card-holder, .card-preview .card-expiry, .card-preview .card-cvv {
+            font-size: 0.85rem; opacity: 0.8;
+        }
+        .form-control-card {
+            background: var(--card-bg); border: 2px solid var(--border-color);
+            border-radius: 12px; padding: 14px 18px; font-size: 1rem; color: var(--text);
+            transition: 0.2s;
+        }
+        .form-control-card:focus {
+            border-color: #f97316; box-shadow: 0 0 0 3px rgba(249,115,22,0.15);
+        }
+        .form-control-card::placeholder { color: #999; }
+        .error-msg {
+            background: #fef2f2; color: #dc2626; border-radius: 12px; padding: 12px 20px; margin-bottom: 20px;
+            border: 1px solid #fecaca; text-align: center; font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='tienda')}"></div>
+
+    <main class="main-content">
+
+        <div th:if="${param.error != null}" class="error-msg">
+            <i class="fas fa-exclamation-circle me-2"></i>
+            Datos de tarjeta inv&aacute;lidos. Verifica e intenta de nuevo.
+        </div>
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h2 class="fw-bold">Pagar Pedido</h2>
+                <p class="text-muted">Simulaci&oacute;n de pago — ning&uacute;n cobro real</p>
+            </div>
+            <a href="/tienda/carrito" class="btn btn-outline-secondary rounded-pill px-3">
+                <i class="fas fa-arrow-left me-2"></i>Volver al carrito
+            </a>
+        </div>
+
+        <div class="row g-4">
+            <!-- Resumen del pedido -->
+            <div class="col-md-5">
+                <div class="content-card p-4">
+                    <h5 class="fw-bold mb-3">Resumen del Pedido</h5>
+                    <div th:each="item : ${carrito}" class="d-flex justify-content-between align-items-center mb-3 pb-3 border-bottom">
+                        <div>
+                            <span class="fw-medium" th:text="${item.nombre}">Producto</span>
+                            <br><small class="text-muted" th:text="${'Cant: ' + item.cantidad}">x1</small>
+                        </div>
+                        <span class="fw-bold" th:text="'S/' + ${#numbers.formatDecimal(item.subtotal, 0, 'COMMA', 2, 'POINT')}">S/0</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-2">
+                        <h5 class="fw-bold mb-0">Total</h5>
+                        <h4 class="fw-bold text-primary mb-0" th:text="'S/' + ${#numbers.formatDecimal(total, 0, 'COMMA', 2, 'POINT')}">S/0.00</h4>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Formulario de pago -->
+            <div class="col-md-7">
+                <div class="card-form">
+                    <div class="card-preview" id="cardPreview">
+                        <svg class="chip" viewBox="0 0 48 36" fill="none">
+                            <rect width="48" height="36" rx="4" fill="#f7931a"/>
+                            <rect x="6" y="6" width="36" height="24" rx="2" fill="none" stroke="#fff" stroke-width="1.5" opacity="0.6"/>
+                        </svg>
+                        <div class="card-number-display" id="cardNumberDisplay">•••• •••• •••• ••••</div>
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <div class="card-holder" id="cardHolderDisplay">TITULAR DE LA TARJETA</div>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <div>
+                                    <div class="card-expiry" id="cardExpiryDisplay">MM/AA</div>
+                                </div>
+                                <div>
+                                    <div class="card-cvv" id="cardCvvDisplay">•••</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form th:action="@{/tienda/procesar-pago}" method="post"
+                          onsubmit="disableBtn(this)">
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium">N&uacute;mero de tarjeta</label>
+                            <input type="text" name="cardNumber" id="cardNumber" class="form-control form-control-card"
+                                   placeholder="1234 5678 9012 3456" maxlength="19" required
+                                   oninput="formatCardNumber(this)">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-medium">Titular de la tarjeta</label>
+                            <input type="text" name="cardName" id="cardName" class="form-control form-control-card"
+                                   placeholder="JUAN PÉREZ" required
+                                   oninput="document.getElementById('cardHolderDisplay').textContent = this.value.toUpperCase() || 'TITULAR DE LA TARJETA'">
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-medium">Fecha de vencimiento</label>
+                                <input type="text" name="cardExpiry" id="cardExpiry" class="form-control form-control-card"
+                                       placeholder="MM/AA" maxlength="5" required
+                                       oninput="formatExpiry(this)">
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-medium">CVV</label>
+                                <input type="text" name="cardCvv" id="cardCvv" class="form-control form-control-card"
+                                       placeholder="123" maxlength="4" required
+                                       oninput="document.getElementById('cardCvvDisplay').textContent = this.value">
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-success w-100 rounded-pill py-3 fw-bold fs-5">
+                                <i class="fas fa-lock me-2"></i>Pagar S/<span th:text="${#numbers.formatDecimal(total, 0, 'COMMA', 2, 'POINT')}">0.00</span>
+                            </button>
+                        </div>
+                        <p class="text-muted small text-center mt-3 mb-0">
+                            <i class="fas fa-shield-alt me-1"></i>
+                            Simulaci&oacute;n — no se realizar&aacute; ning&uacute;n cobro real
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function formatCardNumber(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 16);
+            let formatted = v.replace(/(\d{4})(?=\d)/g, '$1 ');
+            input.value = formatted;
+            document.getElementById('cardNumberDisplay').textContent = formatted || '•••• •••• •••• ••••';
+        }
+        function formatExpiry(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 4);
+            if (v.length > 2) v = v.substring(0, 2) + '/' + v.substring(2);
+            input.value = v;
+            document.getElementById('cardExpiryDisplay').textContent = v || 'MM/AA';
+        }
+        function disableBtn(form) {
+            var btn = form.querySelector('button[type=submit]');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Procesando...'; }
+        }
+    </script>
+</body>
+</html>

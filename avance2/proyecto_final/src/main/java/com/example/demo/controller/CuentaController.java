@@ -44,6 +44,7 @@ public class CuentaController {
             if (!esAdmin) {
                 agregarImcAlModelo(usuarioActivo, model);
             } else {
+                model.addAttribute("planActual", null);
                 List<Usuario> usuarios = usuarioService.findAll();
 
                 long totalUsuarios = usuarios.size();

@@ -93,6 +93,27 @@
         }
         .sf-current-banner i { color: #f97316; }
 
+        body.dark-mode .main-content { background: transparent; }
+        body.dark-mode .sf-hero h1 { color: #f3f4f6; }
+        body.dark-mode .sf-hero p { color: #9ca3af; }
+        body.dark-mode .sf-plan { background: var(--card-bg); border-color: var(--border-color); }
+        body.dark-mode .sf-plan:hover { border-color: #f97316; }
+        body.dark-mode .sf-plan .plan-name { color: #f3f4f6; }
+        body.dark-mode .sf-plan .plan-name small { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-desc { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-from { color: #6b7280; }
+        body.dark-mode .sf-plan .plan-price { color: #f3f4f6; }
+        body.dark-mode .sf-plan .plan-price small { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-meta { color: #9ca3af; }
+        body.dark-mode .sf-plan .plan-meta strong { color: #e5e7eb; }
+        body.dark-mode .sf-plan .btn-sf { background: #f97316; color: #fff; }
+        body.dark-mode .sf-plan .btn-sf:hover { background: #d95f0e; }
+        body.dark-mode .sf-benefits li { color: #d1d5db; border-top-color: var(--border-color); }
+        body.dark-mode .sf-compare { background: var(--card-bg); border-color: var(--border-color); }
+        body.dark-mode .sf-compare h4 { color: #f3f4f6; }
+        body.dark-mode .sf-current-banner { background: var(--card-bg); border-color: #f97316; color: var(--text-dark); }
+        body.dark-mode .sf-success { background: #064e3b; color: #a7f3d0; border-color: #065f46; }
+
         @media (max-width: 768px) {
             .sf-hero h1 { font-size: 1.6rem; }
             .sf-plans { flex-direction: column; align-items: center; }
@@ -138,8 +159,7 @@
         <div class="sf-plans">
             <div th:each="plan : ${planes}" class="sf-plan-wrap">
                 <div class="sf-plan"
-                     th:classappend="${planActual != null and planActual.id == plan.id} ? 'featured' :
-                                      (plan.duracionMeses == 6 and planActual == null) ? 'featured' : ''">
+                     th:classappend="${(planActual != null and planActual.id == plan.id) or (plan.duracionMeses == 6 and planActual == null) ? 'featured' : ''}">
 
                     <!-- Admin controls -->
                     <div class="admin-plan-btn" th:if="${isAdmin}">
@@ -149,13 +169,14 @@
                                 th:data-descripcion="${plan.descripcion}"
                                 th:data-duracion="${plan.duracionMeses}"
                                 th:data-precio="${plan.precio}"
+                                th:data-beneficios="${plan.beneficios}"
                                 onclick="editarPlan(this)">
                             <i class="fas fa-pen"></i>
                         </button>
                         <form th:action="@{/planes/admin/toggle-estado}" method="post" class="d-inline">
                             <input type="hidden" name="id" th:value="${plan.id}">
-                            <button type="submit" class="btn-icon toggle" th:title="${plan.activo} ? 'Desactivar' : 'Activar'">
-                                <i class="fas" th:classappend="${plan.activo} ? 'fa-eye-slash' : 'fa-eye'"></i>
+                            <button type="submit" class="btn-icon toggle" th:title="${plan.activo ? 'Desactivar' : 'Activar'}">
+                                <i class="fas" th:classappend="${plan.activo ? 'fa-eye-slash' : 'fa-eye'}"></i>
                             </button>
                         </form>
                         <form th:action="@{/planes/admin/eliminar}" method="post" class="d-inline"
@@ -196,35 +217,21 @@
                     </div>
 
                     <!-- Button -->
-                    <form th:action="@{/planes/seleccionar}" method="post" th:if="${planActual == null or planActual.id != plan.id}">
-                        <input type="hidden" name="planId" th:value="${plan.id}">
-                        <button type="submit" class="btn-sf"
-                                th:classappend="${plan.duracionMeses == 6} ? 'featured-btn' : ''">
-                            <i class="fas fa-crown me-2"></i>Contratar Ahora
-                        </button>
-                    </form>
+                    <a th:href="@{/planes/checkout(planId=${plan.id})}" th:if="${(planActual == null or planActual.id != plan.id) and !isAdmin}"
+                       class="btn-sf text-center text-decoration-none d-block"
+                       th:classappend="${plan.duracionMeses == 6 ? 'featured-btn' : ''}">
+                        <i class="fas fa-crown me-2"></i>Contratar Ahora
+                    </a>
                     <button class="btn-sf" th:if="${planActual != null and planActual.id == plan.id}" disabled>
                         <i class="fas fa-check-circle me-2"></i>Plan Actual
                     </button>
 
                     <!-- Benefits -->
                     <ul class="sf-benefits">
-                        <li><i class="fas fa-check"></i> Acceso completo al gimnasio</li>
-                        <li><i class="fas fa-check"></i> Rutinas personalizadas</li>
-                        <li>
-                            <i th:class="${plan.duracionMeses >= 3} ? 'fas fa-check' : 'fas fa-times'" style="color:${plan.duracionMeses >= 3} ? '#f97316' : '#ccc'"></i>
-                            Seguimiento nutricional
+                        <li th:each="beneficio : ${plan.beneficiosList}">
+                            <i class="fas fa-check" style="color:#f97316"></i>
+                            <span th:text="${beneficio}">Beneficio</span>
                         </li>
-                        <li>
-                            <i th:class="${plan.duracionMeses >= 6} ? 'fas fa-check' : 'fas fa-times'" style="color:${plan.duracionMeses >= 6} ? '#f97316' : '#ccc'"></i>
-                            Evaluación física mensual
-                        </li>
-                        <li>
-                            <i th:class="${plan.duracionMeses >= 12} ? 'fas fa-check' : 'fas fa-times'" style="color:${plan.duracionMeses >= 12} ? '#f97316' : '#ccc'"></i>
-                            Eventos exclusivos
-                        </li>
-                        <li><i class="fas fa-check"></i> Estacionamiento gratis</li>
-                        <li><i class="fas fa-check"></i> Acceso a la app Fit-Factory</li>
                     </ul>
                 </div>
             </div>
@@ -313,6 +320,10 @@
                                 <label class="form-label small">Precio Total (S/)</label>
                                 <input type="number" step="0.01" name="precio" id="planPrecio" class="form-control" required>
                             </div>
+                            <div class="col-12">
+                                <label class="form-label small">Beneficios (uno por línea)</label>
+                                <textarea name="beneficios" id="planBeneficios" class="form-control" rows="5" placeholder="Acceso completo al gimnasio&#10;Rutinas personalizadas&#10;..."></textarea>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -334,12 +345,14 @@
             document.getElementById('planDescripcion').value = btn.dataset.descripcion;
             document.getElementById('planDuracion').value = btn.dataset.duracion;
             document.getElementById('planPrecio').value = btn.dataset.precio;
+            document.getElementById('planBeneficios').value = btn.dataset.beneficios || '';
         }
         document.getElementById('planModal').addEventListener('show.bs.modal', function (e) {
             if (!e.relatedTarget || !e.relatedTarget.dataset || !e.relatedTarget.dataset.id) {
                 document.getElementById('planModalTitle').textContent = 'Nuevo Plan';
                 document.getElementById('planForm').reset();
                 document.getElementById('planId').value = '';
+                document.getElementById('planBeneficios').value = '';
             }
         });
     </script>

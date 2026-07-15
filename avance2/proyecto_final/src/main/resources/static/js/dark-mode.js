@@ -4,28 +4,28 @@ function toggleDarkMode() {
     localStorage.setItem('darkMode', isDark ? 'true' : 'false');
 
     var icons = ['themeIcon', 'menuThemeIcon'];
-    var labels = ['menuThemeLabel'];
+    var labels = ['themeLabel', 'menuThemeLabel'];
     icons.forEach(function(id) {
         var el = document.getElementById(id);
         if (el) el.className = isDark ? 'fas fa-sun' : 'fas fa-moon';
     });
     labels.forEach(function(id) {
         var el = document.getElementById(id);
-        if (el) el.textContent = isDark ? 'Modo Claro' : 'Modo Oscuro';
+        if (el) el.textContent = isDark ? 'Modo claro' : 'Modo oscuro';
     });
 }
 (function() {
     if (localStorage.getItem('darkMode') === 'true') {
         document.body.classList.add('dark-mode');
         var icons = ['themeIcon', 'menuThemeIcon'];
-        var labels = ['menuThemeLabel'];
+        var labels = ['themeLabel', 'menuThemeLabel'];
         icons.forEach(function(id) {
             var el = document.getElementById(id);
             if (el) el.className = 'fas fa-sun';
         });
         labels.forEach(function(id) {
             var el = document.getElementById(id);
-            if (el) el.textContent = 'Modo Claro';
+            if (el) el.textContent = 'Modo claro';
         });
     }
 })();

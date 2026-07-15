@@ -147,7 +147,7 @@ public class AdminController {
         return "redirect:/calorias";
     }
 
-    @GetMapping("/admin/eliminar-sugerencia")
+    @PostMapping("/admin/eliminar-sugerencia")
     public String eliminarSugerencia(@RequestParam("id") Long id,
             HttpSession session) {
 

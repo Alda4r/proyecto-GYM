@@ -234,10 +234,10 @@ public class DataSeeder implements CommandLineRunner {
     }
 
     private void seedPlanes() {
-        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(59.90); p1.setActivo(true); upsertPlan(p1);
-        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(149.90); p2.setActivo(true); upsertPlan(p2);
-        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(269.90); p3.setActivo(true); upsertPlan(p3);
-        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(429.90); p4.setActivo(true); upsertPlan(p4);
+        PlanMembresia p1 = new PlanMembresia(); p1.setNombre("Básico Mensual"); p1.setDescripcion("Acceso completo por 1 mes"); p1.setDuracionMeses(1); p1.setPrecio(59.90); p1.setActivo(true); p1.setBeneficios("Acceso completo al gimnasio\nRutinas personalizadas\nEstacionamiento gratis\nAcceso a la app Fit-Factory"); upsertPlan(p1);
+        PlanMembresia p2 = new PlanMembresia(); p2.setNombre("Trimestral"); p2.setDescripcion("3 meses con seguimiento nutricional"); p2.setDuracionMeses(3); p2.setPrecio(149.90); p2.setActivo(true); p2.setBeneficios("Acceso completo al gimnasio\nRutinas personalizadas\nSeguimiento nutricional\nEstacionamiento gratis\nAcceso a la app Fit-Factory"); upsertPlan(p2);
+        PlanMembresia p3 = new PlanMembresia(); p3.setNombre("Semestral"); p3.setDescripcion("6 meses con evaluación física mensual"); p3.setDuracionMeses(6); p3.setPrecio(269.90); p3.setActivo(true); p3.setBeneficios("Acceso completo al gimnasio\nRutinas personalizadas\nSeguimiento nutricional\nEvaluación física mensual\nEstacionamiento gratis\nAcceso a la app Fit-Factory"); upsertPlan(p3);
+        PlanMembresia p4 = new PlanMembresia(); p4.setNombre("Anual Premium"); p4.setDescripcion("12 meses con todos los beneficios + eventos"); p4.setDuracionMeses(12); p4.setPrecio(429.90); p4.setActivo(true); p4.setBeneficios("Acceso completo al gimnasio\nRutinas personalizadas\nSeguimiento nutricional\nEvaluación física mensual\nEventos exclusivos\nEstacionamiento gratis\nAcceso a la app Fit-Factory"); upsertPlan(p4);
         System.out.println("4 planes de membresía sincronizados.");
     }
 
@@ -248,6 +248,7 @@ public class DataSeeder implements CommandLineRunner {
             existente.setDuracionMeses(plan.getDuracionMeses());
             existente.setPrecio(plan.getPrecio());
             existente.setActivo(plan.isActivo());
+            existente.setBeneficios(plan.getBeneficios());
             planMembresiaRepository.save(existente);
         } else {
             planMembresiaRepository.save(plan);

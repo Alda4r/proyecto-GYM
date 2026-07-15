@@ -39,7 +39,7 @@ public class Rutina {
     @Column(name = "usuario_email")
     private String usuarioEmail;
 
-    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "rutina", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Ejercicio> listaEjercicios;
 
     public Rutina() {

@@ -95,11 +95,13 @@
                                     <td><span class="badge bg-light text-dark border" th:text="${sug.tipoComida}">Almuerzo</span></td>
                                     <td><strong class="text-success" th:text="${sug.calorias + ' kcal'}">0 kcal</strong></td>
                                     <td class="text-center pe-3">
-                                        <a th:href="@{/admin/eliminar-sugerencia(id=${sug.id})}"
-                                            class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
-                                            title="Revocar Plan">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                        <form th:action="@{/admin/eliminar-sugerencia}" method="post" class="m-0">
+                                            <input type="hidden" name="id" th:value="${sug.id}">
+                                            <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle shadow-sm"
+                                                    title="Eliminar sugerencia" onclick="return confirm('¿Eliminar esta sugerencia?')">
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             </tbody>

@@ -45,7 +45,10 @@
                         <a th:href="@{/planes}" class="nav-link" th:classappend="${paginaActual == 'planes'} ? 'active' : ''"><i class="fas fa-id-card"></i> Planes</a>
                     </li>
                     <li class="nav-item">
-                        <a th:href="@{/tienda}" class="nav-link" th:classappend="${paginaActual == 'tienda'} ? 'active' : ''"><i class="fas fa-store"></i> Suplementos</a>
+                        <a th:href="@{/tienda}" class="nav-link" th:classappend="${paginaActual == 'tienda'} ? 'active' : ''">
+                            <i class="fas fa-store"></i> Suplementos
+                            <span class="badge bg-warning text-dark ms-1 rounded-pill" th:text="${session.carritoCount}">0</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a th:href="@{/cuenta}" class="nav-link" th:classappend="${paginaActual == 'cuenta'} ? 'active' : ''"><i class="fas fa-user"></i> Cuenta</a>
@@ -56,12 +59,19 @@
                 </ul>
 
                 <div class="d-flex align-items-center gap-2 ms-auto">
-                    <button class="theme-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Modo oscuro">
+                    <a th:if="${session.usuarioLogueado == null or session.usuarioLogueado.email != 'admin@gym.com'}"
+                       href="/tienda/carrito" class="top-icon-btn position-relative" title="Carrito">
+                        <i class="fas fa-shopping-bag"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-warning text-dark" th:text="${session.carritoCount}" style="font-size:0.6rem;">0</span>
+                    </a>
+                    <button class="theme-btn rounded-pill px-3 py-1 d-flex align-items-center gap-1" onclick="toggleDarkMode()" id="themeToggleBtn" title="Modo oscuro">
                         <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeLabel" style="font-size:0.8rem;">Modo oscuro</span>
                     </button>
                     <form th:action="@{/logout}" method="post" class="m-0">
-                        <button type="submit" class="logout-btn" title="Cerrar sesión">
-                            <i class="fas fa-power-off"></i>
+                        <button type="submit" class="logout-btn rounded-pill px-3 py-1 d-flex align-items-center gap-1" title="Cerrar sesión">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span style="font-size:0.8rem;">Salir</span>
                         </button>
                     </form>
                 </div>

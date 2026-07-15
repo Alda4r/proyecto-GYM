@@ -29,7 +29,7 @@ public class RutinaService {
         rutinaRepository.deleteById(id);
     }
     public boolean existsByNombre(String nombre) {
-        return rutinaRepository.findAll().stream().anyMatch(r -> r.getNombre().equalsIgnoreCase(nombre));
+        return rutinaRepository.existsByNombre(nombre);
     }
     public List<Rutina> findByGrupoMuscular(String grupoMuscular) {
         return rutinaRepository.findByGrupoMuscular(grupoMuscular);
