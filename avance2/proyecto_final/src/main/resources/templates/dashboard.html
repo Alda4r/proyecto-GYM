@@ -12,11 +12,12 @@
     <div th:replace="~{fragmentos :: sidebar-fitgym (paginaActual='dashboard')}"></div>
 
     <main class="main-content">
-        <div class="header-section mb-5">
+        <div class="header-section mb-4">
             <h2 class="fw-bold">Dashboard</h2>
-            <p class="text-muted">Bienvenido de vuelta, <span class="fw-bold" style="color: #f97316;" th:text="${user.nombre}">Usuario</span>. ¡Es hora de entrenar! 💪</p>
+            <p class="text-muted">Bienvenido de vuelta, <span class="fw-bold" style="color: #f97316;" th:text="${user.nombre}">Usuario</span>. ¡Es hora de entrenar!</p>
         </div>
 
+        <!-- Stats -->
         <div class="row g-3 g-md-4 mb-4">
             <div class="col-6 col-md-3">
                 <div class="stat-card">
@@ -44,6 +45,46 @@
             </div>
         </div>
 
+        <!-- Promotions -->
+        <div class="promo-section">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <div class="promo-card" style="background: linear-gradient(135deg, #f97316, #d97706);">
+                        <div class="promo-content">
+                            <div class="promo-tag">Oferta Especial</div>
+                            <h4>Plan Trimestral</h4>
+                            <p>3 meses de entrenamiento ilimitado</p>
+                            <div class="promo-price">S/149.90 <small>/ total</small></div>
+                            <a href="/planes" class="promo-cta">Ver Planes <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="promo-card" style="background: linear-gradient(135deg, #059669, #047857);">
+                        <div class="promo-content">
+                            <div class="promo-tag">M&aacute;s Popular</div>
+                            <h4>Plan Semestral</h4>
+                            <p>6 meses al mejor precio</p>
+                            <div class="promo-price">S/269.90 <small>/ total</small></div>
+                            <a href="/planes" class="promo-cta">Ver Planes <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="promo-card" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">
+                        <div class="promo-content">
+                            <div class="promo-tag">Promo Nutrición</div>
+                            <h4>Suplementos</h4>
+                            <p>Compra 2 lleva 3 en prote&iacute;nas</p>
+                            <div class="promo-price">S/89.90 <small>/ pack</small></div>
+                            <a href="/tienda" class="promo-cta">Ir a Tienda <i class="fas fa-arrow-right ms-1"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent workouts + Weekly goals -->
         <div class="row g-3 g-md-4">
             <div class="col-md-8">
                 <div class="content-card p-3 p-md-4">

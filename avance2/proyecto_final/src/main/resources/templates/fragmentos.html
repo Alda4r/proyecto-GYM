@@ -10,58 +10,97 @@
 <body>
 
     <th:block th:fragment="sidebar-fitgym(paginaActual)">
-        <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Menú">
-            <i class="fas fa-bars"></i>
-        </button>
-        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
-        <div id="sidebar" class="sidebar shadow-sm">
-            <div class="brand-section d-flex align-items-center mb-5">
-                <i class="fa-solid fa-dumbbell me-3"></i>
-                <div>
-                    <h4 class="fw-bold mb-0">Fit-Factory Gym</h4>
-                    <small class="text-muted">Tu entreno personal</small>
+        <!-- Top Navbar -->
+        <nav class="top-navbar navbar navbar-expand-lg fixed-top">
+            <div class="container-fluid px-3 px-lg-4">
+                <a class="navbar-brand" th:href="@{/dashboard}">
+                    <i class="fa-solid fa-dumbbell brand-icon"></i>
+                    <span class="brand-text">Fit-Factory Gym</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav mx-auto">
+                        <!-- Dashboard -->
+                        <li class="nav-item" th:if="${session.usuarioLogueado == null || session.usuarioLogueado.email != 'admin@gym.com'}">
+                            <a th:href="@{/dashboard}" class="nav-link" th:classappend="${paginaActual == 'dashboard'} ? 'active' : ''">
+                                <i class="fas fa-home"></i> Dashboard
+                            </a>
+                        </li>
+
+                        <!-- Entrenamiento dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"
+                               th:classappend="${paginaActual == 'rutinas' or paginaActual == 'calorias' or paginaActual == 'progreso'} ? 'active' : ''">
+                                <i class="fas fa-dumbbell"></i> Entrenamiento
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'rutinas'} ? 'active' : ''" th:href="@{/rutinas}"><i class="fas fa-calendar-alt"></i> Rutinas</a></li>
+                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'calorias'} ? 'active' : ''" th:href="@{/calorias}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a></li>
+                                <li><a class="dropdown-item" th:classappend="${paginaActual == 'progreso'} ? 'active' : ''" th:href="@{/progreso}"><i class="fas fa-chart-line"></i> Progreso</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Planes -->
+                        <li class="nav-item">
+                            <a th:href="@{/planes}" class="nav-link" th:classappend="${paginaActual == 'planes'} ? 'active' : ''">
+                                <i class="fas fa-id-card"></i> Planes
+                            </a>
+                        </li>
+
+                        <!-- Tienda -->
+                        <li class="nav-item">
+                            <a th:href="@{/tienda}" class="nav-link" th:classappend="${paginaActual == 'tienda'} ? 'active' : ''">
+                                <i class="fas fa-store"></i> Suplementos
+                            </a>
+                        </li>
+
+                        <!-- Cuenta -->
+                        <li class="nav-item">
+                            <a th:href="@{/cuenta}" class="nav-link" th:classappend="${paginaActual == 'cuenta'} ? 'active' : ''">
+                                <i class="fas fa-user"></i> Cuenta
+                            </a>
+                        </li>
+
+                        <!-- Admin -->
+                        <li class="nav-item" th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
+                            <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin'} ? 'active' : ''">
+                                <i class="fas fa-user-shield"></i> Admin
+                            </a>
+                        </li>
+                    </ul>
+
+                    <!-- Right side: theme toggle + logout -->
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="theme-btn" onclick="toggleDarkMode()" id="themeToggleBtn" title="Modo oscuro">
+                            <i class="fas fa-moon" id="themeIcon"></i>
+                        </button>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="logout-btn" title="Cerrar sesión">
+                                <i class="fas fa-power-off"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <div th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
-        <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin' ? 'active' : ''}">
-            <i class="fas fa-user-shield me-2"></i> Gesti&oacute;n Admin
-        </a>
-    </div>
-            <nav>
-                <a th:if="${session.usuarioLogueado == null || session.usuarioLogueado.email != 'admin@gym.com'}"
-                   th:href="@{/dashboard}"
-                   th:class="${paginaActual == 'dashboard' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-home"></i> Dashboard</a>
-                <a th:href="@{/rutinas}" th:class="${paginaActual == 'rutinas' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-calendar-alt"></i> Rutinas</a>
-                <a th:href="@{/calorias}" th:class="${paginaActual == 'calorias' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a>
-                <a th:href="@{/progreso}" th:class="${paginaActual == 'progreso' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-chart-line"></i> Progreso</a>
-                <a th:href="@{/cuenta}" th:class="${paginaActual == 'cuenta' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-user"></i> Cuenta</a>
-                <a th:href="@{/planes}" th:class="${paginaActual == 'planes' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-id-card"></i> Planes</a>
-                <a th:href="@{/tienda}" th:class="${paginaActual == 'tienda' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-store"></i> Suplementos</a>
+        </nav>
 
-                <div class="theme-toggle">
-                    <button type="button" onclick="toggleDarkMode()" id="themeToggleBtn">
-                        <i class="fas fa-moon" id="themeIcon"></i>
-                        <span id="themeLabel">Modo Oscuro</span>
-                    </button>
-                </div>
-
-                <div class="mt-2 pt-2 border-top">
-                    <form th:action="@{/logout}" method="post" style="display: inline;">
-                        <button type="submit" class="nav-link text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
-                            <i class="fas fa-power-off"></i> Salir
-                        </button>
-                    </form>
-                </div>
-            </nav>
-        </div>
         <script th:src="@{/js/dark-mode.js}"></script>
         <script>
-            function toggleSidebar() {
-                var s = document.getElementById('sidebar');
-                var o = document.getElementById('sidebarOverlay');
-                if (s) { s.classList.toggle('open'); }
-                if (o) { o.classList.toggle('active'); }
-            }
+            // Close mobile menu on link click
+            document.addEventListener('DOMContentLoaded', function() {
+                var navLinks = document.querySelectorAll('#mainNav .nav-link, #mainNav .dropdown-item');
+                var navbarCollapse = document.getElementById('mainNav');
+                navLinks.forEach(function(link) {
+                    link.addEventListener('click', function() {
+                        var bsCollapse = bootstrap.Collapse.getInstance(navbarCollapse);
+                        if (bsCollapse) bsCollapse.hide();
+                    });
+                });
+            });
         </script>
     </th:block>
 
