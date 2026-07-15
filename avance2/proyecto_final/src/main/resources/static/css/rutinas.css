@@ -89,3 +89,23 @@ body.dark-mode .routine-body h4 { color: var(--text-dark); }
         flex-direction: column !important;
     }
 }
+
+/* ========== MODAL FIX ========== */
+.modal {
+    z-index: 1060 !important;
+    pointer-events: none; /* Permite clicks a través del fondo si fuera necesario */
+}
+.modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0,0,0,0.5);
+    pointer-events: auto;
+}
+.modal-dialog {
+    pointer-events: auto !important;
+    z-index: 1061 !important;
+}
+.modal-backdrop {
+    display: none !important;
+}
