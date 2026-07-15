@@ -57,3 +57,35 @@ body.dark-mode .diff-hard { background: #7f1d1d; color: #fca5a5; }
 body.dark-mode .routine-card { border: 1px solid var(--border-color); }
 body.dark-mode .exercise-card { background-color: var(--card-bg); }
 body.dark-mode .routine-body h4 { color: var(--text-dark); }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 991.98px) {
+    .routine-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px;
+    }
+    .main-content {
+        margin-left: 0;
+        padding: 20px;
+        padding-top: 70px;
+    }
+    .routine-header {
+        height: 120px;
+        font-size: 2.5rem;
+    }
+    .routine-body {
+        padding: 18px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .routine-grid {
+        gap: 16px;
+    }
+    .content-card {
+        padding: 15px;
+    }
+    .d-flex.gap-3.mb-4 {
+        flex-direction: column !important;
+    }
+}

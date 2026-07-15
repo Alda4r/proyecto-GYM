@@ -322,3 +322,65 @@ body.dark-mode .rest-timer-card .btn-skip:hover {
 body.dark-mode .btn-next-exercise {
     background: linear-gradient(135deg, var(--primary), var(--primary-dark));
 }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 575.98px) {
+    .exercise-display {
+        padding: 1.5rem 1rem;
+    }
+    .exercise-name {
+        font-size: 1.3rem;
+    }
+    .exercise-icon {
+        font-size: 2.2rem;
+    }
+    .exercise-meta {
+        gap: 1.2rem;
+    }
+    .meta-item .value {
+        font-size: 1.1rem;
+    }
+    .btn-complete-set {
+        width: 150px;
+        height: 150px;
+        font-size: 1rem;
+    }
+    .btn-complete-set i {
+        font-size: 1.5rem;
+    }
+    .rest-timer-ring {
+        width: 140px;
+        height: 140px;
+    }
+    .rest-timer-ring-inner {
+        width: 116px;
+        height: 116px;
+    }
+    .rest-timer-value {
+        font-size: 2rem;
+    }
+    .rest-timer-card {
+        padding: 2rem;
+        width: 85%;
+    }
+    .completion-screen .trophy-icon {
+        font-size: 3.5rem;
+    }
+    .completion-screen h2 {
+        font-size: 1.5rem;
+    }
+    .completion-stat {
+        padding: 1rem 1.5rem;
+        min-width: 100px;
+    }
+    .completion-stat .stat-num {
+        font-size: 1.5rem;
+    }
+    .completion-stats {
+        gap: 1rem;
+    }
+    .completion-screen .btn-finish {
+        padding: 14px 40px;
+        font-size: 1rem;
+    }
+}

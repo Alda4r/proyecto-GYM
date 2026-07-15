@@ -9,45 +9,59 @@
 </head>
 <body>
 
-    <div th:fragment="sidebar-fitgym" class="sidebar shadow-sm">
-        <div class="brand-section d-flex align-items-center mb-5">
-            <i class="fa-solid fa-dumbbell me-3"></i>
-            <div>
-                <h4 class="fw-bold mb-0">Fit-Factory Gym</h4>
-                <small class="text-muted">Tu entreno personal</small>
+    <th:block th:fragment="sidebar-fitgym(paginaActual)">
+        <button class="menu-toggle" id="menuToggle" onclick="toggleSidebar()" aria-label="Menú">
+            <i class="fas fa-bars"></i>
+        </button>
+        <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+        <div id="sidebar" class="sidebar shadow-sm">
+            <div class="brand-section d-flex align-items-center mb-5">
+                <i class="fa-solid fa-dumbbell me-3"></i>
+                <div>
+                    <h4 class="fw-bold mb-0">Fit-Factory Gym</h4>
+                    <small class="text-muted">Tu entreno personal</small>
+                </div>
             </div>
-        </div>
-        <div th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
-    <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin' ? 'active' : ''}">
-        <i class="fas fa-user-shield me-2"></i> Gesti&oacute;n Admin
-    </a>
-</div>
-        <nav>
-            <a th:if="${session.usuarioLogueado == null || session.usuarioLogueado.email != 'admin@gym.com'}"
-               th:href="@{/dashboard}"
-               th:class="${paginaActual == 'dashboard' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-home"></i> Dashboard</a>
-            <a th:href="@{/rutinas}" th:class="${paginaActual == 'rutinas' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-calendar-alt"></i> Rutinas</a>
-            <a th:href="@{/calorias}" th:class="${paginaActual == 'calorias' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a>
-            <a th:href="@{/progreso}" th:class="${paginaActual == 'progreso' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-chart-line"></i> Progreso</a>
-            <a th:href="@{/cuenta}" th:class="${paginaActual == 'cuenta' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-user"></i> Cuenta</a>
-
-            <div class="theme-toggle">
-                <button type="button" onclick="toggleDarkMode()" id="themeToggleBtn">
-                    <i class="fas fa-moon" id="themeIcon"></i>
-                    <span id="themeLabel">Modo Oscuro</span>
-                </button>
-            </div>
-
-            <div class="mt-2 pt-2 border-top">
-                <form th:action="@{/logout}" method="post" style="display: inline;">
-                    <button type="submit" class="nav-link text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
-                        <i class="fas fa-power-off"></i> Salir
-                    </button>
-                </form>
-            </div>
-        </nav>
-    <script th:src="@{/js/dark-mode.js}"></script>
+            <div th:if="${session.usuarioLogueado != null && session.usuarioLogueado.email == 'admin@gym.com'}">
+        <a th:href="@{/admin}" class="nav-link" th:classappend="${paginaActual == 'admin' ? 'active' : ''}">
+            <i class="fas fa-user-shield me-2"></i> Gesti&oacute;n Admin
+        </a>
     </div>
+            <nav>
+                <a th:if="${session.usuarioLogueado == null || session.usuarioLogueado.email != 'admin@gym.com'}"
+                   th:href="@{/dashboard}"
+                   th:class="${paginaActual == 'dashboard' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-home"></i> Dashboard</a>
+                <a th:href="@{/rutinas}" th:class="${paginaActual == 'rutinas' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-calendar-alt"></i> Rutinas</a>
+                <a th:href="@{/calorias}" th:class="${paginaActual == 'calorias' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-apple-alt"></i> Calor&iacute;as</a>
+                <a th:href="@{/progreso}" th:class="${paginaActual == 'progreso' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-chart-line"></i> Progreso</a>
+                <a th:href="@{/cuenta}" th:class="${paginaActual == 'cuenta' ? 'nav-link active' : 'nav-link'}"><i class="fas fa-user"></i> Cuenta</a>
+
+                <div class="theme-toggle">
+                    <button type="button" onclick="toggleDarkMode()" id="themeToggleBtn">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                        <span id="themeLabel">Modo Oscuro</span>
+                    </button>
+                </div>
+
+                <div class="mt-2 pt-2 border-top">
+                    <form th:action="@{/logout}" method="post" style="display: inline;">
+                        <button type="submit" class="nav-link text-danger" style="border: none; background: none; width: 100%; text-align: left; cursor: pointer;">
+                            <i class="fas fa-power-off"></i> Salir
+                        </button>
+                    </form>
+                </div>
+            </nav>
+        </div>
+        <script th:src="@{/js/dark-mode.js}"></script>
+        <script>
+            function toggleSidebar() {
+                var s = document.getElementById('sidebar');
+                var o = document.getElementById('sidebarOverlay');
+                if (s) { s.classList.toggle('open'); }
+                if (o) { o.classList.toggle('active'); }
+            }
+        </script>
+    </th:block>
 
 </body>
 </html>
