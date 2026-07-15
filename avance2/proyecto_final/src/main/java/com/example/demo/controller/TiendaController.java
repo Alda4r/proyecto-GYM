@@ -1,19 +1,12 @@
 package com.example.demo.controller;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,8 +29,6 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class TiendaController {
-
-    private static final Path UPLOADS_DIR = Paths.get("uploads");
 
     @Autowired
     private ProductoService productoService;
@@ -232,47 +223,43 @@ public class TiendaController {
         prod.setCategoria(categoria);
         prod.setActivo(true);
 
-        // Si subió un archivo, guardarlo y usar esa ruta
+        // Si subió un archivo, guardarlo en la BD como bytes
         if (imagenFile != null && !imagenFile.isEmpty()) {
             try {
-                Files.createDirectories(UPLOADS_DIR);
-                String ext = "";
-                String originalName = imagenFile.getOriginalFilename();
-                if (originalName != null && originalName.contains(".")) {
-                    ext = originalName.substring(originalName.lastIndexOf("."));
-                }
-                String filename = UUID.randomUUID().toString() + ext;
-                Path destino = UPLOADS_DIR.resolve(filename);
-                Files.copy(imagenFile.getInputStream(), destino, StandardCopyOption.REPLACE_EXISTING);
-                prod.setImagenUrl("/uploads/" + filename);
+                prod.setFoto(imagenFile.getBytes());
+                prod.setFotoMimeType(imagenFile.getContentType());
+                prod.setImagenUrl(null);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else if (imagenUrl != null && !imagenUrl.isBlank()) {
+            prod.setFoto(null);
+            prod.setFotoMimeType(null);
             prod.setImagenUrl(imagenUrl);
         }
 
-        productoService.save(prod);
-        return "redirect:/tienda/admin";
+        Producto saved = productoService.save(prod);
+
+        // Si subió foto, actualizar imagenUrl con la ruta del endpoint
+        if (imagenFile != null && !imagenFile.isEmpty()) {
+            saved.setImagenUrl("/imagen/producto/" + saved.getId());
+            productoService.save(saved);
+        }
+
+        return "redirect:/tienda";
     }
 
-    @GetMapping("/uploads/{filename}")
-    public ResponseEntity<Resource> servirImagen(@PathVariable String filename) {
-        try {
-            Path file = UPLOADS_DIR.resolve(filename).normalize();
-            Resource resource = new UrlResource(file.toUri());
-            if (!resource.exists() || !resource.isReadable()) {
-                return ResponseEntity.notFound().build();
-            }
-            String contentType = Files.probeContentType(file);
-            if (contentType == null) contentType = "application/octet-stream";
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(contentType))
-                    .header(HttpHeaders.CACHE_CONTROL, "max-age=86400")
-                    .body(resource);
-        } catch (IOException e) {
+    @GetMapping("/imagen/producto/{id}")
+    public ResponseEntity<byte[]> servirImagenProducto(@PathVariable Long id) {
+        Producto prod = productoService.findById(id).orElse(null);
+        if (prod == null || prod.getFoto() == null) {
             return ResponseEntity.notFound().build();
         }
+        String mime = prod.getFotoMimeType() != null ? prod.getFotoMimeType() : "image/png";
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(mime))
+                .header(HttpHeaders.CACHE_CONTROL, "max-age=86400")
+                .body(prod.getFoto());
     }
 
     @PostMapping("/tienda/admin/toggle-estado")

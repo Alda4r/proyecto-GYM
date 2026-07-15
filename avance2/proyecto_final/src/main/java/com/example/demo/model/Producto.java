@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,6 +27,13 @@ public class Producto {
 
     @Column(name = "imagen_url")
     private String imagenUrl;
+
+    @Lob
+    @Column(name = "foto")
+    private byte[] foto;
+
+    @Column(name = "foto_mime_type")
+    private String fotoMimeType;
 
     private int stock;
 
@@ -50,6 +58,12 @@ public class Producto {
 
     public String getImagenUrl() { return imagenUrl; }
     public void setImagenUrl(String imagenUrl) { this.imagenUrl = imagenUrl; }
+
+    public byte[] getFoto() { return foto; }
+    public void setFoto(byte[] foto) { this.foto = foto; }
+
+    public String getFotoMimeType() { return fotoMimeType; }
+    public void setFotoMimeType(String fotoMimeType) { this.fotoMimeType = fotoMimeType; }
 
     public int getStock() { return stock; }
     public void setStock(int stock) { this.stock = stock; }
