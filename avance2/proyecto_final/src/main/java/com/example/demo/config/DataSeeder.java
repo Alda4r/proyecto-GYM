@@ -7,8 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.example.demo.model.Ejercicio;
+import com.example.demo.model.Producto;
 import com.example.demo.model.Rutina;
 import com.example.demo.model.Usuario;
+import com.example.demo.repository.ProductoRepository;
 import com.example.demo.repository.RutinaRepository;
 import com.example.demo.repository.UsuarioRepository;
 
@@ -17,11 +19,14 @@ public class DataSeeder implements CommandLineRunner {
 
     private final UsuarioRepository usuarioRepository;
     private final RutinaRepository rutinaRepository;
+    private final ProductoRepository productoRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public DataSeeder(UsuarioRepository usuarioRepository, RutinaRepository rutinaRepository, PasswordEncoder passwordEncoder) {
+    public DataSeeder(UsuarioRepository usuarioRepository, RutinaRepository rutinaRepository,
+                      ProductoRepository productoRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
         this.rutinaRepository = rutinaRepository;
+        this.productoRepository = productoRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -29,6 +34,7 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) {
         seedAdmin();
         seedRoutines();
+        seedProductos();
     }
 
     private void seedAdmin() {
@@ -175,6 +181,55 @@ public class DataSeeder implements CommandLineRunner {
         ));
 
         System.out.println("16 rutinas con ejercicios creadas exitosamente.");
+    }
+
+    private void seedProductos() {
+        if (productoRepository.count() > 0) return;
+
+        productoRepository.save(new Producto());
+        // Necesitamos usar setters porque no hay constructor con params
+        java.util.List<Producto> productos = java.util.List.of(
+            crearProducto("Whey Protein Isolate 2lb", "Proteína de suero aislada de rápida absorción. Ideal post-entreno.", 39.99,
+                "https://m.media-amazon.com/images/I/71p4bGUMKaL._AC_SL1500_.jpg", "Proteínas", 50),
+            crearProducto("Whey Protein 5lb", "Proteína de suero concentrada. Ahorro en presentación familiar.", 69.99,
+                "https://m.media-amazon.com/images/I/71QzY2mE5tL._AC_SL1500_.jpg", "Proteínas", 30),
+            crearProducto("Creatina Monohidratada 500g", "Creatina pura en polvo para fuerza y rendimiento.", 29.99,
+                "https://m.media-amazon.com/images/I/81KqLwHJPzL._AC_SL1500_.jpg", "Creatina", 40),
+            crearProducto("Pre-Entreno Explosivo 300g", "Fórmula completa con cafeína, beta-alanina y citrulina.", 34.99,
+                "https://m.media-amazon.com/images/I/71Y0gAFFMfL._AC_SL1500_.jpg", "Pre-Entreno", 25),
+            crearProducto("Multivitamínico Deportivo 90 tabs", "Complejo B, zinc, magnesio y vitamina D para atletas.", 19.99,
+                "https://m.media-amazon.com/images/I/71ojnT3oz6L._AC_SL1500_.jpg", "Vitaminas", 60),
+            crearProducto("Barra de Proteína 12 pack", "Snack alto en proteína con 20g por barra. Surtido.", 24.99,
+                "https://m.media-amazon.com/images/I/81eZbKLKfmL._AC_SL1500_.jpg", "Proteínas", 100),
+            crearProducto("Creatina HCL 120 caps", "Creatina clorhidrato de alta absorción en cápsulas.", 27.99,
+                "https://m.media-amazon.com/images/I/71VXFeq4MvL._AC_SL1500_.jpg", "Creatina", 35),
+            crearProducto("Shaker 700ml", "Shaker con mezclador de acero inoxidable. Libre de BPA.", 12.99,
+                "https://m.media-amazon.com/images/I/61wXe6tT9TL._AC_SL1500_.jpg", "Accesorios", 80),
+            crearProducto("Guantes de Gimnasio", "Guantes con soporte de muñeca y gel antideslizante.", 15.99,
+                "https://m.media-amazon.com/images/I/71b2GZZ3lCL._AC_SL1500_.jpg", "Accesorios", 45),
+            crearProducto("Camiseta Deportiva", "Camiseta dry-fit de manga corta. Varios colores.", 22.99,
+                "https://m.media-amazon.com/images/I/71hVpWcFGzL._AC_SL1500_.jpg", "Ropa", 70),
+            crearProducto("Short de Entreno", "Short ligero con bolsillos y cintura elástica.", 19.99,
+                "https://m.media-amazon.com/images/I/81EKBWB0bDL._AC_SL1500_.jpg", "Ropa", 50),
+            crearProducto("BCAA 2:1:1 400 caps", "Aminoácidos ramificados para recuperación muscular.", 25.99,
+                "https://m.media-amazon.com/images/I/71KH0bK1YXL._AC_SL1500_.jpg", "Vitaminas", 30)
+        );
+        for (Producto p : productos) {
+            productoRepository.save(p);
+        }
+        System.out.println("12 productos de ejemplo creados.");
+    }
+
+    private Producto crearProducto(String nombre, String descripcion, double precio, String imagenUrl, String categoria, int stock) {
+        Producto p = new Producto();
+        p.setNombre(nombre);
+        p.setDescripcion(descripcion);
+        p.setPrecio(precio);
+        p.setImagenUrl(imagenUrl);
+        p.setCategoria(categoria);
+        p.setStock(stock);
+        p.setActivo(true);
+        return p;
     }
 
     private void crearRutina(String nombre, String nivel, String tiempo, String grupoMuscular,
