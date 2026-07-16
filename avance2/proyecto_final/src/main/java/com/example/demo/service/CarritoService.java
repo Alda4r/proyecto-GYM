@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.model.CarritoItem;
 import com.example.demo.model.Producto;
@@ -77,7 +78,8 @@ public class CarritoService {
         existing.ifPresent(carritoItemRepository::delete);
     }
 
-    public void clearCart(String usuarioEmail) {
-        carritoItemRepository.deleteByUsuarioEmail(usuarioEmail);
-    }
+        @Transactional
+public void clearCart(String usuarioEmail) {
+    carritoItemRepository.deleteByUsuarioEmail(usuarioEmail);
+}
 }
